@@ -1,15 +1,18 @@
-# Build and Release Folders
+# Build and Release Folders #
+#############################
 bin-debug/
 bin-release/
 *.swc
 
-# Project property files
-.actionScriptProperties
-.flexProperties
-.settings/
-.project
+# Project Properties Files (Kept in this case) ##
+#################################################
+#.actionScriptProperties
+#.flexProperties
+#.settings/
+#.project
 
-# Project Specific Ignore Files
+# Project Specific Ignore Files ##
+##################################
 VectorEditorWeb/
 VectorEditorStandalone/bin-debug/
 RegistryWSClient/.model/
@@ -19,10 +22,11 @@ RegistryWSClient/src/services/
 RegistryWSClient/src/valueObjects/
 VectorCommon/bin/
 *~
-## GITHUB STANDARDS
 
-# Compiled source #
-###################
+###### GITHUB STANDARDS  #####
+
+# Compiled source ##
+####################
 *.com
 *.class
 *.dll
@@ -53,6 +57,7 @@ VectorCommon/bin/
 ######################
 .DS_Store?
 .DS_*
+.metadata/
 ehthumbs.db
 Icon?
 Thumbs.db
