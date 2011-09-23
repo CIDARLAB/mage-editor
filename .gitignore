@@ -8,7 +8,7 @@ bin-release/
 #################################################
 #.actionScriptProperties
 #.flexProperties
-#.settings/
+.settings/
 #.project
 
 # Project Specific Ignore Files ##
