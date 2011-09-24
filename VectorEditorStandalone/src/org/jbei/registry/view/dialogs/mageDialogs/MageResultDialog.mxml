@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SimpleDialogForm
+	width="800"
+	height="400"
+	xmlns="org.jbei.lib.ui.dialogs.*"
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	creationComplete="onCreationComplete(event)">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.events.ValidationResultEvent;
+			import org.jbei.registry.ApplicationFacade;
+			
+			private var changed:Boolean = false;
+			
+			[Bindable]
+			private var _mr: String;
+			
+			// Private Methods
+			private function onCreationComplete(event:Event):void
+			{
+				_mr = ApplicationFacade.getInstance().loadMageTextResults();
+				resultBox.text = _mr;
+			}
+
+		]]>
+	</mx:Script>
+	
+	<mx:VBox id="mainBox" width="100%" height="100%" horizontalAlign="center" fontSize="8">
+		<mx:Spacer />
+		<mx:Text id="resultBox" width="100%" height = "100%" />
+	</mx:VBox>
+</SimpleDialogForm>

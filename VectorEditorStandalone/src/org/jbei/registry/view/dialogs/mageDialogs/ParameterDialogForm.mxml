@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="388" height="258">
+	<mx:FormItem id="param6_calc_replic" x="10" y="191" width="366" label="Calculate Replicores:"
+				 direction="horizontal" horizontalAlign="right">
+		<mx:CheckBox id="param6_VALUE" label="Yes/No"/>
+		<mx:RadioButtonGroup id="strandRadioGroup" />
+	</mx:FormItem>
+	<mx:FormItem id="param5_addthiol" x="10" y="161" width="366"
+				 label="Number of Terminal 5' Phosphorothioate Bonds:" direction="horizontal"
+				 horizontalAlign="right">
+		<mx:NumericStepper id="param5_VALUE"  minimum="0"
+						   stepSize="1" textAlign="center"/>
+	</mx:FormItem>
+	<mx:FormItem id="param4" x="10" y="131" width="366" label="Maximum Base Pair Shift :"
+				 direction="horizontal" horizontalAlign="right">
+		<mx:NumericStepper id="param4_VALUE" minimum="0"
+						   stepSize="1" textAlign="center"/>
+	</mx:FormItem>
+	<mx:FormItem id="param3_mloc_dft" x="10" y="101" width="366"
+				 label="Mismatch Distance from 3' End :" direction="horizontal"
+				 horizontalAlign="right">
+		<mx:NumericStepper id="param3_VALUE"  minimum="0" stepSize="1"
+						   textAlign="center"/>
+	</mx:FormItem>
+	<mx:FormItem id="param2_dG_thresh" x="10" y="71" width="366" label="Free Energy Threshold :"
+				 direction="horizontal" horizontalAlign="right">
+		<mx:NumericStepper id="param2_VALUE" minimum="0" stepSize="1"
+						   textAlign="center"/>
+	</mx:FormItem>
+	<mx:FormItem id="param1_olido_size" x="10" y="41" width="366" label="Oligo Size :  " direction="horizontal"
+				 horizontalAlign="right">
+		<mx:NumericStepper id="param1_VALUE" width="58"  minimum="0"
+						   stepSize="1" textAlign="center"/>
+	</mx:FormItem>
+	<mx:Label id="paramTitle" x="10" y="10" width="366" height="26" enabled="true" fontSize="13"
+			  text="Mage Input Parameters" textAlign="center"/>
+	<mx:Button id="paramSave" x="10" y="221" width="102" label="Save"/>
+	<mx:Button id="paramCancel" x="120" y="221" label="Cancel"/>
+	
+</mx:Canvas>

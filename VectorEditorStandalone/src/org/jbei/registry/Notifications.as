@@ -80,5 +80,10 @@ package org.jbei.registry
         public static const IMPORT_SEQUENCE:String = "IMPORT_SEQUENCE";
         public static const DOWNLOAD_SEQUENCE:String = "DOWNLOAD_SEQUENCE";
         public static const REBASE_SEQUENCE:String = "REBASE_SEQUENCE";
+		
+		// Additions from MAGE
+		public static const SHOW_MAGE_PARAMETERS_DIALOG : String = "SHOW_MAGE_PARAMETERS_DIALOG"; 
+		public static const HIDE_MAGE_PARAMETERS_DIALOG : String = "HIDE_MAGE_PARAMETERS_DIALOG"; 
+		public static const SAVE_MAGE_PARAMETERS_DIALOG : String = "SAVE_MAGE_PARAMETERS_DIALOG";
 	}
 }

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AbstractDialogForm 
+	width="100%" 
+	height="100%" 
+	minWidth="300"
+	minHeight="200"
+	xmlns="org.jbei.lib.ui.dialogs.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	creationComplete="onCreationComplete(event)">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.events.ValidationResultEvent;
+			
+			import org.jbei.registry.ApplicationFacade;
+			import org.jbei.registry.models.mageParameters;
+			
+			private var changed:Boolean = false;
+			
+			[Bindable]
+			private var _mp:mageParameters;
+			
+			// Public Methods
+			public override function validate():void
+			{
+ 				if(!changed) {
+					isValid = true;	
+					return;
+				}
+				else{ 
+					isValid = true;
+					_mp.setoligo_size(oligo_size.value);
+					_mp.setdg_thresh(dg_thresh.value);
+					_mp.setmloc_dft(mloc_dft.value);
+					_mp.setmloc_max(mloc_max.value);
+					_mp.setaddthiol(addthiol.value);
+					_mp.setcalc_replic(calc_replic.selected);
+					
+					ApplicationFacade.getInstance().saveMageParameters(_mp);
+ 				} 
+			}
+			
+			// Private Methods
+			private function onCreationComplete(event:Event):void
+			{
+				_mp = ApplicationFacade.getInstance().getMageParameters();
+			}
+			
+			private function onChange(event:Event):void
+			{
+				changed = true;
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:NumberValidator 
+		id="oligo_size_VAL" 
+		source="{ oligo_size }" 
+		required="true" 
+		minValue="0" 
+		maxValue="100" 
+		property="value" 
+		domain="int"/>
+	<mx:NumberValidator 
+		id="dg_thresh_VAL" 
+		source="{ dg_thresh }" 
+		required="true" minValue="-1000" 
+		maxValue="1000" 
+		property="value" 
+		domain="int"/>
+	<mx:NumberValidator 
+		id="mloc_dft_VAL" 
+		source="{ mloc_dft }" 
+		required="true" 
+		minValue="0" 
+		maxValue="100" 
+		property="value" 
+		domain="int"/>
+	<mx:NumberValidator 
+		id="mloc_max_VAL" 
+		source="{ mloc_max }" 
+		required="true" minValue="0" 
+		property="value" 
+		domain="int"/>
+	<mx:NumberValidator 
+		id="addthiol_VAL" 
+		source="{ addthiol }" 
+		required="true" minValue="0" 
+		maxValue="100" 
+		property="value" 
+		domain="int"/>
+	
+	<mx:TabNavigator 
+		borderStyle="solid"
+		width="100%"
+		height="100%">
+		
+		<mx:VBox 
+			label="Input Parameters" 
+            width="100%"
+            height="100%">
+            
+			<mx:Form 
+				id="mainForm" 
+				paddingBottom="5" 
+				paddingTop="5" 
+				paddingLeft="5" 
+				paddingRight="5">
+				<mx:FormItem label="Oligo Size:" direction="horizontal">
+					<mx:VBox width="100%" height="100%">
+						<mx:NumericStepper 
+							id="oligo_size" 
+							stepSize="10" 
+							minimum="0" 
+							maximum="100" 
+							width="60"
+							value="{ _mp.getoligo_size() }"
+							change="onChange(event)" />
+					</mx:VBox>
+				</mx:FormItem>
+				
+				<mx:FormItem label="Free Energy Threshold:" direction="horizontal">
+					<mx:VBox width="100%" height="100%">
+						<mx:NumericStepper 
+							id="dg_thresh" 
+							stepSize="10" 
+							minimum="-1000" 
+							maximum="1000" 
+							width="60"
+							value="{ _mp.getdg_thresh() }"
+							change="onChange(event)" />
+					</mx:VBox>
+			    </mx:FormItem>
+				<mx:FormItem label="Maximum Distance from 3' End:" direction="horizontal">
+				    <mx:NumericStepper 
+				    	id="mloc_dft" 
+				    	stepSize="1" 
+				    	minimum="0" 
+				    	maximum="100"
+				    	width="60" 
+				    	value="{ _mp.getmloc_dft() }"
+				    	change="onChange(event)" />
+			    </mx:FormItem>
+				<mx:FormItem label="Maximum Base Pair Shift:" direction="horizontal">
+					<mx:NumericStepper id="mloc_max" width="60" change="onChange(event)" maximum="100"
+									   minimum="0" stepSize="1"
+									   value="{ _mp.getmloc_max() }"/>
+				</mx:FormItem>
+				<mx:FormItem label="Terminal 5' Phosphorothioate Bonds:"
+							 direction="horizontal" textAlign="left">
+					<mx:VBox width="100%" height="100%">
+						<mx:NumericStepper 
+							id="addthiol" 
+							stepSize="1" 
+							minimum="0" 
+							maximum="100"
+							width="60" 
+							value="{ _mp.getaddthiol()}"
+							change="onChange(event)" />
+					</mx:VBox>
+				</mx:FormItem>
+				<mx:FormItem label="Calculate Replicores: " direction="horizontal">
+					<mx:CheckBox id="calc_replic" 
+								 width="84" 
+								 label="Yes / No" 
+								 selected="{ _mp.getcalc_replic()}"
+								 change="onChange(event)"/>
+			    </mx:FormItem>
+			</mx:Form>
+        </mx:VBox>
+	</mx:TabNavigator>
+	
+</AbstractDialogForm>

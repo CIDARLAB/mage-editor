@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:ApplicationControlBar 
+			dock="true" 
+			fillColors="[0xFFFFFF, 0xCCCCCC]" 
+			fillAlphas="[0.6,0.4]" 
+			width="100%"
+			paddingTop="0" 
+			paddingBottom="0" 
+			paddingLeft="0" 
+			verticalGap="0" 
+			horizontalGap="0" 
+			xmlns:mx="http://www.adobe.com/2006/mxml">
+	<mx:Script>	
+	<![CDATA[
+	
+	[Embed(source='../assets/icons/mageParameters.png')]
+	[Bindable]
+	private var mageParametersIcon:Class;
+	
+	[Embed(source='../assets/icons/link_add.png')]
+	[Bindable]
+	private var mageConnectionIcon:Class;
+	]]>
+	</mx:Script>
+	
+	<mx:Spacer width="10" height="10"/>
+	
+	<mx:Button id="mageParameterButton" height="100%" color="#004756" icon="{ mageParametersIcon }"
+			   toolTip="Parameters"/>
+	
+	<mx:Spacer width="10" height="10"/>
+	
+	<mx:ComboBox id="mageMutationType" labelField="label" height="100%" >
+		<mx:ArrayCollection>
+			<mx:Object label="Insertion" data="INSERTION"/>
+			<mx:Object label="Deletion" data="DELETION"/>
+			<mx:Object label="Mismatch" data="MISMATCH"/>
+		</mx:ArrayCollection>
+	</mx:ComboBox>
+	
+	<mx:Spacer width="10" height="10"/>
+	
+	<mx:Button id="mageConnectionButton" height="100%" color="#004756" icon="{ mageConnectionIcon }"
+			   toolTip="Test MAGE Server Connection" />
+	
+	<mx:Spacer width="10" height="10"/>
+	<mx:Button label="I"/>
+	<mx:Button label="D"/>
+	<mx:Button label="MM"/>
+	<mx:Spacer width="10" height="10"/>
+	<mx:Button id="mageButton" width="71" height="100%" label="MAGE" color="#0D84C9" fontSize="14"/>
+	
+	<mx:Label id="mageStatus" width="100%" height="15" color="#000000" enabled="true" textAlign="right"/>
+	
+	<mx:XMLList id="mutationList">
+		<node label="Inbox"/>
+		<node label="Calendar"/>
+		<node label="Deleted Items"/>
+	</mx:XMLList>
+	
+</mx:ApplicationControlBar >
