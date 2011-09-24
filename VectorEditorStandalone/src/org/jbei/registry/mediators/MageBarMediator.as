@@ -65,7 +65,7 @@ package org.jbei.registry.mediators
 			
 			mageBar.mageStatus.text =  "Connecting...";
 			//mageBar.mageStatus.text =  MageServerRequest.mageGET("/Mage_Test");
-			var mageRequest:URLRequest = new URLRequest("http://localhost:8080/Mage/Mage_Test");//+servlet);
+			var mageRequest:URLRequest = new URLRequest("http://localhost:8080/magelet/Mage_Test");//+servlet);
 			var mageLoader:URLLoader = new URLLoader();
 			var mageVariables:URLVariables = new URLVariables();
 			var Status: String =  "";
