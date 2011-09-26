@@ -4,10 +4,11 @@ package org.jbei.registry.models
 	/**
 	 * @author Samir Ahmed
 	 * */
-	public class mageParameters
+	public class mageProperties
 	{
-		// Data Types in mageParameters
+		/* Data Types in mageProperties */
 		
+		// Input Parameters
 		private var _oligo_size:int = 90;
 		private var _dg_thresh:int = -20;
 		private var _mloc_dft:int = 45;
@@ -15,8 +16,23 @@ package org.jbei.registry.models
 		private var _addthiol:int = 0;
 		private var _calc_replic: Boolean = true;
 		
+		// Input Target
+		
+		private var _count : int = 0;
+		private var _start : Array;
+		private var _end : Array;
+		private var _mutation : Array;
+		private var _replichore : Array;
+		private var _geneName : Array;
+		private var _sense : Array;
+		private var _sequence : Array;
+		
+		// Result Data Members
+		
+		private var _mageTextResults:String;
+		
 		// Constructor
-		public function mageParameters()
+		public function mageProperties()
 		{
 		}
 		
@@ -71,7 +87,6 @@ package org.jbei.registry.models
 			_addthiol = value;
 		}
 		
-		
 		public function getcalc_replic():Boolean
 		{
 			return _calc_replic;
@@ -82,7 +97,12 @@ package org.jbei.registry.models
 			_calc_replic = value;
 		}
 		
+		public function set MageTextResults(_mtr : String): void {
+			this._mageTextResults = _mtr;
+		}
 		
-		
+		public function  get MageTextResults(): String {
+			return this._mageTextResults;}
 	}
+	
 }

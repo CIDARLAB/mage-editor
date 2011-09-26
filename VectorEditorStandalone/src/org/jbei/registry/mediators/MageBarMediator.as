@@ -12,7 +12,7 @@ package org.jbei.registry.mediators
 	import org.jbei.lib.ui.dialogs.SimpleDialog;
 	import org.jbei.registry.ApplicationFacade;
 	import org.jbei.registry.Notifications;
-	import org.jbei.registry.models.mageParameters;
+	import org.jbei.registry.models.mageProperties;
 	import org.jbei.registry.view.dialogs.mageDialogs.MageResultDialog;
 	import org.jbei.registry.view.dialogs.mageDialogs.MageParameterDialogForm;
 	import org.jbei.registry.view.ui.MageBar;
@@ -60,12 +60,9 @@ package org.jbei.registry.mediators
 		
 		private function onMageButtonClick(event:Event):void 
 		{
-			
-			
-			
 			mageBar.mageStatus.text =  "Connecting...";
 			//mageBar.mageStatus.text =  MageServerRequest.mageGET("/Mage_Test");
-			var mageRequest:URLRequest = new URLRequest("http://localhost:8080/magelet/Mage_Test");//+servlet);
+			var mageRequest:URLRequest = new URLRequest("http://localhost:8080/magelet/optMAGE_1");//+servlet);
 			var mageLoader:URLLoader = new URLLoader();
 			var mageVariables:URLVariables = new URLVariables();
 			var Status: String =  "";
@@ -78,7 +75,7 @@ package org.jbei.registry.mediators
 				var POSTresponse: String = mageLoader.data;
 				mageBar.mageStatus.text = "Request Complete";//if (GETResponse.length <10){GETResponse = "Yes"}
 				
-				ApplicationFacade.getInstance().saveMageTextResults(POSTresponse);
+				ApplicationFacade.getInstance().MageProperties.MageTextResults = POSTresponse;
 				var _mrd:SimpleDialog = new SimpleDialog(MageResultDialog);
 				_mrd.title = "Mage Results";
 				_mrd.open();
@@ -91,51 +88,22 @@ package org.jbei.registry.mediators
 			catch (error:Error) { Status = "Error Connecting";}
 			mageBar.mageStatus.text = Status;
 			
-			
 		}
 		
 		private function onMageParameterButtonClick(event:Event): void 
 		{
-			//var parameterDialog: SimpleDialog = new SimpleDialog(ParameterDialogForm);
-			
 			var _mageParameterDialog:ModalDialog = new ModalDialog(MageParameterDialogForm, null);
 			_mageParameterDialog.title = "Preferences";
 			_mageParameterDialog.open();
-			
-			
+				
 		}
 		
 		private function onMageConnectionButtonClick(event: Event): void 
 		{
-			
-			
-			
-			/*mageBar.mageStatus.text =  "Connecting...";
-			//mageBar.mageStatus.text =  MageServerRequest.mageGET("/Mage_Test");
-			var mageRequest:URLRequest = new URLRequest("http://localhost:8080/Mage/Mage_Test");//+servlet);
-			var mageLoader:URLLoader = new URLLoader();
-			var mageVariables:URLVariables = new URLVariables();
-			var Status : String =  "Connecting";
-			
-			mageRequest.method = URLRequestMethod.GET;
-			mageVariables.test = "Testing";
-			mageRequest.data = mageVariables;
-			
-			function onLoaded(evt: Event) : void { 
-			Status = mageLoader.data.substr(0,100);
-			mageBar.mageStatus.text = Status;//if (GETResponse.length <10){GETResponse = "Yes"}
-			}
-			
-			mageLoader.dataFormat = URLLoaderDataFormat.TEXT;
-			mageLoader.addEventListener(Event.COMPLETE, onLoaded());
-			mageLoader.load(mageRequest);
-			try { mageLoader.load(mageRequest); } 
-			catch (error:Error) { Status = "Error Connecting";}
-			mageBar.mageStatus.text = Status;
-			*/
+
 			mageBar.mageStatus.text =  "Connecting...";
 			//mageBar.mageStatus.text =  MageServerRequest.mageGET("/Mage_Test");
-			var mageRequest:URLRequest = new URLRequest("http://localhost:8080/Mage/Mage_Test");//+servlet);
+			var mageRequest:URLRequest = new URLRequest("http://localhost:8080/magelet/optMAGE_1");//+servlet);
 			var mageLoader:URLLoader = new URLLoader();
 			var mageVariables:URLVariables = new URLVariables();
 			var GETResponse : String =  "No Connection";
@@ -156,9 +124,6 @@ package org.jbei.registry.mediators
 			catch (error:Error) { GETResponse = "Error Connecting";}
 			mageBar.mageStatus.text = GETResponse;
 			
-			
-			
-			
 		}
 		
 		private function collectPostVariables( _mageVariables: URLVariables): URLVariables{
@@ -167,10 +132,13 @@ package org.jbei.registry.mediators
 			//_mageVariables.dnaSequence = ";
 			
 			var _af : ApplicationFacade = ApplicationFacade.getInstance();
-			var _mp :mageParameters= _af.getMageParameters();
+			var _mp :mageProperties= _af.MageProperties;
 			var _sequence : String = _af.sequence.sequence;
 			var _start : int= _af.selectionStart;
 			var _end : int = _af.selectionEnd;
+			
+			// MetaVariables
+			_mageVariables.count = "1";
 			
 			// Get Target Variables
 			_mageVariables.dnaSequence = _sequence;
@@ -185,7 +153,6 @@ package org.jbei.registry.mediators
 			_mageVariables.mloc_dft = _mp.getmloc_dft();
 			_mageVariables.mloc_max = _mp.getmloc_max();
 			_mageVariables.addthiol = _mp.getaddthiol();
-			//_mageVariables.
 			
 			if ( _mp.getcalc_replic() )
 			{_mageVariables.calc_replic = "1";} 

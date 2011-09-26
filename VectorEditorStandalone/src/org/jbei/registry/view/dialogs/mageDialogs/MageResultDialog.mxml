@@ -10,6 +10,7 @@
 		<![CDATA[
 			import mx.events.ValidationResultEvent;
 			import org.jbei.registry.ApplicationFacade;
+			import org.jbei.registry.models.mageProperties;
 			
 			private var changed:Boolean = false;
 			
@@ -19,7 +20,7 @@
 			// Private Methods
 			private function onCreationComplete(event:Event):void
 			{
-				_mr = ApplicationFacade.getInstance().loadMageTextResults();
+				_mr = ApplicationFacade.getInstance().MageProperties.MageTextResults;
 				resultBox.text = _mr;
 			}
 

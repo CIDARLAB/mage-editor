@@ -13,12 +13,13 @@
 			import mx.events.ValidationResultEvent;
 			
 			import org.jbei.registry.ApplicationFacade;
-			import org.jbei.registry.models.mageParameters;
+			import org.jbei.registry.MageConstants;
+			import org.jbei.registry.models.mageProperties;
 			
 			private var changed:Boolean = false;
 			
 			[Bindable]
-			private var _mp:mageParameters;
+			private var _mp:mageProperties;
 			
 			// Public Methods
 			public override function validate():void
@@ -28,6 +29,7 @@
 					return;
 				}
 				else{ 
+					
 					isValid = true;
 					_mp.setoligo_size(oligo_size.value);
 					_mp.setdg_thresh(dg_thresh.value);
@@ -36,14 +38,14 @@
 					_mp.setaddthiol(addthiol.value);
 					_mp.setcalc_replic(calc_replic.selected);
 					
-					ApplicationFacade.getInstance().saveMageParameters(_mp);
+					ApplicationFacade.getInstance().MageProperties = _mp;
  				} 
 			}
 			
 			// Private Methods
 			private function onCreationComplete(event:Event):void
 			{
-				_mp = ApplicationFacade.getInstance().getMageParameters();
+				_mp = ApplicationFacade.getInstance().MageProperties;
 			}
 			
 			private function onChange(event:Event):void
@@ -57,36 +59,39 @@
 		id="oligo_size_VAL" 
 		source="{ oligo_size }" 
 		required="true" 
-		minValue="0" 
-		maxValue="100" 
+		minValue="{ MageConstants.OLIGO_SIZE_MIN }"
+		maxValue="{ MageConstants.OLIGO_SIZE_MAX }"
 		property="value" 
 		domain="int"/>
 	<mx:NumberValidator 
 		id="dg_thresh_VAL" 
 		source="{ dg_thresh }" 
-		required="true" minValue="-1000" 
-		maxValue="1000" 
+		required="true" minValue="{ MageConstants.DG_THRESH_MIN }"
+		maxValue="{ MageConstants.DG_THRESH_MAX }"
 		property="value" 
 		domain="int"/>
 	<mx:NumberValidator 
 		id="mloc_dft_VAL" 
 		source="{ mloc_dft }" 
 		required="true" 
-		minValue="0" 
-		maxValue="100" 
+		minValue="{ MageConstants.MLOC_DFT_MIN }"
+		maxValue="{ MageConstants.MLOC_DFT_MAX }"
 		property="value" 
 		domain="int"/>
 	<mx:NumberValidator 
 		id="mloc_max_VAL" 
 		source="{ mloc_max }" 
-		required="true" minValue="0" 
+		required="true" 
+		minValue= "{ MageConstants.MLOC_MAX_MIN }" 
+		maxValue= "{ MageConstants.MLOC_MAX_MAX }" 
 		property="value" 
 		domain="int"/>
 	<mx:NumberValidator 
 		id="addthiol_VAL" 
 		source="{ addthiol }" 
-		required="true" minValue="0" 
-		maxValue="100" 
+		required="true" 
+		minValue="{ MageConstants.ADDTHIOL_MIN }"
+		maxValue="{ MageConstants.ADDTHIOL_MAX }" 
 		property="value" 
 		domain="int"/>
 	

@@ -31,7 +31,7 @@ package org.jbei.registry
 	import org.jbei.registry.models.UserPreferences;
 	import org.jbei.registry.models.UserRestrictionEnzymes;
 	import org.jbei.registry.models.VectorEditorProject;
-	import org.jbei.registry.models.mageParameters;
+	import org.jbei.registry.models.mageProperties;
 	import org.jbei.registry.proxies.RegistryAPIProxy;
 	import org.jbei.registry.utils.FeaturedDNASequenceUtils;
 	import org.jbei.registry.utils.IceXmlUtils;
@@ -69,7 +69,7 @@ package org.jbei.registry
         private var _applicationInitialized:Boolean = false;
         
 		private var browserSavedState:Boolean = true;
-        private var _mageParameters: mageParameters;
+        private var _mageProperties: mageProperties;
 		private var _mageTextResults: String;
 		// Properties
         public function get project():VectorEditorProject
@@ -472,7 +472,7 @@ package org.jbei.registry
         {
             updateSequence(StandaloneUtils.standaloneSequence());
             updateUserPreferences(StandaloneUtils.standaloneUserPreferences());
-			this._mageParameters =  new mageParameters;
+			this._mageProperties =  new mageProperties;
 			this._mageTextResults = "No Completed Requests. \n Please Set Parameters, then Hit the Mage Button";
         }
         
@@ -535,19 +535,12 @@ package org.jbei.registry
             sequenceProvider.dispatchEvent(new SequenceProviderEvent(SequenceProviderEvent.SEQUENCE_CHANGED, SequenceProviderEvent.KIND_INITIALIZED));
         }
 		
-		public function saveMageParameters( _mp : mageParameters):void{
-			this._mageParameters = _mp;
+		public function set MageProperties( _mp : mageProperties):void{
+			this._mageProperties = _mp;
 		}
 		
-		public function getMageParameters(): mageParameters{
-			return this._mageParameters;
+		public function get MageProperties(): mageProperties{
+			return this._mageProperties;
 		}
-		
-		public function saveMageTextResults(_mtr : String): void {
-			this._mageTextResults = _mtr;
-		}
-		
-		public function loadMageTextResults(): String {
-			return this._mageTextResults;}
 	}
 }
