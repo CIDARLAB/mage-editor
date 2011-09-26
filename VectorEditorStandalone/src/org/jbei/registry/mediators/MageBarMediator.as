@@ -8,13 +8,16 @@ package org.jbei.registry.mediators
 	import flash.net.URLRequestMethod;
 	import flash.net.URLVariables;
 	
+	import mx.controls.Button;
+	
 	import org.jbei.lib.ui.dialogs.ModalDialog;
 	import org.jbei.lib.ui.dialogs.SimpleDialog;
 	import org.jbei.registry.ApplicationFacade;
+	import org.jbei.registry.MageConstants;
 	import org.jbei.registry.Notifications;
 	import org.jbei.registry.models.mageProperties;
-	import org.jbei.registry.view.dialogs.mageDialogs.MageResultDialog;
 	import org.jbei.registry.view.dialogs.mageDialogs.MageParameterDialogForm;
+	import org.jbei.registry.view.dialogs.mageDialogs.MageResultDialog;
 	import org.jbei.registry.view.ui.MageBar;
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.mediator.Mediator;
@@ -25,22 +28,31 @@ package org.jbei.registry.mediators
 	public class MageBarMediator extends Mediator
 	{
 		private var mageBar : MageBar; 
-		private var applicationFacade:ApplicationFacade;
+		private var _af:ApplicationFacade;
+		private var _start:int;
+		private var _end:int;
+		private var _cp:int;
 		private var NAME: String = "MageBarMediator";
 		private var MAGE_DATA:String;
 		public function MageBarMediator(viewComponent:Object=null)
 		{
 			super(NAME, viewComponent);
 			
-			// Construct will assign a view component, then assign event listeners
-			
 			// Assigning view component to mageBar and application facade to applicationFacade
 			mageBar = viewComponent as MageBar;
-			applicationFacade = ApplicationFacade.getInstance();
+			_af = ApplicationFacade.getInstance();
 			
+			// Extract information about the user interface
+			refreshInterfaceInformation();
+			
+			// Add event listeners to deal with the mouse click for the following events.
 			mageBar.mageButton.addEventListener(MouseEvent.CLICK,onMageButtonClick);
 			mageBar.mageParameterButton.addEventListener(MouseEvent.CLICK,onMageParameterButtonClick);
-			mageBar.mageConnectionButton.addEventListener(MouseEvent.CLICK,onMageConnectionButtonClick)
+			mageBar.mageConnectionButton.addEventListener(MouseEvent.CLICK,onMageConnectionButtonClick);
+			mageBar.insertionButton.addEventListener(MouseEvent.CLICK,onInsertionButtonClick);
+			mageBar.deletionButton.addEventListener(MouseEvent.CLICK,onDeletionButtonClick);
+			mageBar.mismatchButton.addEventListener(MouseEvent.CLICK,onMismatchButtonClick);
+			mageBar.mageStatus.addEventListener(MouseEvent.ROLL_OVER,onStatusRollOver);
 		}
 		
 		/* List of Notifications that the MAGE Mediator is interested in*/
@@ -57,6 +69,56 @@ package org.jbei.registry.mediators
 			switch (notification){
 			}
 		}
+		
+		private function onStatusRollOver(event : Event) : void 
+		{
+			clearErrorString();
+		}
+		
+		private function onInsertionButtonClick (event: Event) : void 
+		{
+			
+			// Refresh Selection Values
+			refreshInterfaceInformation();
+			
+			// Start by assuming this is a valid request
+			var valid :Boolean = true;
+			var reason : String = "";
+			
+			// Check that we have made not made a selection and just positioned a pointer
+			if (_start != -1 && _end != -1)
+			{
+				valid = false;
+				reason = MageConstants.NO_SELECTION_ERROR;
+			}
+			
+			// Check if the Caret Position is negative 1, then we dont do anything
+			if (_cp < 0) {
+				valid = false;
+				reason = MageConstants.INVALID_CARET_POSITION;
+			}
+			
+			// If insertion request is valid, extract the before and after positions
+			if (valid)
+			{
+				var _before : int = _cp;
+				var _after : int = _cp+1;
+				mageBar.mageStatus.text = MageConstants.INSERTION_VALID;
+				clearErrorString();
+			}
+			else
+			{
+				mageBar.mageStatus.text = reason;
+				setErrorString ( mageBar.insertionButton , reason) ;
+			}
+		}
+		
+			
+		private function onDeletionButtonClick (event: Event) {}
+		
+				
+		private function onMismatchButtonClick (event: Event) {}
+		
 		
 		private function onMageButtonClick(event:Event):void 
 		{
@@ -163,6 +225,33 @@ package org.jbei.registry.mediators
 			return _mageVariables;
 		}
 		
+		private function refreshInterfaceInformation():void {
+			
+			// Pull the Caret Position from the Application Facade
+			this._af = ApplicationFacade.getInstance();
+			this._cp  = _af.caretPosition;
+			this._start = _af.selectionStart;
+			this._end  = _af.selectionEnd;
+		}
 		
+		private function setErrorString( button :mx.controls.Button , error : String ) {
+		clearErrorString();
+		button.errorString = error;
+		
+		}
+			
+		private function clearErrorString() : void 
+		{
+		// Action Buttons
+		mageBar.mageButton.errorString = '';
+		mageBar.mageConnectionButton.errorString = '';
+		mageBar.mageParameterButton.errorString = '';
+		
+		// Mutation Buttons
+		mageBar.insertionButton.errorString = '';
+		mageBar.deletionButton.errorString = '';
+		mageBar.mismatchButton.errorString = '';
+		
+		}
 	}
 }
