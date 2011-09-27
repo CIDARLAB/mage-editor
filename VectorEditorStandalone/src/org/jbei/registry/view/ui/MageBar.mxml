@@ -21,6 +21,8 @@
 	[Bindable]
 	private var mageConnectionIcon:Class;
 	]]>
+		
+		
 	</mx:Script>
 	
 	<mx:Spacer width="10" height="10"/>
@@ -34,10 +36,23 @@
 			   toolTip="Test MAGE Server Connection" />
 	
 	<mx:Spacer width="10" height="10"/>
-	<mx:Button id="insertionButton" label="+" color="#327F03" fontSize="20"
-			   textRollOverColor="#00250B" themeColor="#2C005D"/>
-	<mx:Button id="deletionButton" label="-" color="#CD0000" fontSize="20"/>
-	<mx:Button id="mismatchButton" label="±" color="#E48B00" fontSize="20"/>
+	<mx:Button id="insertionButton" 
+			   label="+" 
+			   color="#327F03"
+			   fontSize="20"
+			   textRollOverColor="#00250B" 
+			   themeColor="#2C005D"
+			   toolTip = "Insert"/>
+	<mx:Button id="deletionButton" 
+			   label="-"
+			   color="#CD0000" 
+			   fontSize="20"
+			   toolTip="Delete"/>
+	<mx:Button id="mismatchButton" 
+			   label="±" 
+			   color="#E48B00" 
+			   fontSize="20"
+			   toolTip = "Mismatch"/>
 	<mx:Spacer width="10" height="10"/>
 	<mx:Button id="mageButton" width="71" height="100%" label="MAGE" color="#0D84C9" fontSize="14"/>
 	<mx:Spacer width="10" height="10"/>

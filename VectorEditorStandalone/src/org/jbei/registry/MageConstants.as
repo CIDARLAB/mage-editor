@@ -5,9 +5,12 @@ package org.jbei.registry
 		
 			// Input button Constants
 			public static const NO_SELECTION_ERROR : String = "[ERROR] Select a single position only for insertion";
-			public static const INVALID_CARET_POSITION : String = "[ERROR] Invalid Position";
+			public static const INVALID_CARET_POSITION : String = "[ERROR] Invalid Cursor Position";
 			public static const INSERTION_VALID : String = "Insertion Recorded Successfully";
-		
+			public static const INVALID_SELECTION_ERROR : String = "[ERROR] No Base Pair Selected";
+			public static const DELETION_VALID : String = "Deletion Recorded Successully";
+			public static const MISMATCH_VALID : String = "Mismatch Recorded Successully";
+			
 			// input target Constants
 			public static const INSERTION:String = "";
 			public static const DELETION:String = "";

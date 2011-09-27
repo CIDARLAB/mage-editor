@@ -114,10 +114,68 @@ package org.jbei.registry.mediators
 		}
 		
 			
-		private function onDeletionButtonClick (event: Event) {}
-		
+		private function onDeletionButtonClick (event: Event) 
+		{
+			// Refresh Selection Values
+			refreshInterfaceInformation();
+			
+			// Start by assuming this is a valid request
+			var valid :Boolean = true;
+			var reason : String = "";
+			
+			// Check that we have made a selection and not positioned a 
+			if (_start == -1 && _end == -1)
+			{
+				valid = false;
+				reason = MageConstants.INVALID_SELECTION_ERROR;
+			}
+			
+			// If deletion request is valid, extract the before and after positions
+			if (valid)
+			{
+				var _before : int = _cp;
+				var _after : int = _cp+1;
+				mageBar.mageStatus.text = MageConstants.DELETION_VALID;
+				clearErrorString();
+			}
+			else
+			{
+				mageBar.mageStatus.text = reason;
+				setErrorString ( mageBar.insertionButton , reason) ;
+			}
+			
+		}
 				
-		private function onMismatchButtonClick (event: Event) {}
+		private function onMismatchButtonClick (event: Event) 
+		{
+			// Refreshing Selection Values
+			refreshInterfaceInformation();
+			
+			// Start by assuming this is a valid request
+			var valid :Boolean = true;
+			var reason:String = "";
+			
+			// Check that we have made a selection and not positioned a 
+			if (_start == -1 && _end == -1)
+			{
+				valid = false;
+				reason = MageConstants.INVALID_SELECTION_ERROR;
+			}
+			
+			// If deletion request is valid, extract the before and after positions
+			if (valid)
+			{
+				var _before : int = _cp;
+				var _after : int = _cp+1;
+				mageBar.mageStatus.text = MageConstants.MISMATCH_VALID;
+				clearErrorString();
+			}
+			else
+			{
+				mageBar.mageStatus.text = reason;
+				setErrorString ( mageBar.insertionButton , reason) ;
+			}
+		}
 		
 		
 		private function onMageButtonClick(event:Event):void 

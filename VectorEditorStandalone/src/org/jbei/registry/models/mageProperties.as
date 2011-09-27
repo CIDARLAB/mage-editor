@@ -16,9 +16,10 @@ package org.jbei.registry.models
 		private var _addthiol:int = 0;
 		private var _calc_replic: Boolean = true;
 		
-		// Input Target
 		
-		private var _count : int = 0;
+		
+		// Input Target Records
+		private var _count : int;
 		private var _start : Array;
 		private var _end : Array;
 		private var _mutation : Array;
@@ -34,6 +35,15 @@ package org.jbei.registry.models
 		// Constructor
 		public function mageProperties()
 		{
+			_count = 0;
+			_start = new Array();
+			_end = new Array();
+			_mutation =  new Array();
+			_replichore = new Array();
+			_geneName = new Array();
+			_sense = new Array();
+			_sequence = new Array();
+			
 		}
 		
 		// Properties
@@ -102,7 +112,33 @@ package org.jbei.registry.models
 		}
 		
 		public function  get MageTextResults(): String {
-			return this._mageTextResults;}
+			return this._mageTextResults;
+		}
+		
+		public function Record(		
+			geneName : String,
+			start : int,
+			end : int,
+			mutation : String,
+			replichore : String,
+			sense : String,
+			sequence : String
+		)
+		{	
+			// Increment count
+			_count = _count + 1;
+			
+			// record the remainder of the results
+			_geneName[_count] = geneName;
+			_sense[_count] = replichore;
+			_replichore[_count] = replichore;
+			_start[_count] = start;
+			_end[_count] = end;
+			_mutation[_count] = mutation;
+			_sequence[_count] = sequence;
+			
+		}
+		
 	}
 	
 }
