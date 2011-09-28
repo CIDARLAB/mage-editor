@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AbstractDialogForm 
+	width="100%" 
+	height="100%" 
+	minWidth="600"
+	minHeight="500"
+	xmlns="org.jbei.lib.ui.dialogs.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	creationComplete="onCreationComplete(event)">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.events.ValidationResultEvent;
+			
+			import org.jbei.registry.ApplicationFacade;
+			import org.jbei.registry.MageConstants;
+			import org.jbei.registry.models.mageProperties;
+			
+			private var changed:Boolean = false;
+			
+			[Bindable]
+			private var _mp:mageProperties;
+			
+			// Public Methods
+			public override function validate():void
+			{
+				if(!changed) {
+					isValid = true;	
+					return;
+				}
+				else{ 
+					
+					isValid = true;
+				}
+			}
+			
+			// Private Methods
+			private function onCreationComplete(event:Event):void
+			{
+				_mp = ApplicationFacade.getInstance().MageProperties;
+			}
+			
+			private function onChange(event:Event):void
+			{
+				changed = true;
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:TabNavigator 
+		borderStyle="solid"
+		width="100%"
+		height="100%">
+		
+		<mx:VBox 
+			label="Marked Mutations" 
+			width="100%"
+			height="100%">
+			
+			<mx:Form id="mainForm" width="601" paddingBottom="5" paddingLeft="5" paddingRight="5"
+					 paddingTop="5">
+				<mx:Text id="recordTitleString" width = "100%" height = "100%" text = "{ _mp.printHeaders()}"/>
+				<mx:Text id="recordStrings" width="100%" height = "251" color="blue" text="{ _mp.printRecord() }"/>				
+			</mx:Form>
+		</mx:VBox>
+	</mx:TabNavigator>
+	
+</AbstractDialogForm>

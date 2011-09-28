@@ -16,8 +16,10 @@ package org.jbei.registry.mediators
 	import org.jbei.registry.MageConstants;
 	import org.jbei.registry.Notifications;
 	import org.jbei.registry.models.mageProperties;
+	import org.jbei.registry.view.dialogs.mageDialogs.MageMutationRecordDialog;
 	import org.jbei.registry.view.dialogs.mageDialogs.MageParameterDialogForm;
 	import org.jbei.registry.view.dialogs.mageDialogs.MageResultDialog;
+	import org.jbei.registry.view.dialogs.mageDialogs.MageViewResultDialog;
 	import org.jbei.registry.view.ui.MageBar;
 	import org.puremvc.as3.interfaces.INotification;
 	import org.puremvc.as3.patterns.mediator.Mediator;
@@ -53,6 +55,7 @@ package org.jbei.registry.mediators
 			mageBar.deletionButton.addEventListener(MouseEvent.CLICK,onDeletionButtonClick);
 			mageBar.mismatchButton.addEventListener(MouseEvent.CLICK,onMismatchButtonClick);
 			mageBar.mageStatus.addEventListener(MouseEvent.ROLL_OVER,onStatusRollOver);
+			mageBar.mageRecords.addEventListener(MouseEvent.CLICK, onViewMageRecordsClick);
 		}
 		
 		/* List of Notifications that the MAGE Mediator is interested in*/
@@ -73,6 +76,14 @@ package org.jbei.registry.mediators
 		private function onStatusRollOver(event : Event) : void 
 		{
 			clearErrorString();
+		}
+		
+		private function onViewMageRecordsClick(event: Event):void
+		{
+			var _mageViewResultsDialog:ModalDialog = new ModalDialog(MageViewResultDialog, null);
+			_mageViewResultsDialog.title = "Preferences";
+			_mageViewResultsDialog.open();
+			
 		}
 		
 		private function onInsertionButtonClick (event: Event) : void 
@@ -98,13 +109,33 @@ package org.jbei.registry.mediators
 				reason = MageConstants.INVALID_CARET_POSITION;
 			}
 			
+			saveRecord (_cp, valid, MageConstants.INSERTION,reason);
+
+		}
+		
+		private function saveRecord (cp:int, valid:Boolean,mutationType:String, reason:String) : void
+		{
 			// If insertion request is valid, extract the before and after positions
 			if (valid)
 			{
+				// Calculate the required target parameters and add to the record
 				var _before : int = _cp;
 				var _after : int = _cp+1;
-				mageBar.mageStatus.text = MageConstants.INSERTION_VALID;
+					
+				_af.MageProperties.queueRecord("pps",_before,_after,
+					mutationType,
+					MageConstants.REPLICHORE_1,
+					MageConstants.SENSE_NEGATIVE,
+					"Desired Sequence...");
+				
+				displayMutationRecord();
+				
+				// Notify user the target record was successful
+				mageBar.mageStatus.text = MageConstants.INSERTION_VALID + "["+(_af.MageProperties.count+1)+"]";
+				
+				// Clear any Error String Warnings
 				clearErrorString();
+				
 			}
 			else
 			{
@@ -112,9 +143,8 @@ package org.jbei.registry.mediators
 				setErrorString ( mageBar.insertionButton , reason) ;
 			}
 		}
-		
 			
-		private function onDeletionButtonClick (event: Event) 
+		private function onDeletionButtonClick (event: Event) : void 
 		{
 			// Refresh Selection Values
 			refreshInterfaceInformation();
@@ -130,23 +160,12 @@ package org.jbei.registry.mediators
 				reason = MageConstants.INVALID_SELECTION_ERROR;
 			}
 			
-			// If deletion request is valid, extract the before and after positions
-			if (valid)
-			{
-				var _before : int = _cp;
-				var _after : int = _cp+1;
-				mageBar.mageStatus.text = MageConstants.DELETION_VALID;
-				clearErrorString();
-			}
-			else
-			{
-				mageBar.mageStatus.text = reason;
-				setErrorString ( mageBar.insertionButton , reason) ;
-			}
+			saveRecord (_cp, valid, MageConstants.DELETION,reason);
+			
 			
 		}
 				
-		private function onMismatchButtonClick (event: Event) 
+		private function onMismatchButtonClick (event: Event) : void
 		{
 			// Refreshing Selection Values
 			refreshInterfaceInformation();
@@ -162,19 +181,8 @@ package org.jbei.registry.mediators
 				reason = MageConstants.INVALID_SELECTION_ERROR;
 			}
 			
-			// If deletion request is valid, extract the before and after positions
-			if (valid)
-			{
-				var _before : int = _cp;
-				var _after : int = _cp+1;
-				mageBar.mageStatus.text = MageConstants.MISMATCH_VALID;
-				clearErrorString();
-			}
-			else
-			{
-				mageBar.mageStatus.text = reason;
-				setErrorString ( mageBar.insertionButton , reason) ;
-			}
+			saveRecord (_cp, valid, MageConstants.MISMATCH,reason);
+			
 		}
 		
 		
@@ -213,7 +221,7 @@ package org.jbei.registry.mediators
 		private function onMageParameterButtonClick(event:Event): void 
 		{
 			var _mageParameterDialog:ModalDialog = new ModalDialog(MageParameterDialogForm, null);
-			_mageParameterDialog.title = "Preferences";
+			_mageParameterDialog.title = "Parameters";
 			_mageParameterDialog.open();
 				
 		}
@@ -251,21 +259,28 @@ package org.jbei.registry.mediators
 			
 			//_mageVariables.dnaSequence = ";
 			
-			var _af : ApplicationFacade = ApplicationFacade.getInstance();
-			var _mp :mageProperties= _af.MageProperties;
-			var _sequence : String = _af.sequence.sequence;
-			var _start : int= _af.selectionStart;
-			var _end : int = _af.selectionEnd;
+			//var _af : ApplicationFacade = ApplicationFacade.getInstance();
+			refreshInterfaceInformation();
+			
+			var _mp :mageProperties= this._af.MageProperties;
+			var _sequence : String = this._af.sequence.sequence;
+			var _start : int= this._af.selectionStart;
+			var _end : int = this._af.selectionEnd;
 			
 			// MetaVariables
-			_mageVariables.count = "1";
+			_mageVariables.count = _mp.count;
 			
 			// Get Target Variables
 			_mageVariables.dnaSequence = _sequence;
-			_mageVariables.start = _start;
-			_mageVariables.end = _end;
-			_mageVariables.mutation = "I";
-			_mageVariables.mutatedSequence = "x";
+			_mageVariables.targetSequence = _mp.sequence;
+			_mageVariables.start = _mp.start;
+			_mageVariables.end = _mp.end;
+			_mageVariables.mutation = _mp.mutation;
+			_mageVariables.geneName = _mp.geneName;
+			_mageVariables.sense = _mp.sense;
+			_mageVariables.replichore = _mp.replichore;
+			
+			//_mageVariables.mutatedSequence = "x";
 			
 			// Get the parameter variables
 			_mageVariables.oligo_size = _mp.getoligo_size();
@@ -292,10 +307,18 @@ package org.jbei.registry.mediators
 			this._end  = _af.selectionEnd;
 		}
 		
-		private function setErrorString( button :mx.controls.Button , error : String ) {
-		clearErrorString();
-		button.errorString = error;
+		private function displayMutationRecord() : void
+		{
+			var _mageMutationRecordDialog:ModalDialog = new ModalDialog(MageMutationRecordDialog, null);
+			_mageMutationRecordDialog.title = "Mutation Record";
+			_mageMutationRecordDialog.open();
+		}
 		
+		
+		private function setErrorString( button :mx.controls.Button , error : String ) : void
+		{
+			clearErrorString();
+			button.errorString = error;
 		}
 			
 		private function clearErrorString() : void 

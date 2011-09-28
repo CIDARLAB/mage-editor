@@ -32,6 +32,15 @@ package org.jbei.registry.models
 		
 		private var _mageTextResults:String;
 		
+		// New Queued Record info
+		public var _nstart : int;
+		public var _nend : int;
+		public var _nmutation : String;
+		public var _nreplichore : String;
+		public var _ngeneName : String;
+		public var _nsense : String;
+		public var _nsequence : String;
+		
 		// Constructor
 		public function mageProperties()
 		{
@@ -115,7 +124,47 @@ package org.jbei.registry.models
 			return this._mageTextResults;
 		}
 		
-		public function Record(		
+		public function get count():int 
+		{
+			return this._count;
+		}
+		
+		public function get geneName() :Array
+		{
+			return _geneName;
+		}
+		
+		public function get start() : Array
+		{
+			return this._start;
+		}
+		
+		public function get end() : Array
+		{
+			return this._end;
+		}
+		
+		public function get mutation() : Array
+		{
+			return this._mutation;
+		}
+
+		public function get replichore(): Array
+		{
+			return this._replichore;
+		}
+		
+		public function get sense(): Array 
+		{
+			return this._sense;
+		}
+		
+		public function get sequence(): Array
+		{
+			return this._sequence;
+		}
+		
+		public function newRecord(	
 			geneName : String,
 			start : int,
 			end : int,
@@ -123,21 +172,85 @@ package org.jbei.registry.models
 			replichore : String,
 			sense : String,
 			sequence : String
-		)
+		) : void
 		{	
-			// Increment count
-			_count = _count + 1;
-			
 			// record the remainder of the results
 			_geneName[_count] = geneName;
-			_sense[_count] = replichore;
+			_sense[_count] = sense;
 			_replichore[_count] = replichore;
 			_start[_count] = start;
 			_end[_count] = end;
 			_mutation[_count] = mutation;
 			_sequence[_count] = sequence;
 			
+			// Increment count
+			_count = _count + 1;
 		}
+		
+		public function printRecord() : String
+		{
+			var index:int;
+			var records :String = "";
+			for(index =0; index < count ; index++ )
+			{
+				records += printRecordLine(index)+'\n';
+			}
+			
+			return records;
+		}
+			
+		public function printSingleRecord(index :int): String 
+		{
+			return	printRecordLine(index);
+		}
+		
+		public function printHeaders(): String 
+		{
+			var headers: String = "";
+			headers += "Gene Name" + "	";
+			headers += "Sense"+"	";
+			headers += "Replichore"+"	";
+			headers += "LP"+"	";
+			headers += "RP"+"	";
+			headers += "Mutation"+"	";
+			headers += "Desired Sequence";
+			
+			return headers;
+		}
+		
+		public function queueRecord(	geneName : String,
+											start : int,
+											end : int,
+											mutation : String,
+											replichore : String,
+											sense : String,
+											sequence : String): void
+		{
+			// Queue new record information on in the display box.
+			this._ngeneName= "mutation_"+(this._count+1);
+			this._nsense = sense;
+			this._nreplichore = replichore;
+			this._nstart = start;
+			this._nend = end;
+			this._nmutation = mutation;
+			this._nsequence = sequence;	
+		}
+
+		private function printRecordLine(index :int): String{
+			var print :String = "";
+			
+			// record the remainder of the results
+			print += _geneName[index] + "	";
+			print += _sense[index] + "	";
+			print += _replichore[index] + "	";
+			print += _start[index] + "	";
+			print += _end[index] + "	";
+			print += _mutation[index] + "	";
+			print += _sequence[index];
+			
+			return print;
+		}
+		
 		
 	}
 	

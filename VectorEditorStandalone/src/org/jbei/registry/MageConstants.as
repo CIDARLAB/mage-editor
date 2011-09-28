@@ -12,12 +12,13 @@ package org.jbei.registry
 			public static const MISMATCH_VALID : String = "Mismatch Recorded Successully";
 			
 			// input target Constants
-			public static const INSERTION:String = "";
-			public static const DELETION:String = "";
-			public static const MISMATCH:String = "";
-			public static const SENSE_POSITIVE:String = "";
-			public static const SENSE_NEGATIVE:String = "";
-			
+			public static const INSERTION:String = "I";
+			public static const DELETION:String = "D";
+			public static const MISMATCH:String = "M";
+			public static const SENSE_POSITIVE:String = "+";
+			public static const SENSE_NEGATIVE:String = "-";
+			public static const REPLICHORE_1 : String = "1";
+			public static const REPLICHORE_2 : String = "2";
 			
 			
 			// input parameter constants
