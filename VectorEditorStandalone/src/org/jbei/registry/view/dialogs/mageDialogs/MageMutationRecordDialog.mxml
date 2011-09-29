@@ -24,31 +24,17 @@
 			// Public Methods
 			public override function validate():void
 			{
-				if(!changed) {
-					isValid = true;	
-					return;
-				}
-				else{ 
-					
-					isValid = true;
-					
-					ApplicationFacade.getInstance().MageProperties.newRecord(
-						newRecordName.text,
-						Number(newStart.text),	// Cast as Number
-						Number(newEnd.text),	// Cast as Number
-						newMutation.text,
-						newReplichore.text,
-						newSense.text,
-						newSequence.text);
-					
-					/* _mp.setoligo_size(oligo_size.value);
-					_mp.setdg_thresh(dg_thresh.value);
-					_mp.setmloc_dft(mloc_dft.value);
-					_mp.setmloc_max(mloc_max.value);
-					_mp.setaddthiol(addthiol.value);
-					_mp.setcalc_replic(calc_replic.selected);
-					 */
-				} 
+			newRecordName.text.replace(" ","");
+			isValid = true;
+			
+			ApplicationFacade.getInstance().MageProperties.newRecord(
+				newRecordName.text,
+				Number(newStart.text),	// Cast as Number
+				Number(newEnd.text),	// Cast as Number
+				newMutation.text,
+				newReplichore.text,
+				newSense.text,
+				newSequence.text);
 			}
 			
 			// Private Methods
@@ -62,15 +48,18 @@
 				newSense.text =  _mp._nsense
 				newSequence.text = _mp._nsequence;
 				newRecordName.text = _mp._ngeneName;
+				
+				// In the event of a deletion disable the sequence text box and make it empty
+				if (newMutation.text == MageConstants.DELETION)
+				{
+					newSequence.text = "N/A";
+					newSequence.enabled= false;
+				}
 			}
 			
-			private function onChange(event:Event):void
-			{
-				changed = true;
-			}
+
 		]]>
 	</mx:Script>
-
 	<mx:TabNavigator 
 		borderStyle="solid"
 		width="100%"
@@ -81,25 +70,21 @@
 			width="100%"
 			height="100%">
 			
-			<mx:Form 
-				id="mainForm" 
-				paddingBottom="5" 
-				paddingTop="5" 
-				paddingLeft="5" 
-				paddingRight="5">
+			<mx:Form id="mainForm" width="554" paddingBottom="5" paddingLeft="5" paddingRight="5"
+					 paddingTop="5">
 				<mx:TextArea id="recordTitleString" width = "100%" height="100%" text = "{ _mp.printHeaders()}" />
 				<mx:TextArea id="recordStrings" width="100%" height ="100%" color="blue" text="{ _mp.printRecord() }"/>
 				
 				
 				<mx:HBox id="newRecordBox" width="100%" borderStyle="solid" paddingBottom="10"
-						 paddingLeft="10" paddingRight="10" paddingTop="10" >
-					<mx:TextInput id="newRecordName" width="60" editable="true" change="onChange(event)"/>
-					<mx:TextInput id="newSense" width="25" editable="false" change="onChange(event)"/>
-					<mx:TextInput id="newReplichore" width="28" editable="false" change="onChange(event)"/>
-					<mx:TextInput id="newStart" width="37" editable="false" change="onChange(event)"/>
-					<mx:TextInput id="newEnd" width="37" editable="false" change="onChange(event)"/>
-					<mx:TextInput id="newMutation" width="19" editable="false" change="onChange(event)"/>
-					<mx:TextInput id="newSequence" width="179" maxChars="30" change="onChange(event)"/>
+						 paddingLeft="10" paddingRight="10" paddingTop="10">
+					<mx:TextInput id="newRecordName" width="94" editable="true" toolTip="Give this Record a Unique Name"/>
+					<mx:TextInput id="newSense" width="25" editable="false"/>
+					<mx:TextInput id="newReplichore" width="28" editable="false" />
+					<mx:TextInput id="newStart" width="37" editable="false" />
+					<mx:TextInput id="newEnd" width="37" editable="false" />
+					<mx:TextInput id="newMutation" width="19" editable="false"/>
+					<mx:TextInput id="newSequence" width="238" maxChars="30" toolTip ="Enter the desired sequence"/>
 				</mx:HBox>
 				
 			</mx:Form>

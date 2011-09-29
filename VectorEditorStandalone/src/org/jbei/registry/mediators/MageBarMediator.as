@@ -119,8 +119,16 @@ package org.jbei.registry.mediators
 			if (valid)
 			{
 				// Calculate the required target parameters and add to the record
-				var _before : int = _cp;
-				var _after : int = _cp+1;
+				if (mutationType == MageConstants.INSERTION )
+				{
+					var _before : int = _cp;
+					var _after : int = _cp+1;
+				}
+				else 
+				{
+					var _before : int = _start;
+					var _after : int = _end+1;
+				}
 					
 				_af.MageProperties.queueRecord("pps",_before,_after,
 					mutationType,
