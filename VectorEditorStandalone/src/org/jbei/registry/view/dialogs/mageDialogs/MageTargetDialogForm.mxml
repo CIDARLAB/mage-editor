@@ -3,7 +3,7 @@
 	width="100%" 
 	height="100%" 
 	minWidth="300"
-	minHeight="200"
+	minHeight="400"
 	xmlns="org.jbei.lib.ui.dialogs.*" 
 	xmlns:mx="http://www.adobe.com/2006/mxml"
 	creationComplete="onCreationComplete(event)">
@@ -23,7 +23,7 @@
 			private function onCreationComplete(event:Event):void
 			{
 				_mp = ApplicationFacade.getInstance().MageProperties;
-				uploadTextArea.text = _mp.parameterFile ;
+				uploadTextArea.text = _mp.targetFile ;
 			}
 			
 			private function onChange(event:Event):void
@@ -33,18 +33,18 @@
 			
 			protected function uploadButton_clickHandler(event:MouseEvent):void
 			{
-				_mp.uploadParameterFile();
-				uploadTextArea.text = _mp.parameterFile ;
+				_mp.uploadTargetFile();
+				uploadTextArea.text = _mp.targetFile;
 			}
 			
 			protected function previewButton_clickHandler(event: MouseEvent):void
 			{
-				uploadTextArea.text = _mp.parameterFile;
+				uploadTextArea.text = _mp.targetFile; 
 			}
 			
 			protected function saveButton_clickHandler(event: MouseEvent):void
 			{
-				_mp.saveParameterFile(_mp.parameterFile);
+				_mp.saveTargetFile(uploadTextArea.text);
 			}
 			
 		]]>
@@ -56,7 +56,7 @@
 		height="100%">
 		
 		<mx:VBox 
-			label="Input Parameter" 
+			label="Input Targets" 
             width="100%"
             height="100%">
             
@@ -75,8 +75,7 @@
 								   click="saveButton_clickHandler(event)" textAlign="center"/>
 					</mx:HBox>
 				</mx:FormItem>
-					<mx:TextArea id="uploadTextArea" width="600" height="200" enabled="true"
-							  textAlign="left"/>
+					<mx:TextArea id="uploadTextArea" width="600" height="600" enabled="true" textAlign="left"/>
 				
 			</mx:Form>
         </mx:VBox>

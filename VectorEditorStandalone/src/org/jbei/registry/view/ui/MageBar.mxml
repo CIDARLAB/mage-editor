@@ -32,47 +32,14 @@
 	
 	<mx:Spacer width="10" height="10"/>
 	
-	<mx:Button id="mageParameterButton" height="100%" color="#004756" icon="{ mageParametersIcon }"
-			   toolTip="Parameters"/>
+	<mx:Button id="mageUploadParameterButton" height="100%" color="#004756" icon="{ mageParametersIcon }"
+			   toolTip="Upload Parameter File"/>
+	
+	<mx:Spacer width="10" height="10" />
+	
+	<mx:Button id="mageUploadTargetButton" height="100%" color="#004756" icon="{ mageParametersIcon }" toolTip="Upload Target File"/>
 	
 	<mx:Spacer width="10" height="10"/>
-	
-	<mx:Button id="mageConnectionButton" height="100%" color="#004756" icon="{ mageConnectionIcon }"
-			   toolTip="Test MAGE Server Connection" />
-	
-	<mx:Spacer width="10" height="10"/>
-	
-	<mx:Button id="insertionButton" 
-			   label="+" 
-			   color="#327F03"
-			   fontSize="20"
-			   textRollOverColor="#00250B" 
-			   themeColor="#2C005D"
-			   toolTip = "Insert"/>
-	
-	<mx:Button id="deletionButton" 
-			   label="-"
-			   color="#CD0000" 
-			   fontSize="20"
-			   toolTip="Delete"/>
-	
-	<mx:Button id="mismatchButton" 
-			   label="±" 
-			   color="#E48B00" 
-			   fontSize="20"
-			   toolTip = "Mismatch"/>
-	
-	<mx:Spacer width="10" height="10"
-			   />
-	
-	<mx:Button id="mageRecords" 
-			   height = "100%"
-			   icon="{ mageRecordsViewIcon }" 
-			   toolTip="View Record of Mutations"/>
-	
-	<mx:Spacer width="10"
-			   height="10" 
-			   />
 	
 	<mx:Button id="mageButton" 
 			   width="71"
@@ -81,6 +48,8 @@
 			   color="#0D84C9" 
 			   fontSize="14"/>
 	<mx:Spacer width="10" height="10"/>
+	<mx:Button id="mageConnectionButton" height="100%" color="#004756" icon="{ mageConnectionIcon }"
+			   toolTip="Test MAGE Server Connection" />
 	
 	<mx:Label id="mageStatus" width="100%" height="15" color="#000000" enabled="true" textAlign="right"/>
 	
