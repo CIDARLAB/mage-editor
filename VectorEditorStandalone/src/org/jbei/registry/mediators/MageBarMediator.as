@@ -57,9 +57,7 @@ package org.jbei.registry.mediators
 		/* List of Notifications that the MAGE Mediator is interested in*/
 		public override function listNotificationInterests():Array 
 		{
-			return [Notifications.SHOW_MAGE_PARAMETERS_DIALOG
-				, Notifications.HIDE_MAGE_PARAMETERS_DIALOG
-				, Notifications.SAVE_MAGE_PARAMETERS_DIALOG
+			return [
 			];
 		}
 		
@@ -86,11 +84,14 @@ package org.jbei.registry.mediators
 		/* Function for dealing the completion of the Post Request Response.*/
 		private function onLoaded(evt: Event) : void { 
 			var response: String = _mageLoader.data.result;
-			if (response == null ) { 
-				mageBar.mageStatus.text = "Mage Failed"; 
+			if (response == null ) {
+				updateStatus(">> Invalid Response Data"); 
+				updateStatus(_mageLoader.data.error); 
 			}
 			else {
-				mageBar.mageStatus.text = "Request Complete"; 				
+				updateStatus(">> New Data");
+				updateStatus(response);
+				updateStatus(">> Request Complete"); 				
 			}
 			
 			ApplicationFacade.getInstance().mageProperties.mageResults = response;
@@ -99,7 +100,7 @@ package org.jbei.registry.mediators
 		private function onMageButtonClick(event:Event):void 
 		{
 			// Set the Status Connecting
-			mageBar.mageStatus.text =  "Processing ... Could Take Several Minutes";
+			updateStatus(">> Processing ... Could Take Several Minutes");
 			
 			// Create a new Post Request and add Variables to it
 			var mageRequest:URLRequest = new URLRequest("http://localhost:8080/magelet/optMAGE_1");//+servlet);
@@ -115,19 +116,19 @@ package org.jbei.registry.mediators
 			_mageLoader.dataFormat = URLLoaderDataFormat.VARIABLES;
 			_mageLoader.addEventListener(Event.COMPLETE, onLoaded);
 			try { _mageLoader.load(mageRequest); } 
-			catch (error:Error) { Status = "Error Connecting";}
-			mageBar.mageStatus.text = Status;
+			catch (error:Error) { Status = ">> Error Connecting";}
+			updateStatus( Status );
 		}
 		
 		private function onMageConnectionButtonClick(event: Event): void 
 		{
 
-			mageBar.mageStatus.text =  "Connecting...";
+			updateStatus(">> Connecting...");
 			//mageBar.mageStatus.text =  MageServerRequest.mageGET("/Mage_Test");
 			var mageRequest:URLRequest = new URLRequest("http://localhost:8080/magelet/optMAGE_1");//+servlet);
 			var mageLoader:URLLoader = new URLLoader();
 			var mageVariables:URLVariables = new URLVariables();
-			var GETResponse : String =  "No Connection";
+			var GETResponse : String =  ">> No Connection";
 			
 			mageRequest.method = URLRequestMethod.GET;
 			mageVariables.test = "Testing";
@@ -135,15 +136,23 @@ package org.jbei.registry.mediators
 			
 			function onLoaded(evt: Event) : void { 
 				GETResponse = mageLoader.data.substr(0,100);
-				mageBar.mageStatus.text = GETResponse;//if (GETResponse.length <10){GETResponse = "Yes"}
+				if (GETResponse == null)
+				{
+					updateStatus(">> No Connection");
+				}
+				else {
+					updateStatus(GETResponse);
+				}
 			}
 			
 			mageLoader.dataFormat = URLLoaderDataFormat.TEXT;
 			mageLoader.addEventListener(Event.COMPLETE, onLoaded);
 			mageLoader.load(mageRequest);
 			try { mageLoader.load(mageRequest); } 
-			catch (error:Error) { GETResponse = "Error Connecting";}
-			mageBar.mageStatus.text = GETResponse;
+			catch (error:Error) { 
+				GETResponse = ">> Error Connecting";
+				updateStatus(GETResponse);
+			}
 			
 		}
 		
@@ -194,12 +203,11 @@ package org.jbei.registry.mediators
 		mageBar.mageConnectionButton.errorString = '';
 		mageBar.mageUploadParameterButton.errorString = '';
 		
-		// Mutation Buttons
-//		mageBar.insertionButton.errorString = '';
-//		mageBar.deletionButton.errorString = '';
-//		mageBar.mismatchButton.errorString = '';
-		
 		}
-
+		
+		private function updateStatus( text :String ): void
+		{
+			sendNotification(Notifications.UPDATE_STATUS, text );
+		}
 	}
 }

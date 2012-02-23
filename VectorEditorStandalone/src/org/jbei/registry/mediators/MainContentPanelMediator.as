@@ -45,7 +45,8 @@ package org.jbei.registry.mediators
         private var sequenceAnnotator:SequenceAnnotator;
         private var pie:Pie;
         private var rail:Rail;
-        
+        private var status : String;
+		
         private var controlsInitialized:Boolean = false;
         private var isSequenceInitialized:Boolean = false;
         
@@ -65,6 +66,10 @@ package org.jbei.registry.mediators
             rail = mainContentPanel.rail;
             
             initializeEventHandlers();
+			
+			// Set the initial status to be an empty string
+			status ="";
+			mainContentPanel.StatusStream.text = "";
         }
         
         // Public Methods
@@ -108,6 +113,7 @@ package org.jbei.registry.mediators
                 , Notifications.PRINT_SEQUENCE
                 
                 , Notifications.SEQUENCE_PROVIDER_CHANGED
+				, Notifications.UPDATE_STATUS
             ];
         }
         
@@ -252,7 +258,9 @@ package org.jbei.registry.mediators
                     break;
                 case Notifications.REVERSE_COMPLEMENT_SEQUENCE:
                     applicationFacade.sequenceProvider.reverseComplementSequence();
-                    
+                    break;
+				case Notifications.UPDATE_STATUS:
+					updateStatus(notification.getBody() as String )
                     break;
             }
         }
@@ -770,5 +778,15 @@ package org.jbei.registry.mediators
             pie.restrictionEnzymeMapper = applicationFacade.restrictionEnzymeMapper;
             rail.restrictionEnzymeMapper = applicationFacade.restrictionEnzymeMapper;
         }
+		
+		private function updateStatus(newLine : String ) : void
+		{
+			this.status += "\n "+ newLine;
+			this.mainContentPanel.StatusStream.text = status;
+			
+			// Auto Scroll to the bottom
+			this.mainContentPanel.StatusStream.validateNow();
+			this.mainContentPanel.StatusStream.verticalScrollPosition = this.mainContentPanel.StatusStream.maxVerticalScrollPosition;
+		}
     }
 }

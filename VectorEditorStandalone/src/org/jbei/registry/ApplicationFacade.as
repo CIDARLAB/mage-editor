@@ -542,5 +542,6 @@ package org.jbei.registry
 		public function get mageProperties(): MageProperties{
 			return this._mageProperties;
 		}
+
 	}
 }

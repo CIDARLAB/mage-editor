@@ -97,8 +97,7 @@ package org.jbei.registry.models
 			// Get the data as a string
 			this.targetFileData = uload.getData();
 		}
-		
-		
+	
 	}
 	
 }

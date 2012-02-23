@@ -6,7 +6,7 @@ package org.jbei.registry.mage
 		public  var 
 		public function Oligo(span : String)
 		{
-			this.span = span;
+//			this.span = span;
 		}
 	}
 }
