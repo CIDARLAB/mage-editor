@@ -7,7 +7,7 @@ package org.jbei.registry.models
 	/**
 	 * @author Samir Ahmed
 	 * */
-	public class mageProperties
+	public class MageProperties
 	{
 		/* Data Types in mageProperties */
 		
@@ -16,9 +16,10 @@ package org.jbei.registry.models
 		private var parameterFileData : String;
 		private var parameters : String;
 		private var targets : String;
+		private var _mageResults : String;
 		
 		// Constructor
-		public function mageProperties()
+		public function MageProperties()
 		{
 			this.targetFileData 	= "No File Uploaded";	
 			this.parameterFileData 	= "No File Uploaded";
@@ -32,6 +33,11 @@ package org.jbei.registry.models
 		public function set targetFile( text:String) : void
 		{
 			this.targetFileData = text;
+		}
+
+		public function get getSavedGenome() : String
+		{
+			return "";
 		}
 		
 		public function saveParameterFile( text:String ) : void
@@ -63,6 +69,12 @@ package org.jbei.registry.models
 		{
 			return this.targetFileData;
 		}
+		
+		public function set mageResults(response : String): void
+		{
+			this._mageResults = response; 
+		}
+		
 		
 		// Uploads and stores the parameter file
 		public function uploadParameterFile() : void

@@ -58,7 +58,7 @@ package org.jbei.registry.mage
 			}
 			
 			this.uploadData = fr.data.toString();
-			ApplicationFacade.getInstance().MageProperties.targetFile = this.uploadData;
+			ApplicationFacade.getInstance().mageProperties.targetFile = this.uploadData;
 		}
 		
 		private function onImportSequenceFileReferenceLoadError(event:IOErrorEvent):void
