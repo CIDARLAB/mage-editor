@@ -35,7 +35,7 @@
 		
 		<components:Rail 
 			id="rail"
-			visible="false"
+			visible="true"
 			includeInLayout="false"
 			showORFs="false"
 			showCutSites="false"

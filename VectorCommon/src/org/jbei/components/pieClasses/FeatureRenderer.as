@@ -109,23 +109,18 @@ package org.jbei.components.pieClasses
 		{
 			var color:int = 0xCCCCCC;
 			
-			if(featureType == "promoter") {
-				color = 0x31B440;
-			} else if(featureType == "terminator"){
+			if(featureType == "insertion"){
+				color = 0x4DDE00;
+			} else if(featureType == "deletion"){
 				color = 0xF51600;
-			} else if(featureType == "cds"){
+			} else if(featureType == "mismatch"){
 				color = 0xEF6500;
-			} else if(featureType == "m_rna"){
-				color = 0xFFFF00;
-			} else if(featureType == "misc_binding"){
+			} else if(featureType == "optmage"){
+				color = 0xCB0077;
+			} else if(featureType == "merlin"){
 				color = 0x006FEF;
-			} else if(featureType == "misc_feature"){
-				color = 0x006FEF;
-			} else if(featureType == "misc_marker"){
-				color = 0x8DCEB1;
-			} else if(featureType == "rep_origin"){
-				color = 0x878787;
 			}
+			
 			
 			return color;
 		}
