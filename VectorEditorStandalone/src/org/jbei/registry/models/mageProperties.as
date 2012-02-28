@@ -17,12 +17,26 @@ package org.jbei.registry.models
 		private var parameters : String;
 		private var targets : String;
 		private var _mageResults : String;
+		private var _merlinResults: Array;
+		private var oligos : Array;
+		private var current : int ;
+		
+		public function set merlinResults( merlinProps : Array) : void
+		{
+			this._merlinResults = merlinProps;
+		}
+		
+		public function get merlinResults(): Array
+		{
+			return this._merlinResults;
+		}
 		
 		// Constructor
 		public function MageProperties()
 		{
 			this.targetFileData 	= "No File Uploaded";	
 			this.parameterFileData 	= "No File Uploaded";
+			this.current = 0;
 		}
 		
 		public function set parameterFile( text:String) : void

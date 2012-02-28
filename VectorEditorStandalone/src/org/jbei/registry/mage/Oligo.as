@@ -1,12 +1,36 @@
 package org.jbei.registry.mage
 {
+	import org.jbei.registry.ApplicationFacade;
+	
 	public class Oligo
 	{
-		private var _span: String;
-		public  var 
-		public function Oligo(span : String)
+		private var _genbank: String;
+		private static var _count : int = 0;
+		private var  _name : String;
+		private var _id : int;
+		
+		public function Oligo(genbankString : String)
 		{
-//			this.span = span;
+			// Save the genbank file
+			this._genbank =  genbankString;
+			
+			this._id = _count++;
+			this._name = "Oligo "+_id.toString();
+		}
+		
+		public function select():void
+		{
+			ApplicationFacade.getInstance().importSequence( this._genbank );
+		}
+		
+		public function get name():String
+		{
+			return this._name;
+		}
+		
+		public function get id():int
+		{
+			return this._id;
 		}
 	}
 }
