@@ -2,7 +2,6 @@ package org.jbei.registry.mediators
 {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import mx.events.ListEvent;
 	import flash.net.FileReference;
 	import flash.net.URLLoader;
 	import flash.net.URLLoaderDataFormat;
@@ -12,6 +11,7 @@ package org.jbei.registry.mediators
 	
 	import mx.collections.ArrayCollection;
 	import mx.controls.Button;
+	import mx.events.ListEvent;
 	
 	import org.jbei.lib.ui.dialogs.ModalDialog;
 	import org.jbei.registry.ApplicationFacade;
@@ -130,9 +130,12 @@ package org.jbei.registry.mediators
 			else {
 				updateStatus(">> Mage Response Recieved");
 				var lines:Array = response.split(MageConstants.DELIMITER );
+				var namesResponse: String =  _merlinLoader.data.names;
+				var names: Array = namesResponse.split(MageConstants.DELIMITER);
+				
 				for ( var ii:int =0;  ii < lines.length ; ii++  )
 				{
-					genbanks[ii] =  new Oligo(lines[ii]);
+					genbanks[ii] =  new Oligo(lines[ii], names[ii]);
 					updateStatus(">> Oligo " + genbanks[ii].id + " : " + genbanks[ii].name) ;
 				}
 				updateStatus(">> Request Complete");

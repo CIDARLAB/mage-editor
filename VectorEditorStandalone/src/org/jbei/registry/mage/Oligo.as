@@ -9,13 +9,13 @@ package org.jbei.registry.mage
 		private var  _name : String;
 		private var _id : int;
 		
-		public function Oligo(genbankString : String)
+		public function Oligo(genbankString : String, nameStr: String)
 		{
 			// Save the genbank file
 			this._genbank =  genbankString;
 			
 			this._id = _count++;
-			this._name = "Oligo "+_id.toString();
+			this._name = nameStr;
 		}
 		
 		public function select():void
