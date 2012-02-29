@@ -22,6 +22,7 @@ package org.jbei.registry
 	import org.jbei.registry.control.ActionStack;
 	import org.jbei.registry.control.ActionStackEvent;
 	import org.jbei.registry.control.RestrictionEnzymeGroupManager;
+	import org.jbei.registry.mage.Oligo;
 	import org.jbei.registry.mediators.ApplicationMediator;
 	import org.jbei.registry.mediators.FindPanelMediator;
 	import org.jbei.registry.mediators.MainControlBarMediator;
@@ -541,6 +542,11 @@ package org.jbei.registry
 		
 		public function get mageProperties(): MageProperties{
 			return this._mageProperties;
+		}
+		
+		public function updateChart( oligo: Oligo ): void
+		{
+			sendNotification(Notifications.UPDATE_CHARTS, oligo ); 
 		}
 
 	}

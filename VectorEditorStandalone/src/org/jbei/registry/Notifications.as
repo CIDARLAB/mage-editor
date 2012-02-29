@@ -83,5 +83,6 @@ package org.jbei.registry
 		
 		// Additions from MAGE
 		public static const UPDATE_STATUS:String = "UPDATE_STATUS";
+		public static const UPDATE_CHARTS:String = "UPDATE_CHARTS";
 	}
 }

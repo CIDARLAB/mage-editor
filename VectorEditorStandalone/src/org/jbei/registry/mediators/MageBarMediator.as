@@ -59,7 +59,7 @@ package org.jbei.registry.mediators
 			mageBar.mageUploadParameterButton.addEventListener(MouseEvent.CLICK,onMageParameterButtonClick);
 			mageBar.mageConnectionButton.addEventListener(MouseEvent.CLICK,onMageConnectionButtonClick);
 			mageBar.mageUploadTargetButton.addEventListener(MouseEvent.CLICK,onMageUploadTargetButtonClick );
-			//mageBar.oligoSelect.addEventListener(ListEvent.CHANGE,onOligoSelection);
+			mageBar.oligoSelect.addEventListener(ListEvent.CHANGE,onOligoSelection);
 			
 		}
 		
@@ -129,14 +129,42 @@ package org.jbei.registry.mediators
 			}
 			else {
 				updateStatus(">> Mage Response Recieved");
+				
+				// Format the response data in a way we want it...
 				var lines:Array = response.split(MageConstants.DELIMITER );
 				var namesResponse: String =  _merlinLoader.data.names;
 				var names: Array = namesResponse.split(MageConstants.DELIMITER);
+				var bg:Array = (_merlinLoader.data.bg as String).split(MageConstants.DELIMITER) ;
+				var dg:Array = (_merlinLoader.data.dg as String).split(MageConstants.DELIMITER) ;
+				var bo:Array = (_merlinLoader.data.bo as String).split(MageConstants.DELIMITER) ;
+				var mp:Array = (_merlinLoader.data.mp as String).split(MageConstants.DELIMITER) ;
+				var op:Array = (_merlinLoader.data.op as String).split(MageConstants.DELIMITER) ;
 				
+				
+				// Generate Oligos
 				for ( var ii:int =0;  ii < lines.length ; ii++  )
 				{
-					genbanks[ii] =  new Oligo(lines[ii], names[ii]);
-					updateStatus(">> Oligo " + genbanks[ii].id + " : " + genbanks[ii].name) ;
+					if ( (lines[ii] as String ).length>1 )
+					{
+						
+					// Create a new oligo
+					genbanks[ii] =  new Oligo(lines[ii], names[ii], ii);
+					
+					// Add the following properties to the oligos
+					(genbanks[ii] as  Oligo).setBg( bg[ii] );
+					(genbanks[ii] as  Oligo).setDg( dg[ii] );
+					(genbanks[ii] as  Oligo).setBo( bo[ii] );
+					(genbanks[ii] as  Oligo).setMp( mp[ii] );
+					(genbanks[ii] as  Oligo).setOp( op[ii] );
+					
+					updateStatus(">> Oligo " + (genbanks[ii].id + 1 ) + " : " + genbanks[ii].name) ;
+					updateStatus(">> Oligo " + (genbanks[ii].id + 1 ) + " MP: " +genbanks[ii].mp) ;
+//					updateStatus(">> BG" + bg[ii] );
+//					updateStatus(">> BO" + bo[ii] );
+//					updateStatus(">> DG" + dg[ii] );
+//					updateStatus(">> MP" + mp[ii] );
+//					updateStatus(">> OP" + bg[ii] );
+					}
 				}
 				updateStatus(">> Request Complete");
 				
@@ -300,14 +328,17 @@ package org.jbei.registry.mediators
 			this.mageBar.oligoSelect.toolTip = "Select the desired oligo to display";
 			updateStatus(">> Displaying First Oligo");
 			oligos[0].select();
+			sendNotification(Notifications.UPDATE_CHARTS,oligos[0]);
 		}
 		
 		private function onOligoSelection( ) : void
 		{
 				// Get and select the correspodning oligo
-				(ApplicationFacade.getInstance().mageProperties.merlinResults[mageBar.oligoSelect.selectedIndex] as Oligo ).select();
+				var oligo :Oligo = (ApplicationFacade.getInstance().mageProperties.merlinResults[mageBar.oligoSelect.selectedIndex] as Oligo );
+				sendNotification(Notifications.UPDATE_CHARTS,oligo);
+				oligo.select();
 				
-				updateStatus(">>> Displaying Oligo " + mageBar.oligoSelect.selectedIndex );
+				updateStatus(">> Displaying Oligo " + mageBar.oligoSelect.selectedIndex );
 		}
 		
 		

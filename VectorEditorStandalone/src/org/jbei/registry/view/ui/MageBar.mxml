@@ -32,7 +32,9 @@
 		
 		protected function oligoSelect_changeHandler(event:ListEvent):void
 		{
-			(ApplicationFacade.getInstance().mageProperties.merlinResults[ oligoSelect.selectedIndex ] as Oligo).select();		
+			var ol : Oligo = (ApplicationFacade.getInstance().mageProperties.merlinResults[ oligoSelect.selectedIndex ] as Oligo);
+			ol.select();
+			ApplicationFacade.getInstance().updateChart(ol);
 		}
 		
 	]]>

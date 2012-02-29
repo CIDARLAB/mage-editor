@@ -7,6 +7,8 @@ package org.jbei.registry.mediators
     import mx.events.CloseEvent;
     import mx.printing.FlexPrintJob;
     import mx.printing.FlexPrintJobScaleType;
+	import mx.collections.ArrayCollection;
+	import org.jbei.registry.mage.Oligo;
     
     import org.jbei.bio.sequence.common.Annotation;
     import org.jbei.bio.sequence.common.SymbolList;
@@ -114,6 +116,8 @@ package org.jbei.registry.mediators
                 
                 , Notifications.SEQUENCE_PROVIDER_CHANGED
 				, Notifications.UPDATE_STATUS
+				, Notifications.UPDATE_CHARTS
+				
             ];
         }
         
@@ -262,6 +266,9 @@ package org.jbei.registry.mediators
 				case Notifications.UPDATE_STATUS:
 					updateStatus(notification.getBody() as String )
                     break;
+				case Notifications.UPDATE_CHARTS:
+					updateCharts(notification.getBody() as Oligo )
+					break;
             }
         }
         
@@ -787,6 +794,50 @@ package org.jbei.registry.mediators
 			// Auto Scroll to the bottom
 			this.mainContentPanel.StatusStream.validateNow();
 			this.mainContentPanel.StatusStream.verticalScrollPosition = this.mainContentPanel.StatusStream.maxVerticalScrollPosition;
+		}
+		
+		private function updateCharts(ol : Oligo) : void
+		{
+			var bg : Array = ol.bg;
+			var dg : Array = ol.dg;
+			var bo : Array = ol.bo;
+			var mp : Number = ol.mp;
+			var op : Number = ol.op;
+			
+			var chartInfo: Array = new Array();
+			for ( var ii : int =0; ii < bg.length ; ii++ )
+			{
+				chartInfo[ii] =  {"bg":(bg[ii] as Number), 
+								  "dg":(dg[ii] as Number),
+								  "bo":(bo[ii] as Number),
+								  "x":(ii+1) } ;
+				//updateStatus(">>> Made Oligo" +(oligos[ii] as Oligo ).name );
+			}
+			var chartData:ArrayCollection = new ArrayCollection(chartInfo);
+			
+			this.mainContentPanel.boChart.dataProvider = chartData;
+			this.mainContentPanel.boAxis.categoryField = "x";
+			this.mainContentPanel.boAxis.dataProvider = chartData;
+			this.mainContentPanel.boline.dataProvider = chartData;
+			this.mainContentPanel.boline.yField = "bo";
+			this.mainContentPanel.boChart.showDataTips=true;
+			
+			this.mainContentPanel.dgChart.dataProvider = chartData;
+			this.mainContentPanel.dgAxis.categoryField = "x";
+			this.mainContentPanel.dgAxis.dataProvider = chartData;
+			this.mainContentPanel.dgline.dataProvider = chartData;
+			this.mainContentPanel.dgline.yField = "dg";
+			this.mainContentPanel.dgChart.showDataTips=true;
+			
+			this.mainContentPanel.bgChart.dataProvider = chartData;
+			this.mainContentPanel.bgAxis.categoryField = "x";
+			this.mainContentPanel.bgAxis.dataProvider = chartData;
+			this.mainContentPanel.bgline.dataProvider = chartData;
+			this.mainContentPanel.bgline.yField = "bg";
+			this.mainContentPanel.bgChart.showDataTips=true;
+			
+			updateStatus(">> Plotting Oligo");
+			
 		}
     }
 }

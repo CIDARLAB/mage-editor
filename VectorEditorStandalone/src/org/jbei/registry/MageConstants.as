@@ -3,6 +3,7 @@ package org.jbei.registry
 	public final class MageConstants
 	{
 			public static const DELIMITER : String = "x11delimiternewelement11x" ;
+
 		
 		
 //			// Input button Constants
