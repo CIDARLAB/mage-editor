@@ -3,12 +3,11 @@ package org.jbei.registry.mediators
     import flash.display.BitmapData;
     import flash.events.Event;
     
+    import mx.collections.ArrayCollection;
     import mx.controls.Alert;
     import mx.events.CloseEvent;
     import mx.printing.FlexPrintJob;
     import mx.printing.FlexPrintJobScaleType;
-	import mx.collections.ArrayCollection;
-	import org.jbei.registry.mage.Oligo;
     
     import org.jbei.bio.sequence.common.Annotation;
     import org.jbei.bio.sequence.common.SymbolList;
@@ -29,6 +28,7 @@ package org.jbei.registry.mediators
     import org.jbei.registry.ApplicationFacade;
     import org.jbei.registry.Notifications;
     import org.jbei.registry.control.RestrictionEnzymeGroupManager;
+    import org.jbei.registry.mage.Oligo;
     import org.jbei.registry.models.UserPreferences;
     import org.jbei.registry.utils.Finder;
     import org.jbei.registry.view.dialogs.FeatureDialogForm;
@@ -804,6 +804,14 @@ package org.jbei.registry.mediators
 			var mp : Number = ol.mp;
 			var op : Number = ol.op;
 			
+			var bgmax : Number = bg[0];
+			var dgmax : Number = dg[0];
+			var bomax : Number = bo[0];
+			var bgmin : Number = bg[0];
+			var dgmin : Number = dg[0];
+			var bomin : Number = bo[0];
+
+			
 			var chartInfo: Array = new Array();
 			for ( var ii : int =0; ii < bg.length ; ii++ )
 			{
@@ -811,7 +819,14 @@ package org.jbei.registry.mediators
 								  "dg":(dg[ii] as Number),
 								  "bo":(bo[ii] as Number),
 								  "x":(ii+1) } ;
-				//updateStatus(">>> Made Oligo" +(oligos[ii] as Oligo ).name );
+				bgmax = Math.max(bgmax,bg[ii]);
+				dgmax = Math.max(dgmax,dg[ii]);
+				bomax = Math.max(bomax,bo[ii]);
+				bgmin = Math.min(bgmin,bg[ii]);
+				dgmin = Math.min(dgmin,dg[ii]);
+				bomin = Math.min(bomin,bo[ii]);
+				
+				
 			}
 			var chartData:ArrayCollection = new ArrayCollection(chartInfo);
 			
@@ -835,6 +850,30 @@ package org.jbei.registry.mediators
 			this.mainContentPanel.bgline.dataProvider = chartData;
 			this.mainContentPanel.bgline.yField = "bg";
 			this.mainContentPanel.bgChart.showDataTips=true;
+			
+			// Piant
+			this.mainContentPanel.bocanvas.clear();
+			this.mainContentPanel.bocanvas.beginFill(0xCB0077,1);
+			this.mainContentPanel.bocanvas.drawCircle(op,bo[op],4);
+			this.mainContentPanel.bocanvas.beginFill(0x006FEF,1);
+			this.mainContentPanel.bocanvas.drawCircle(mp,bo[mp],4);
+			this.mainContentPanel.bocanvas.endFill();
+			
+			// Piant
+			this.mainContentPanel.dgcanvas.clear();
+			this.mainContentPanel.dgcanvas.beginFill(0xCB0077,1);
+			this.mainContentPanel.dgcanvas.drawCircle(op,dg[op],4);
+			this.mainContentPanel.dgcanvas.beginFill(0x006FEF,1);
+			this.mainContentPanel.dgcanvas.drawCircle(mp,dg[mp],4);
+			this.mainContentPanel.dgcanvas.endFill();
+			
+			// Piant
+			this.mainContentPanel.bgcanvas.clear();
+			this.mainContentPanel.bgcanvas.beginFill(0xCB0077,1);
+			this.mainContentPanel.bgcanvas.drawCircle(op,bg[op],4);
+			this.mainContentPanel.bgcanvas.beginFill(0x006FEF,1);
+			this.mainContentPanel.bgcanvas.drawCircle(mp,bg[mp],4);
+			this.mainContentPanel.bgcanvas.endFill();
 			
 			updateStatus(">> Plotting Oligo");
 			

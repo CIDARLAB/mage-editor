@@ -23,7 +23,7 @@
 				}
 			}
 			
-			
+
 
 		]]>
 	</mx:Script>
@@ -54,17 +54,25 @@
 			width="50%" 
 			height="100%" />
 	</mx:HDividedBox>
-		<mx:HBox width="100%" height="30%">
+		<mx:HBox width="100%" height="30%" id="graphpanel" >
 			<mx:Panel title="Free Energy" width="33%" height="100%" paddingLeft="10" paddingRight="10" dropShadowEnabled="false">
 			<mx:LineChart id="dgChart"  width="100%" height="100%" >
+				<mx:annotationElements>
+					<mx:CartesianDataCanvas id="dgcanvas" includeInRanges="true" />
+				</mx:annotationElements>
 				<mx:seriesFilters>
 					<mx:Array/>
 				</mx:seriesFilters>
 				<mx:horizontalAxis>
 					<mx:CategoryAxis id="dgAxis" 
 						categoryField="shift"
+						title="Shift"
 						/>
 				</mx:horizontalAxis>
+				<mx:horizontalAxisRenderers>
+					<mx:AxisRenderer axis="{dgAxis}" canDropLabels="true"/>
+				</mx:horizontalAxisRenderers>
+
 				<mx:series>
 						<mx:LineSeries  id="dgline"
 							yField="dg" 
@@ -82,14 +90,21 @@
 			</mx:Panel>
 			<mx:Panel title="Genome Homology" width="33%" height="100%" paddingLeft="10" paddingRight="10" dropShadowEnabled="false">
 			<mx:LineChart id="bgChart" width="100%" height="100%">
+				<mx:annotationElements>
+					<mx:CartesianDataCanvas id="bgcanvas" includeInRanges="true" />
+				</mx:annotationElements>
 				<mx:seriesFilters>
 					<mx:Array/>
 				</mx:seriesFilters>
 				<mx:horizontalAxis>
 					<mx:CategoryAxis id="bgAxis"  
 						categoryField="shift"
+						title="Shift"
 						/>
 				</mx:horizontalAxis>
+				<mx:horizontalAxisRenderers>
+					<mx:AxisRenderer axis="{bgAxis}" canDropLabels="true"/>
+				</mx:horizontalAxisRenderers>
 				<mx:series>
 					<mx:LineSeries id="bgline" 
 						yField="bg" 
@@ -107,14 +122,21 @@
 				</mx:Panel>
 			<mx:Panel title="Oligo Pool Homology"  width="33%" height="100%" paddingLeft="10" paddingRight="10" dropShadowEnabled="false">
 			<mx:LineChart id="boChart" width="100%" height="100%">
+				<mx:annotationElements>
+					<mx:CartesianDataCanvas id="bocanvas" includeInRanges="true" />
+				</mx:annotationElements>
 				<mx:seriesFilters>
 					<mx:Array/>
 				</mx:seriesFilters>
 				<mx:horizontalAxis>
 					<mx:CategoryAxis  id="boAxis"
 						categoryField="shift"
+						title="Shift"
 						/>
 				</mx:horizontalAxis> 
+				<mx:horizontalAxisRenderers>
+					<mx:AxisRenderer axis="{boAxis}" canDropLabels="true"/>
+				</mx:horizontalAxisRenderers>
 				<mx:series>
 					<mx:LineSeries  id="boline"
 						yField="bo" 
