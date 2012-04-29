@@ -182,7 +182,7 @@ package org.jbei.registry.mediators
 			updateStatus(">> Processing ... Could Take Several Minutes");
 			
 			// Create a new Post Request and add Variables to it
-			var merlinRequest:URLRequest = new URLRequest("http://localhost:8080/magelet/merlin");
+			var merlinRequest:URLRequest = new URLRequest("http://cidar1.bu.edu:8080/magelet/merlin");
 			var merlinVariables:URLVariables = new URLVariables();
 			merlinRequest.method = URLRequestMethod.POST;
 			merlinRequest.data = collectPostVariables(merlinVariables);
@@ -205,7 +205,7 @@ package org.jbei.registry.mediators
 			updateStatus(">> Processing ... Could Take Several Minutes");
 			
 			// Create a new Post Request and add Variables to it
-			var mageRequest:URLRequest = new URLRequest("http://localhost:8080/magelet/optMAGE_1");//+servlet);
+			var mageRequest:URLRequest = new URLRequest("http://cidar1.bu.edu:8080/magelet/optMAGE_1");//+servlet);
 			var mageVariables:URLVariables = new URLVariables();
 			mageRequest.method = URLRequestMethod.POST;
 			mageRequest.data = collectPostVariables(mageVariables);
@@ -227,7 +227,7 @@ package org.jbei.registry.mediators
 
 			updateStatus(">> Connecting...");
 			//mageBar.mageStatus.text =  MageServerRequest.mageGET("/Mage_Test");
-			var mageRequest:URLRequest = new URLRequest("http://localhost:8080/magelet/optMAGE_1");//+servlet);
+			var mageRequest:URLRequest = new URLRequest("http://cidar1.bu.edu:8080/magelet/optMAGE_1");//+servlet);
 			var mageLoader:URLLoader = new URLLoader();
 			var mageVariables:URLVariables = new URLVariables();
 			var GETResponse : String =  ">> No Connection";
