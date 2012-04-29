@@ -3,6 +3,7 @@ package org.jbei.registry.mediators
     import flash.display.BitmapData;
     import flash.events.Event;
     
+    import mx.collections.ArrayCollection;
     import mx.controls.Alert;
     import mx.events.CloseEvent;
     import mx.printing.FlexPrintJob;
@@ -27,6 +28,7 @@ package org.jbei.registry.mediators
     import org.jbei.registry.ApplicationFacade;
     import org.jbei.registry.Notifications;
     import org.jbei.registry.control.RestrictionEnzymeGroupManager;
+    import org.jbei.registry.mage.Oligo;
     import org.jbei.registry.models.UserPreferences;
     import org.jbei.registry.utils.Finder;
     import org.jbei.registry.view.dialogs.FeatureDialogForm;
@@ -45,7 +47,8 @@ package org.jbei.registry.mediators
         private var sequenceAnnotator:SequenceAnnotator;
         private var pie:Pie;
         private var rail:Rail;
-        
+        private var status : String;
+		
         private var controlsInitialized:Boolean = false;
         private var isSequenceInitialized:Boolean = false;
         
@@ -65,6 +68,10 @@ package org.jbei.registry.mediators
             rail = mainContentPanel.rail;
             
             initializeEventHandlers();
+			
+			// Set the initial status to be an empty string
+			status ="";
+			mainContentPanel.StatusStream.text = "";
         }
         
         // Public Methods
@@ -108,6 +115,9 @@ package org.jbei.registry.mediators
                 , Notifications.PRINT_SEQUENCE
                 
                 , Notifications.SEQUENCE_PROVIDER_CHANGED
+				, Notifications.UPDATE_STATUS
+				, Notifications.UPDATE_CHARTS
+				
             ];
         }
         
@@ -252,8 +262,13 @@ package org.jbei.registry.mediators
                     break;
                 case Notifications.REVERSE_COMPLEMENT_SEQUENCE:
                     applicationFacade.sequenceProvider.reverseComplementSequence();
-                    
                     break;
+				case Notifications.UPDATE_STATUS:
+					updateStatus(notification.getBody() as String )
+                    break;
+				case Notifications.UPDATE_CHARTS:
+					updateCharts(notification.getBody() as Oligo )
+					break;
             }
         }
         
@@ -770,5 +785,98 @@ package org.jbei.registry.mediators
             pie.restrictionEnzymeMapper = applicationFacade.restrictionEnzymeMapper;
             rail.restrictionEnzymeMapper = applicationFacade.restrictionEnzymeMapper;
         }
+		
+		private function updateStatus(newLine : String ) : void
+		{
+			this.status += "\n "+ newLine;
+			this.mainContentPanel.StatusStream.text = status;
+			
+			// Auto Scroll to the bottom
+			this.mainContentPanel.StatusStream.validateNow();
+			this.mainContentPanel.StatusStream.verticalScrollPosition = this.mainContentPanel.StatusStream.maxVerticalScrollPosition;
+		}
+		
+		private function updateCharts(ol : Oligo) : void
+		{
+			var bg : Array = ol.bg;
+			var dg : Array = ol.dg;
+			var bo : Array = ol.bo;
+			var mp : Number = ol.mp;
+			var op : Number = ol.op;
+			
+			var bgmax : Number = bg[0];
+			var dgmax : Number = dg[0];
+			var bomax : Number = bo[0];
+			var bgmin : Number = bg[0];
+			var dgmin : Number = dg[0];
+			var bomin : Number = bo[0];
+
+			
+			var chartInfo: Array = new Array();
+			for ( var ii : int =0; ii < bg.length ; ii++ )
+			{
+				chartInfo[ii] =  {"bg":(bg[ii] as Number), 
+								  "dg":(dg[ii] as Number),
+								  "bo":(bo[ii] as Number),
+								  "x":(ii+1) } ;
+				bgmax = Math.max(bgmax,bg[ii]);
+				dgmax = Math.max(dgmax,dg[ii]);
+				bomax = Math.max(bomax,bo[ii]);
+				bgmin = Math.min(bgmin,bg[ii]);
+				dgmin = Math.min(dgmin,dg[ii]);
+				bomin = Math.min(bomin,bo[ii]);
+				
+				
+			}
+			var chartData:ArrayCollection = new ArrayCollection(chartInfo);
+			
+			this.mainContentPanel.boChart.dataProvider = chartData;
+			this.mainContentPanel.boAxis.categoryField = "x";
+			this.mainContentPanel.boAxis.dataProvider = chartData;
+			this.mainContentPanel.boline.dataProvider = chartData;
+			this.mainContentPanel.boline.yField = "bo";
+			this.mainContentPanel.boChart.showDataTips=true;
+			
+			this.mainContentPanel.dgChart.dataProvider = chartData;
+			this.mainContentPanel.dgAxis.categoryField = "x";
+			this.mainContentPanel.dgAxis.dataProvider = chartData;
+			this.mainContentPanel.dgline.dataProvider = chartData;
+			this.mainContentPanel.dgline.yField = "dg";
+			this.mainContentPanel.dgChart.showDataTips=true;
+			
+			this.mainContentPanel.bgChart.dataProvider = chartData;
+			this.mainContentPanel.bgAxis.categoryField = "x";
+			this.mainContentPanel.bgAxis.dataProvider = chartData;
+			this.mainContentPanel.bgline.dataProvider = chartData;
+			this.mainContentPanel.bgline.yField = "bg";
+			this.mainContentPanel.bgChart.showDataTips=true;
+			
+			// Piant
+			this.mainContentPanel.bocanvas.clear();
+			this.mainContentPanel.bocanvas.beginFill(0xCB0077,1);
+			this.mainContentPanel.bocanvas.drawCircle(op,bo[op],4);
+			this.mainContentPanel.bocanvas.beginFill(0x006FEF,1);
+			this.mainContentPanel.bocanvas.drawCircle(mp,bo[mp],4);
+			this.mainContentPanel.bocanvas.endFill();
+			
+			// Piant
+			this.mainContentPanel.dgcanvas.clear();
+			this.mainContentPanel.dgcanvas.beginFill(0xCB0077,1);
+			this.mainContentPanel.dgcanvas.drawCircle(op,dg[op],4);
+			this.mainContentPanel.dgcanvas.beginFill(0x006FEF,1);
+			this.mainContentPanel.dgcanvas.drawCircle(mp,dg[mp],4);
+			this.mainContentPanel.dgcanvas.endFill();
+			
+			// Piant
+			this.mainContentPanel.bgcanvas.clear();
+			this.mainContentPanel.bgcanvas.beginFill(0xCB0077,1);
+			this.mainContentPanel.bgcanvas.drawCircle(op,bg[op],4);
+			this.mainContentPanel.bgcanvas.beginFill(0x006FEF,1);
+			this.mainContentPanel.bgcanvas.drawCircle(mp,bg[mp],4);
+			this.mainContentPanel.bgcanvas.endFill();
+			
+			updateStatus(">> Plotting Oligo");
+			
+		}
     }
 }

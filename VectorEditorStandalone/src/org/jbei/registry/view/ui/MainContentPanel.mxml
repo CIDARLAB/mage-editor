@@ -22,10 +22,13 @@
 					}
 				}
 			}
+			
+
+
 		]]>
 	</mx:Script>
-	
-	<mx:HDividedBox width="100%" height="100%" paddingTop="0" paddingBottom="0" paddingLeft="0" paddingRight="0">
+	<mx:VDividedBox width="100%" height="100%" >
+	<mx:HDividedBox width="100%" height="40%" paddingTop="0" paddingBottom="0" paddingLeft="0" paddingRight="0">
 		<components:Pie 
 			id="pie"
 			showORFs="false"
@@ -35,7 +38,7 @@
 		
 		<components:Rail 
 			id="rail"
-			visible="false"
+			visible="true"
 			includeInLayout="false"
 			showORFs="false"
 			showCutSites="false"
@@ -50,9 +53,107 @@
 			showAminoAcids3="false"
 			width="50%" 
 			height="100%" />
-		
 	</mx:HDividedBox>
-	
+		<mx:HBox width="100%" height="30%" id="graphpanel" >
+			<mx:Panel title="Free Energy" width="33%" height="100%" paddingLeft="10" paddingRight="10" dropShadowEnabled="false">
+			<mx:LineChart id="dgChart"  width="100%" height="100%" >
+				<mx:annotationElements>
+					<mx:CartesianDataCanvas id="dgcanvas" includeInRanges="true" />
+				</mx:annotationElements>
+				<mx:seriesFilters>
+					<mx:Array/>
+				</mx:seriesFilters>
+				<mx:horizontalAxis>
+					<mx:CategoryAxis id="dgAxis" 
+						categoryField="shift"
+						title="Shift"
+						/>
+				</mx:horizontalAxis>
+				<mx:horizontalAxisRenderers>
+					<mx:AxisRenderer axis="{dgAxis}" canDropLabels="true"/>
+				</mx:horizontalAxisRenderers>
+
+				<mx:series>
+						<mx:LineSeries  id="dgline"
+							yField="dg" 
+							displayName="Free Energy"
+							>
+							<mx:lineStroke>
+								<mx:Stroke 
+									color="0x307D7E"
+									weight="4"
+									/>
+							</mx:lineStroke> 
+					</mx:LineSeries>
+				</mx:series>
+			</mx:LineChart>
+			</mx:Panel>
+			<mx:Panel title="Genome Homology" width="33%" height="100%" paddingLeft="10" paddingRight="10" dropShadowEnabled="false">
+			<mx:LineChart id="bgChart" width="100%" height="100%">
+				<mx:annotationElements>
+					<mx:CartesianDataCanvas id="bgcanvas" includeInRanges="true" />
+				</mx:annotationElements>
+				<mx:seriesFilters>
+					<mx:Array/>
+				</mx:seriesFilters>
+				<mx:horizontalAxis>
+					<mx:CategoryAxis id="bgAxis"  
+						categoryField="shift"
+						title="Shift"
+						/>
+				</mx:horizontalAxis>
+				<mx:horizontalAxisRenderers>
+					<mx:AxisRenderer axis="{bgAxis}" canDropLabels="true"/>
+				</mx:horizontalAxisRenderers>
+				<mx:series>
+					<mx:LineSeries id="bgline" 
+						yField="bg" 
+						displayName="Genome Homology"
+						>
+						<mx:lineStroke>
+							<mx:Stroke 
+								color="0x800517" 
+								weight="4"
+								/>
+						</mx:lineStroke> 
+					</mx:LineSeries>
+				</mx:series>
+			</mx:LineChart>
+				</mx:Panel>
+			<mx:Panel title="Oligo Pool Homology"  width="33%" height="100%" paddingLeft="10" paddingRight="10" dropShadowEnabled="false">
+			<mx:LineChart id="boChart" width="100%" height="100%">
+				<mx:annotationElements>
+					<mx:CartesianDataCanvas id="bocanvas" includeInRanges="true" />
+				</mx:annotationElements>
+				<mx:seriesFilters>
+					<mx:Array/>
+				</mx:seriesFilters>
+				<mx:horizontalAxis>
+					<mx:CategoryAxis  id="boAxis"
+						categoryField="shift"
+						title="Shift"
+						/>
+				</mx:horizontalAxis> 
+				<mx:horizontalAxisRenderers>
+					<mx:AxisRenderer axis="{boAxis}" canDropLabels="true"/>
+				</mx:horizontalAxisRenderers>
+				<mx:series>
+					<mx:LineSeries  id="boline"
+						yField="bo" 
+						displayName="Oligo Pool Homology"
+						>
+						<mx:lineStroke>
+							<mx:Stroke 
+								color="0x4CC417" 
+								weight="4"
+								/>
+						</mx:lineStroke> 
+					</mx:LineSeries>
+				</mx:series>
+			</mx:LineChart>
+				</mx:Panel>
+		</mx:HBox>		
+		<mx:TextArea id="StatusStream" editable="false" height="30%" width="100%"/>
 	<mx:HBox includeInLayout="true" visible="true">
 		<components:Pie 
 			id="printingPie"
@@ -82,4 +183,5 @@
 		
 		</print:PrintView>
 	</mx:HBox>
+	</mx:VDividedBox>
 </mx:Canvas>

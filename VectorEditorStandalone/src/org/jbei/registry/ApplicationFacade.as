@@ -22,6 +22,7 @@ package org.jbei.registry
 	import org.jbei.registry.control.ActionStack;
 	import org.jbei.registry.control.ActionStackEvent;
 	import org.jbei.registry.control.RestrictionEnzymeGroupManager;
+	import org.jbei.registry.mage.Oligo;
 	import org.jbei.registry.mediators.ApplicationMediator;
 	import org.jbei.registry.mediators.FindPanelMediator;
 	import org.jbei.registry.mediators.MainControlBarMediator;
@@ -31,10 +32,11 @@ package org.jbei.registry
 	import org.jbei.registry.models.UserPreferences;
 	import org.jbei.registry.models.UserRestrictionEnzymes;
 	import org.jbei.registry.models.VectorEditorProject;
+	import org.jbei.registry.models.MageProperties;
 	import org.jbei.registry.proxies.RegistryAPIProxy;
 	import org.jbei.registry.utils.FeaturedDNASequenceUtils;
+	import org.jbei.registry.utils.IceXmlUtils;
 	import org.jbei.registry.utils.StandaloneUtils;
-    import org.jbei.registry.utils.IceXmlUtils;
 	import org.jbei.registry.view.ui.ApplicationPanel;
 	import org.puremvc.as3.patterns.facade.Facade;
 
@@ -68,7 +70,8 @@ package org.jbei.registry
         private var _applicationInitialized:Boolean = false;
         
 		private var browserSavedState:Boolean = true;
-        
+        private var _mageProperties: MageProperties;
+		private var _mageTextResults: String;
 		// Properties
         public function get project():VectorEditorProject
         {
@@ -470,6 +473,8 @@ package org.jbei.registry
         {
             updateSequence(StandaloneUtils.standaloneSequence());
             updateUserPreferences(StandaloneUtils.standaloneUserPreferences());
+			this._mageProperties =  new MageProperties;
+			this._mageTextResults = "No Completed Requests. \n Please Set Parameters, then Hit the Mage Button";
         }
         
         private function initializeRegistryEditionApplication():void
@@ -530,5 +535,19 @@ package org.jbei.registry
             
             sequenceProvider.dispatchEvent(new SequenceProviderEvent(SequenceProviderEvent.SEQUENCE_CHANGED, SequenceProviderEvent.KIND_INITIALIZED));
         }
+		
+		public function set mageProperties( _mp : MageProperties):void{
+			this._mageProperties = _mp;
+		}
+		
+		public function get mageProperties(): MageProperties{
+			return this._mageProperties;
+		}
+		
+		public function updateChart( oligo: Oligo ): void
+		{
+			sendNotification(Notifications.UPDATE_CHARTS, oligo ); 
+		}
+
 	}
 }

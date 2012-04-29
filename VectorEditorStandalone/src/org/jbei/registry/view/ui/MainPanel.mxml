@@ -3,7 +3,9 @@
     <ui:MainMenu id="mainMenu" />
     
     <ui:MainControlBar id="mainControlBar" />
-    
+	
+	<ui:MageBar id="MageBar" />
+	
     <ui:MainContentPanel id="mainContentPanel" />
     
     <ui:FindPanel id="findPanel" width="100%" paddingBottom="2" paddingTop="2" visible="false" includeInLayout="false" />

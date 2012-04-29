@@ -162,15 +162,9 @@
     <mx:Button width="32" height="32" id="saveProjectButton" icon="{ saveProjectIcon }" toolTip="Save Project" />
     <mx:Button width="32" height="32" id="projectPropertiesButton" icon="{ projectPropertiesIcon }" toolTip="Project Properties" />
     <mx:Spacer width="5" />
-	<mx:ToggleButtonBar 
-		id="viewToggleButtonBar"
-		toggleOnClick="false" 
-		buttonWidth="32" 
-		buttonHeight="32"
-		paddingLeft="0" 
-		paddingRight="0" 
-		buttonStyleName="haloSilver"
-		>
+	<mx:ToggleButtonBar id="viewToggleButtonBar" buttonHeight="32" buttonStyleName="haloSilver"
+						buttonWidth="32" paddingLeft="0" paddingRight="0" selectedIndex="1"
+						toggleOnClick="false">
 		
         <mx:dataProvider>
          	<mx:Object toolTip="Circular View" icon="{ pieIcon }" />

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:ApplicationControlBar 
+			dock="true" 
+			fillColors="[0xFFFFFF, 0xCCCCCC]" 
+			fillAlphas="[0.6,0.4]" 
+			width="100%"
+			paddingTop="0" 
+			paddingBottom="0" 
+			paddingLeft="0" 
+			verticalGap="0" 
+			horizontalGap="0" 
+			xmlns:mx="http://www.adobe.com/2006/mxml">
+	<mx:Script>	
+	<![CDATA[
+		import mx.events.ListEvent;
+		
+		import org.jbei.registry.ApplicationFacade;
+		import org.jbei.registry.mage.Oligo;
+	
+	[Embed(source='../assets/icons/mageParameters.png')]
+	[Bindable]
+	private var mageParametersIcon:Class;
+	
+	[Embed(source='../assets/icons/ip.png')]
+	[Bindable]
+	private var mageConnectionIcon:Class;
+		
+	[Embed(source='../assets/icons/mage_records.png')]
+	[Bindable]
+	private var mageRecordsViewIcon:Class;
+
+		
+		protected function oligoSelect_changeHandler(event:ListEvent):void
+		{
+			var ol : Oligo = (ApplicationFacade.getInstance().mageProperties.merlinResults[ oligoSelect.selectedIndex ] as Oligo);
+			ol.select();
+			ApplicationFacade.getInstance().updateChart(ol);
+		}
+		
+	]]>
+		
+		
+		
+	</mx:Script>
+	
+	<mx:Spacer width="10" height="10"/>
+	
+	<mx:Button id="mageUploadParameterButton" height="100%" color="#004756" icon="{ mageParametersIcon }"
+			   toolTip="Upload Parameter File"/>
+	
+	<mx:Spacer width="10" height="10" />
+	
+	<mx:Button id="mageUploadTargetButton" height="100%" color="#004756" icon="{ mageParametersIcon }" toolTip="Upload Target File"/>
+	
+	<mx:Spacer width="10" height="10"/>
+	<mx:Button id="mageConnectionButton" height="100%"
+			   color="#004756"
+			   icon="{ mageConnectionIcon }" toolTip="Test MAGE Server Connection"/>
+	<mx:Spacer width="10" height="10"/>
+	
+	<mx:Button id="mageButton" 
+			   width="93"
+			   height="100%" 
+			   label="MAGE" 
+			   color="#0D84C9" 
+			   fontSize="14"/>
+	<mx:Spacer width="10" height="10"/>
+	<mx:Button id="merlinButton" 
+			   width="91"
+			   height="100%" 
+			   label="MERLIN" 
+			   color="#97A9B3" 
+			   fontSize="14"/>
+	<mx:Spacer width="10" height="10"/>
+	<mx:ComboBox id="oligoSelect" change="oligoSelect_changeHandler(event)"
+				 toolTip="Run Mage to Generate Oligos">
+		<mx:ArrayCollection>
+			<mx:Object id="No_Oligo" name ="No Oligos Generated"/>
+		</mx:ArrayCollection>
+	</mx:ComboBox>
+	
+	<mx:Label id="mageStatus" width="100%" height="15" color="#000000" enabled="true" textAlign="right"/>
+
+	
+</mx:ApplicationControlBar >

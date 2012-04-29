@@ -80,5 +80,9 @@ package org.jbei.registry
         public static const IMPORT_SEQUENCE:String = "IMPORT_SEQUENCE";
         public static const DOWNLOAD_SEQUENCE:String = "DOWNLOAD_SEQUENCE";
         public static const REBASE_SEQUENCE:String = "REBASE_SEQUENCE";
+		
+		// Additions from MAGE
+		public static const UPDATE_STATUS:String = "UPDATE_STATUS";
+		public static const UPDATE_CHARTS:String = "UPDATE_CHARTS";
 	}
 }

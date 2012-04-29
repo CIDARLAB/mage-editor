@@ -60,6 +60,8 @@ package org.jbei.registry.mediators
             applicationFacade.registerMediator(new MainContentPanelMediator(applicationPanel.mainPanel.mainContentPanel));
             applicationFacade.registerMediator(new StatusBarMediator(applicationPanel.mainPanel.statusBar));
             applicationFacade.registerMediator(new FindPanelMediator(applicationPanel.mainPanel.findPanel));
+			// Registered Mediator
+			applicationFacade.registerMediator(new MageBarMediator(applicationPanel.mainPanel.MageBar));
 		}
 		
 		// Public Methods
