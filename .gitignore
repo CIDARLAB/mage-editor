@@ -1,14 +1,14 @@
 # Build and Release Folders #
 #############################
-bin-debug/
-bin-release/
-.swc
+#bin-debug/
+#bin-release/
+#.swc
 
 # Project Properties Files (Kept in this case) ##
 #################################################
 #.actionScriptProperties
 #.flexProperties
-.settings/
+#.settings/
 #.project
 
 # Project Specific Ignore Files ##
@@ -23,15 +23,15 @@ RegistryWSClient/src/valueObjects/
 VectorCommon/bin/
 *~
 
-settings/
-metadata/
+#settings/
+#metadata/
 
 # Git standards
 
 # PROJECT SPECIFIC #
 ####################
-.settings/
-.metadata/
+#.settings/
+#.metadata/
 build/
 
 
