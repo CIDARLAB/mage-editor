@@ -1,7 +1,7 @@
 # Build and Release Folders #
 #############################
-#bin-debug/
-#bin-release/
+bin-debug/
+bin-release/
 #.swc
 
 # Project Properties Files (Kept in this case) ##
