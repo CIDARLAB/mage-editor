@@ -19,6 +19,7 @@ package org.jbei.registry.mediators
 	import org.jbei.registry.Notifications;
 	import org.jbei.registry.mage.Oligo;
 	import org.jbei.registry.models.MageProperties;
+	import org.jbei.registry.view.dialogs.mageDialogs.GenomeDialogForm;
 	import org.jbei.registry.view.dialogs.mageDialogs.MageParameterDialogForm;
 	import org.jbei.registry.view.dialogs.mageDialogs.MageTargetDialogForm;
 	import org.jbei.registry.view.ui.MageBar;
@@ -42,7 +43,7 @@ package org.jbei.registry.mediators
 		private var _mageLoader :URLLoader ;
 		private var _merlinLoader :URLLoader;
 		private var _mageClicked :Boolean;
-		
+		private var host : String = "http://localhost:8080/" // "http://cidar1.bu.edu:8080/"
 		public function MageBarMediator(viewComponent:Object=null)
 		{
 			super(NAME, viewComponent);
@@ -57,6 +58,8 @@ package org.jbei.registry.mediators
 			// Add event listeners to deal with the mouse click for the following events.
 			mageBar.mageButton.addEventListener(MouseEvent.CLICK,onMageButtonClick);
 			mageBar.mageUploadParameterButton.addEventListener(MouseEvent.CLICK,onMageParameterButtonClick);
+			mageBar.mageUploadGenomeButton.addEventListener(MouseEvent.CLICK,onMageGenomeButtonClick);
+			
 			mageBar.mageConnectionButton.addEventListener(MouseEvent.CLICK,onMageConnectionButtonClick);
 			mageBar.mageUploadTargetButton.addEventListener(MouseEvent.CLICK,onMageUploadTargetButtonClick );
 			mageBar.oligoSelect.addEventListener(ListEvent.CHANGE,onOligoSelection);
@@ -86,6 +89,13 @@ package org.jbei.registry.mediators
 			mageBar.merlinButton.addEventListener(MouseEvent.CLICK,onMerlinButtonClick);
 		}
 		
+		private function onMageGenomeButtonClick(event:Event): void 
+		{
+			var _mageGenomeDialog:ModalDialog = new ModalDialog(GenomeDialogForm, null);
+			_mageGenomeDialog.title = "Upload Start Genome FASTA File";
+			_mageGenomeDialog.open();
+			
+		}
 
 		private function onMageParameterButtonClick(event:Event): void 
 		{
@@ -182,7 +192,7 @@ package org.jbei.registry.mediators
 			updateStatus(">> Processing ... Could Take Several Minutes");
 			
 			// Create a new Post Request and add Variables to it
-			var merlinRequest:URLRequest = new URLRequest("http://cidar1.bu.edu:8080/magelet/merlin");
+			var merlinRequest:URLRequest = new URLRequest(host+"magelet/merlin");
 			var merlinVariables:URLVariables = new URLVariables();
 			merlinRequest.method = URLRequestMethod.POST;
 			merlinRequest.data = collectPostVariables(merlinVariables);
@@ -205,7 +215,7 @@ package org.jbei.registry.mediators
 			updateStatus(">> Processing ... Could Take Several Minutes");
 			
 			// Create a new Post Request and add Variables to it
-			var mageRequest:URLRequest = new URLRequest("http://cidar1.bu.edu:8080/magelet/optMAGE_1");//+servlet);
+			var mageRequest:URLRequest = new URLRequest(host+"magelet/optMAGE_1");//+servlet);
 			var mageVariables:URLVariables = new URLVariables();
 			mageRequest.method = URLRequestMethod.POST;
 			mageRequest.data = collectPostVariables(mageVariables);
@@ -227,7 +237,7 @@ package org.jbei.registry.mediators
 
 			updateStatus(">> Connecting...");
 			//mageBar.mageStatus.text =  MageServerRequest.mageGET("/Mage_Test");
-			var mageRequest:URLRequest = new URLRequest("http://cidar1.bu.edu:8080/magelet/optMAGE_1");//+servlet);
+			var mageRequest:URLRequest = new URLRequest(host+"magelet/optMAGE_1");//+servlet);
 			var mageLoader:URLLoader = new URLLoader();
 			var mageVariables:URLVariables = new URLVariables();
 			var GETResponse : String =  ">> No Connection";
@@ -269,8 +279,7 @@ package org.jbei.registry.mediators
 			var _mp :MageProperties= this._af.mageProperties;
 			_mageVariables.targets 		= _mp.getSavedTargets();
 			_mageVariables.parameters 	= _mp.getSavedParameters();
-			_mageVariables.genome		= _mp.getSavedGenome ;
-			
+			_mageVariables.genome		= _mp.getSavedGenome.toString();//getSavedGenome() ;
 			return _mageVariables;			
 			
 		}

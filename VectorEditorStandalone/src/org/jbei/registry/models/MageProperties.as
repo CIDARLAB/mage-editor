@@ -2,6 +2,7 @@ package org.jbei.registry.models
 {
 	import org.jbei.registry.mage.ParameterUploader;
 	import org.jbei.registry.mage.TargetUploader;
+	import org.jbei.registry.mage.GenomeUploader;
 	
 	[Bindable]
 	/**
@@ -14,6 +15,8 @@ package org.jbei.registry.models
 		// Result Data Members
 		private var targetFileData : String;
 		private var parameterFileData : String;
+		private var genomeFileData : String;
+		private var genome: String;
 		private var parameters : String;
 		private var targets : String;
 		private var _mageResults : String;
@@ -36,6 +39,7 @@ package org.jbei.registry.models
 		{
 			this.targetFileData 	= "No File Uploaded";	
 			this.parameterFileData 	= "No File Uploaded";
+			this.genome = "No File Uploaded"
 			this.current = 0;
 		}
 		
@@ -51,7 +55,7 @@ package org.jbei.registry.models
 
 		public function get getSavedGenome() : String
 		{
-			return "";
+			return this.genome;
 		}
 		
 		public function saveParameterFile( text:String ) : void
@@ -89,7 +93,20 @@ package org.jbei.registry.models
 			this._mageResults = response; 
 		}
 		
+		public function getGenome(): String
+		{
+			return this.genomeFileData;
+		}
 		
+		public function setGenome( new_genome : String ): void
+		{
+			this.genomeFileData = new_genome;
+		}
+		
+		public function saveGenome( new_genome: String) : void
+		{
+			this.genome = new_genome;
+		}
 		// Uploads and stores the parameter file
 		public function uploadParameterFile() : void
 		{
@@ -110,6 +127,17 @@ package org.jbei.registry.models
 			
 			// Get the data as a string
 			this.targetFileData = uload.getData();
+		}
+		
+		// Uploads and stores the start genome file
+		public function uploadGenomeFile() : void
+		{
+			// Create an uploader and ask the user about uploading
+			var ul : GenomeUploader = new GenomeUploader();
+			ul.upload();
+			
+			// Get the data as a string
+			this.genomeFileData = ul.getData();
 		}
 	
 	}
