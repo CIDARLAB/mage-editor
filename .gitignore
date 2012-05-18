@@ -2,6 +2,7 @@
 #############################
 bin-debug/
 bin-release/
+.fxp*
 #.swc
 
 # Project Properties Files (Kept in this case) ##
