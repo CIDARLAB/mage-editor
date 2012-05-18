@@ -43,7 +43,7 @@ package org.jbei.registry.mediators
 		private var _mageLoader :URLLoader ;
 		private var _merlinLoader :URLLoader;
 		private var _mageClicked :Boolean;
-		private var host : String = "http://localhost:8080/" // "http://cidar1.bu.edu:8080/"
+		private var host : String = "http://cidar1.bu.edu:8080/";//"http://localhost:8080/" // 
 		public function MageBarMediator(viewComponent:Object=null)
 		{
 			super(NAME, viewComponent);
@@ -235,9 +235,9 @@ package org.jbei.registry.mediators
 		private function onMageConnectionButtonClick(event: Event): void 
 		{
 
-			updateStatus(">> Connecting...");
+			updateStatus(">> Connecting with ID " + this._af.mageProperties.ID + " ...");
 			//mageBar.mageStatus.text =  MageServerRequest.mageGET("/Mage_Test");
-			var mageRequest:URLRequest = new URLRequest(host+"magelet/optMAGE_1");//+servlet);
+			var mageRequest:URLRequest = new URLRequest(host+"magelet/optMAGE_1");
 			var mageLoader:URLLoader = new URLLoader();
 			var mageVariables:URLVariables = new URLVariables();
 			var GETResponse : String =  ">> No Connection";
@@ -280,6 +280,7 @@ package org.jbei.registry.mediators
 			_mageVariables.targets 		= _mp.getSavedTargets();
 			_mageVariables.parameters 	= _mp.getSavedParameters();
 			_mageVariables.genome		= _mp.getSavedGenome.toString();//getSavedGenome() ;
+			_mageVariables.id			= _mp.ID;
 			return _mageVariables;			
 			
 		}

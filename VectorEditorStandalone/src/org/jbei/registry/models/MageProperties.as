@@ -1,8 +1,8 @@
 package org.jbei.registry.models
 {
+	import org.jbei.registry.mage.GenomeUploader;
 	import org.jbei.registry.mage.ParameterUploader;
 	import org.jbei.registry.mage.TargetUploader;
-	import org.jbei.registry.mage.GenomeUploader;
 	
 	[Bindable]
 	/**
@@ -23,6 +23,7 @@ package org.jbei.registry.models
 		private var _merlinResults: Array;
 		private var oligos : Array;
 		private var current : int ;
+		private var id : String;
 		
 		public function set merlinResults( merlinProps : Array) : void
 		{
@@ -40,6 +41,8 @@ package org.jbei.registry.models
 			this.targetFileData 	= "No File Uploaded";	
 			this.parameterFileData 	= "No File Uploaded";
 			this.genome = "No File Uploaded"
+			var now:Date = new Date();
+			this.id =  Math.round((Math.random()*1000)).toString(10) +"_"+ now.getTime().toString(10) ;
 			this.current = 0;
 		}
 		
@@ -107,6 +110,12 @@ package org.jbei.registry.models
 		{
 			this.genome = new_genome;
 		}
+		
+		public  function get ID(): String
+		{
+			return this.id;
+		}
+		
 		// Uploads and stores the parameter file
 		public function uploadParameterFile() : void
 		{

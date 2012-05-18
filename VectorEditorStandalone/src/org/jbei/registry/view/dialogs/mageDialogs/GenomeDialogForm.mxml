@@ -23,7 +23,9 @@
 			private function onCreationComplete(event:Event):void
 			{
 				_mp = ApplicationFacade.getInstance().mageProperties;
-				uploadTextArea.text = "" ;
+				uploadTextArea.text = "\n --Preview-- \n " + _mp.getGenome().substr(0,1000) ;
+				//uploadTextArea.text = _mp.getGenome().length ;
+				
 			}
 			
 			private function onChange(event:Event):void
@@ -34,7 +36,7 @@
 			protected function uploadButton_clickHandler(event:MouseEvent):void
 			{
 				_mp.uploadGenomeFile();
-				uploadTextArea.text = "Uploading. Click Preview" ;
+				
 			}
 			
 			protected function previewButton_clickHandler(event: MouseEvent):void
