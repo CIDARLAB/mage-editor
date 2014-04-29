@@ -12,13 +12,7 @@
 		</buildCommand>
 	</buildSpec>
 	<natures>
-		<nature>com.adobe.flexbuilder.project.flexlibnature</nature>
+		<nature>com.adobe.flexbuilder.project.flexnature</nature>
 		<nature>com.adobe.flexbuilder.project.actionscriptnature</nature>
 	</natures>
-	<variableList>
-		<variable>
-			<name>LIBS</name>
-			<value>file:/Users/mockingbird/dropbox/research/magic/vectoreditor/VectorEditorStandalone/libs</value>
-		</variable>
-	</variableList>
 </projectDescription>
