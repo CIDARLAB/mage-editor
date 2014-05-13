@@ -8,6 +8,7 @@
             import org.jbei.lib.ui.menu.MenuItemEvent;
 			
 			// File
+			public static const EXPORT_OLIGOS:String = "ExportOligos";
             public static const SAVE_TO_REGISTRY:String = "SaveToRegistry";
             public static const DOWNLOAD_SEQUENCE:String = "DownloadSequence";
 			public static const SAVE_PROJECT:String = "SaveProject";
@@ -53,6 +54,9 @@
 			public static const SHOW_CREATE_NEW_FEATURE_DIALOG:String = "ShowCreateNewFeatureDialog";
             public static const SHOW_SIMULATE_DIGESTION_DIALOG:String = "ShowSimulateDigestionDialog";
 			public static const SHOW_PREFERENCES_DIALOG:String = "ShowPreferencesDialog";
+			public static const SHOW_DIVERSIFICATION_INPUT_DIALOG:String = "ShowDiversificationInputDialog";
+			public static const DOWNLOAD_MASCPCR:String = "DownloadMASCPCR";
+			public static const SHOW_DSDNA_DIALOG:String = "ShowDSDNADialog";
 			
 			// About
 			public static const GO_REPORT_BUG_WEB_LINK:String = "GoReportBugWebLink";
@@ -90,6 +94,7 @@
                 var printSequenceMenuItem:MenuItem = new MenuItem("printSequenceMenuItem", "Sequence");
 				var printPieMenuItem:MenuItem = new MenuItem("printPieMenuItem", "Circular View");
 				var printRailMenuItem:MenuItem = new MenuItem("printRailMenuItem", "Linear View");
+				var exportOligosMenuItem:MenuItem = new MenuItem("exportOligosMenuItem", "Save Oligos To File");
                 
                 CONFIG::registryEdition {
                     fileMenuItem.addSubItem(saveProjectMenuItem);
@@ -119,7 +124,8 @@
                     fileMenuItem.addSubItem(downloadSequenceMenuItem);
                     fileMenuItem.addSubItem(separatorMenuItem);
                 }
-                
+				
+				fileMenuItem.addSubItem(exportOligosMenuItem);
                 fileMenuItem.addSubItem(printMenuItem);
             	
                 // File -> Print
@@ -197,8 +203,15 @@
             	var restrictionEnzymesManagerMenuItem:MenuItem = new MenuItem("restrictionEnzymesManagerMenuItem", "Restriction Enzymes Manager");
             	var createNewFeatureMenuItem:MenuItem = new MenuItem("createNewFeatureMenuItem", "Create New Feature");
                 var simulateDigestionMenuItem:MenuItem = new MenuItem("simulateDigestionMenuItem", "Simulate Digestion");
-                var propertiesMenuItem:MenuItem = new MenuItem("propertiesMenuItem", "Properties");
-            	toolsMenuItem.addSubItem(createNewFeatureMenuItem);
+                var diversificationInputMenuItem:MenuItem = new MenuItem("diversificationInputMenuItem", "Calculate Diversification Trends");
+				var downloadMASCPCRMenuItem:MenuItem = new MenuItem("downloadMASCPCRMenuItem","Download MASCPCR Primers");
+				var propertiesMenuItem:MenuItem = new MenuItem("propertiesMenuItem", "Properties");
+				var dsdnaMenuItem:MenuItem = new MenuItem("dsdnaMenuItem","DSDNA Primer Generator");
+				toolsMenuItem.addSubItem(diversificationInputMenuItem);
+				toolsMenuItem.addSubItem(downloadMASCPCRMenuItem);
+				toolsMenuItem.addSubItem(dsdnaMenuItem);
+				toolsMenuItem.addSubItem(separatorMenuItem);
+				toolsMenuItem.addSubItem(createNewFeatureMenuItem);
             	toolsMenuItem.addSubItem(restrictionEnzymesManagerMenuItem);
                 toolsMenuItem.addSubItem(simulateDigestionMenuItem);
                 toolsMenuItem.addSubItem(propertiesMenuItem);
@@ -226,6 +239,7 @@
                 menuItemsMap["importSequenceMenuItem"] = importSequenceMenuItem;
                 menuItemsMap["saveToRegistryMenuItem"] = saveToRegistryMenuItem;
                 menuItemsMap["downloadSequenceMenuItem"] = downloadSequenceMenuItem;
+				menuItemsMap["exportOligosMenuItem"] = exportOligosMenuItem;
             	
                 // File->Print
                 menuItemsMap["printSequenceMenuItem"] = printSequenceMenuItem;
@@ -269,6 +283,9 @@
                 menuItemsMap["simulateDigestionMenuItem"] = simulateDigestionMenuItem;
                 menuItemsMap["propertiesMenuItem"] = propertiesMenuItem;
             	menuItemsMap["preferencesMenuItem"] = preferencesMenuItem;
+				menuItemsMap["diversificationInputMenuItem"] = diversificationInputMenuItem;
+				menuItemsMap["downloadMASCPCRMenuItem"] = downloadMASCPCRMenuItem;
+				menuItemsMap["dsdnsMenuItem"] = dsdnaMenuItem;
             	
             	// Help
             	menuItemsMap["helpMenuItem"] = helpMenuItem;
@@ -365,7 +382,15 @@
                     dispatchEvent(new MenuItemEvent(SAVE_TO_REGISTRY, menuItem));
                 } else if(menuItem.id == "downloadSequenceMenuItem") {
                     dispatchEvent(new MenuItemEvent(DOWNLOAD_SEQUENCE, menuItem));
-                }
+                } else if(menuItem.id == "diversificationInputMenuItem") {
+					dispatchEvent(new MenuItemEvent(SHOW_DIVERSIFICATION_INPUT_DIALOG, menuItem));
+				} else if(menuItem.id == "exportOligosMenuItem") {
+					dispatchEvent(new MenuItemEvent(EXPORT_OLIGOS, menuItem));
+				} else if (menuItem.id == "downloadMASCPCRMenuItem") {
+					dispatchEvent(new MenuItemEvent(DOWNLOAD_MASCPCR, menuItem));
+				} else if (menuItem.id == "dsdnaMenuItem"){
+					dispatchEvent(new MenuItemEvent(SHOW_DSDNA_DIALOG, menuItem));
+				}
             }
 		]]>
 	</mx:Script>

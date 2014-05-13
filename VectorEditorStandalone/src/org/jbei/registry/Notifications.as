@@ -65,12 +65,17 @@ package org.jbei.registry
 		public static const SHOW_CREATE_NEW_FEATURE_DIALOG:String = "SHOW_CREATE_NEW_FEATURE_DIALOG";
 		public static const SHOW_RESTRICTION_ENZYMES_MANAGER_DIALOG:String = "SHOW_RESTRICTION_ENZYMES_MANAGER_DIALOG";
         public static const SHOW_SIMULATE_DIGESTION_DIALOG:String = "SHOW_SIMULATE_DIGESTION_DIALOG";
+		public static const SHOW_DIVERSIFICATION_INPUT_DIALOG:String = "SHOW_DIVERSIFICATION_INPUT_DIALOG";
+		public static const DOWNLOAD_MASCPCR:String = "DOWNLOAD_MASCPCR";
         public static const REVERSE_COMPLEMENT_SEQUENCE:String = "REVERSE_COMPLEMENT_SEQUENCE";
+		public static const SHOW_DSDNA_DIALOG:String = "SHOW_DSDNA_DIALOG";
+		//public static const DSDNA_DIALOG_SUBMITTED:String = "DSDNA_DIALOG_SUBMITTED";
 		
 		public static const PRINT_SEQUENCE:String = "PRINT_SEQUENCE";
 		public static const PRINT_RAIL:String = "PRINT_RAIL";
 		public static const PRINT_PIE:String = "PRINT_PIE";
         
+		public static const EXPORT_OLIGOS:String = "EXPORT_OLIGOS";
         public static const SAVE_TO_REGISTRY:String = "SAVE_TO_REGISTRY";
         public static const SAVE_PROJECT:String = "SAVE_PROJECT";
         public static const SAVE_PROJECT_AS:String = "SAVE_PROJECT_AS";

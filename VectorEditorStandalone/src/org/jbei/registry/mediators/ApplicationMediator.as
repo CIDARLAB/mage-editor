@@ -3,6 +3,12 @@ package org.jbei.registry.mediators
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.net.FileReference;
+	import flash.net.URLLoader;
+	import flash.net.URLLoaderDataFormat;
+	import flash.net.URLRequest;
+	import flash.net.URLRequestMethod;
+	import flash.net.URLVariables;
+	import flash.utils.Dictionary;
 	
 	import mx.controls.Alert;
 	import mx.core.Application;
@@ -20,6 +26,8 @@ package org.jbei.registry.mediators
 	import org.jbei.registry.models.FeaturedDNASequence;
 	import org.jbei.registry.models.VectorEditorProject;
 	import org.jbei.registry.view.dialogs.AboutDialogForm;
+	import org.jbei.registry.view.dialogs.DSDNADialogForm;
+	import org.jbei.registry.view.dialogs.DiversificationInputDialogForm;
 	import org.jbei.registry.view.dialogs.FeatureDialogForm;
 	import org.jbei.registry.view.dialogs.GelDigestDialogForm;
 	import org.jbei.registry.view.dialogs.GoToDialogForm;
@@ -74,7 +82,10 @@ package org.jbei.registry.mediators
                 , Notifications.HIDE_ACTION_PROGRESSBAR
                 , Notifications.APPLICATION_FAILURE
 				
-                , Notifications.SAVE_TO_REGISTRY
+                , Notifications.EXPORT_OLIGOS
+				, Notifications.DOWNLOAD_MASCPCR
+				, Notifications.SHOW_DSDNA_DIALOG
+				, Notifications.SAVE_TO_REGISTRY
                 , Notifications.SAVE_PROJECT
                 , Notifications.SAVE_PROJECT_AS
                 , Notifications.SHOW_PROJECT_PROPERTIES_DIALOG
@@ -89,6 +100,7 @@ package org.jbei.registry.mediators
                 , Notifications.REDO
                 , Notifications.REBASE_SEQUENCE
                 
+				, Notifications.SHOW_DIVERSIFICATION_INPUT_DIALOG
 				, Notifications.SHOW_PREFERENCES_DIALOG
 				, Notifications.SHOW_PROPERTIES_DIALOG
 				, Notifications.SHOW_ABOUT_DIALOG
@@ -138,6 +150,10 @@ package org.jbei.registry.mediators
                     saveToRegistry();
                     
                     break;
+				case Notifications.EXPORT_OLIGOS:
+					exportOligos();
+					
+					break;				
                 case Notifications.DOWNLOAD_SEQUENCE:
                     generateSequence();
                     
@@ -210,6 +226,18 @@ package org.jbei.registry.mediators
                     showSimulateDigestionDialog();
                     
 					break;
+				case Notifications.SHOW_DIVERSIFICATION_INPUT_DIALOG:
+					showDiversificationInputDialog();
+					
+					break;
+				case Notifications.SHOW_DSDNA_DIALOG:
+					showDSDNADialog();
+					
+					break;
+				case Notifications.DOWNLOAD_MASCPCR:
+					getMASCPCRPrimers();
+					
+					break;				
 				case Notifications.SHOW_GOTO_DIALOG:
 					showGoToDialog();
 					
@@ -248,7 +276,28 @@ package org.jbei.registry.mediators
         {
             sendNotification(Notifications.CARET_POSITION_CHANGED, (event.data as int));
         }
-        
+		
+		private function onDiversifificationInputDialogSubmit(event:ModalDialogEvent):void
+		{
+			//TODO: get the entered number of cycles, launch the diversity view
+		}
+		
+		private function onDSDNADialogSubmit(event:ModalDialogEvent):void
+		{
+			//sendNotification(Notifications.DSDNA_DIALOG_SUBMITTED, event.data);
+			var tmp:int = 1;
+			var dict:Dictionary = event.data as Dictionary;
+			var left:int = dict["left"];
+			var right:int = dict["right"];
+			var sequence:String = dict["sequence"];
+			
+			//remove all whitespace from sequence
+			var rex:RegExp = /[\s\r\n]+/gim;
+			sequence = sequence.replace(rex,'');
+			
+			applicationFacade.getDSDNAPrimer(left, right, sequence);			
+		}
+        		
         private function onRestrictionEnzymeManagerDialogSubmit(event:ModalDialogEvent):void
         {
             sendNotification(Notifications.USER_RESTRICTION_ENZYMES_CHANGED);
@@ -378,7 +427,21 @@ package org.jbei.registry.mediators
             gelDigestDialog.title = "Gel Digest";
             gelDigestDialog.open();
         }
-        
+		
+		private function showDiversificationInputDialog():void
+		{
+			var diversificationInputDialog:ModalDialog = new ModalDialog(DiversificationInputDialogForm, applicationFacade.caretPosition);
+			diversificationInputDialog.title = "Enter number of MAGE cycles";
+			diversificationInputDialog.open();
+			
+			diversificationInputDialog.addEventListener(ModalDialogEvent.SUBMIT, onDiversifificationInputDialogSubmit);
+		}
+		
+		private function getMASCPCRPrimers():void
+		{
+			applicationFacade.getMASCPCRPrimers();
+		}
+		
 		private function showGoToDialog():void
 		{
 			var gotoDialog:ModalDialog = new ModalDialog(GoToDialogForm, applicationFacade.caretPosition);
@@ -386,6 +449,15 @@ package org.jbei.registry.mediators
 			gotoDialog.open();
 			
 			gotoDialog.addEventListener(ModalDialogEvent.SUBMIT, onGoToDialogSubmit);
+		}
+		
+		private function showDSDNADialog():void
+		{
+			var dsdnaDialog:ModalDialog = new ModalDialog(DSDNADialogForm, applicationFacade.caretPosition);
+			dsdnaDialog.title = "Enter a replacement sequence";
+			dsdnaDialog.open();
+			
+			dsdnaDialog.addEventListener(ModalDialogEvent.SUBMIT, onDSDNADialogSubmit);
 		}
 		
 		private function showAboutDialog():void
@@ -495,6 +567,11 @@ package org.jbei.registry.mediators
         {
             applicationFacade.saveSequence();
         }
+		
+		private function exportOligos():void
+		{
+			applicationFacade.exportOligos();	
+		}
         
         private function generateSequence():void
         {

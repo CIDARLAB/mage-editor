@@ -43,7 +43,7 @@ package org.jbei.registry.mediators
 		private var _mageLoader :URLLoader ;
 		private var _merlinLoader :URLLoader;
 		private var _mageClicked :Boolean;
-		private var host : String = "http://cidar1.bu.edu:8080/";//"http://localhost:8080/" // 
+		private var host : String = "http://cidar.bu.edu/";//"http://localhost:8080/" // 
 		public function MageBarMediator(viewComponent:Object=null)
 		{
 			super(NAME, viewComponent);
@@ -121,7 +121,7 @@ package org.jbei.registry.mediators
 					updateStatus(lines[ii]);
 				}
 				updateStatus(">> Mage Request Complete");
-				updateStatus(">> Enabling Merling Request");
+				updateStatus(">> Enabling Merlin Request");
 				
 				enableMerlinButton();
 			}

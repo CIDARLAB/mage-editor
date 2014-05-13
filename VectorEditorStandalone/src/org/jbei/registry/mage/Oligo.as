@@ -23,6 +23,11 @@ package org.jbei.registry.mage
 			this._name = nameStr;
 		}
 		
+		public function get genbank():String
+		{
+			return _genbank;
+		}
+
 		public function get bg() : Array
 		{
 			return this._bg;

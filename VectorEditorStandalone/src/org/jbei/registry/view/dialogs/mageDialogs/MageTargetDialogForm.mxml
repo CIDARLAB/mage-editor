@@ -3,7 +3,7 @@
 	width="100%" 
 	height="100%" 
 	minWidth="300"
-	minHeight="400"
+	minHeight="200"
 	xmlns="org.jbei.lib.ui.dialogs.*" 
 	xmlns:mx="http://www.adobe.com/2006/mxml"
 	creationComplete="onCreationComplete(event)">
@@ -70,7 +70,7 @@
 						<mx:Button id="previewButton" label="Preview and Save" height="100%" width="200" click="previewButton_clickHandler(event)"/>
 					</mx:HBox>
 				</mx:FormItem>
-					<mx:TextArea id="uploadTextArea" width="600" height="600" editable="false"
+					<mx:TextArea id="uploadTextArea" width="600" height="300" editable="false"
 								 enabled="true" textAlign="left"/>
 				
 			</mx:Form>

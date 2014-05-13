@@ -4,6 +4,12 @@ package org.jbei.registry
 	import flash.events.IOErrorEvent;
 	import flash.external.ExternalInterface;
 	import flash.net.FileReference;
+	import flash.net.URLLoader;
+	import flash.net.URLLoaderDataFormat;
+	import flash.net.URLRequest;
+	import flash.net.URLRequestMethod;
+	import flash.net.URLVariables;
+	import flash.net.navigateToURL;
 	
 	import mx.collections.ArrayCollection;
 	import mx.controls.Alert;
@@ -11,6 +17,7 @@ package org.jbei.registry
 	
 	import org.jbei.bio.parsers.GenbankFormat;
 	import org.jbei.bio.sequence.DNATools;
+	import org.jbei.bio.sequence.dna.Feature;
 	import org.jbei.lib.SequenceProvider;
 	import org.jbei.lib.SequenceProviderEvent;
 	import org.jbei.lib.SequenceProviderMemento;
@@ -28,11 +35,12 @@ package org.jbei.registry
 	import org.jbei.registry.mediators.MainControlBarMediator;
 	import org.jbei.registry.mediators.MainMenuMediator;
 	import org.jbei.registry.mediators.StatusBarMediator;
+	import org.jbei.registry.models.DNAFeature;
 	import org.jbei.registry.models.FeaturedDNASequence;
+	import org.jbei.registry.models.MageProperties;
 	import org.jbei.registry.models.UserPreferences;
 	import org.jbei.registry.models.UserRestrictionEnzymes;
 	import org.jbei.registry.models.VectorEditorProject;
-	import org.jbei.registry.models.MageProperties;
 	import org.jbei.registry.proxies.RegistryAPIProxy;
 	import org.jbei.registry.utils.FeaturedDNASequenceUtils;
 	import org.jbei.registry.utils.IceXmlUtils;
@@ -46,6 +54,8 @@ package org.jbei.registry
 	public class ApplicationFacade extends Facade
 	{
 		private const EXTERNAL_JAVASCIPT_UPDATE_SAVED_BROWSER_TITLE_FUNCTION:String = "updateSavedStateTitle";
+		
+		private var host : String = "http://cidar.bu.edu/";
 		
 		private var _sequenceProvider:SequenceProvider;
         private var _hasWritablePermissions:Boolean = false;
@@ -424,7 +434,157 @@ package org.jbei.registry
             
             Alert.show("Sequence was generated successfully. Press OK button to save it", "Save sequence", Alert.OK | Alert.CANCEL, null, onSequenceGeneratedAlertClose);
         }
+		
+		public function exportOligos():void
+		{
+			/* //do the request on the servlet side
+			//get the content of the oligo file
+			//directory = this.mageProperties.ID;
+			
+			//save the content
+			//fileReference = new FileReference();
+			//fileReference.addEventListener(IOErrorEvent.IO_ERROR, onExportIOSequenceError);
+			//fileReference.addEventListener(Event.COMPLETE, onExportSequenceComplete);
+			//fileReference.save(oligoFileContent);
+			var oligoRequest:URLRequest = new URLRequest(host+"magelet/utils");
+			var oligoLoader:URLLoader = new URLLoader();
+			var oligoVariables:URLVariables = new URLVariables();
+			var GETResponse : String =  ">> No Connection";
+			
+			oligoRequest.method = URLRequestMethod.GET;
+			oligoVariables.requesttype = "oligos";
+			oligoVariables.userID = this.mageProperties.ID; //must pass user session id
+			oligoRequest.data = oligoVariables;
+			
+			//Flex 10 disallows this- fileReference must be directly invoked by user input handlers
+			/*function onLoaded(evt: Event) : void { 
+				GETResponse = oligoLoader.data;
+				if (GETResponse == null)
+				{
+					Alert.show("Sorry, failed to retreive Oligo sequences", "Error Exporting");
+				}
+				else {
+					fileReference = new FileReference();
+					fileReference.addEventListener(IOErrorEvent.IO_ERROR, onExportIOSequenceError);
+					fileReference.addEventListener(Event.COMPLETE, onExportSequenceComplete);
+					fileReference.save(GETResponse);
+				}
+			}
+			
+			oligoLoader.dataFormat = URLLoaderDataFormat.TEXT;
+			//oligoLoader.addEventListener(Event.COMPLETE, onLoaded);
+			oligoLoader.load(oligoRequest);
+			try { oligoLoader.load(oligoRequest); } 
+			catch (error:Error) { 
+				GETResponse = ">> Error Connecting";
+			}
+			fileReference = new FileReference();
+			fileReference.download(oligoRequest);
+			*/
+			
+			//do the request on the client side
+			var contents:String = "";
+			var colsep:String = "\t";
+			var linesep:String = "\n";
+			//get the sequences, and the start and end positions, then the appropriate substring
+			var oligos:Array = this.mageProperties.merlinResults;
+			
+			var i:int;
+			for (i = 0;  i < oligos.length; i++){
+				var oligo:Oligo = oligos[i] as Oligo;
+				var featuredDNASequence:FeaturedDNASequence = sequenceProvider.fromGenbankFileModel(GenbankFormat.parseGenbankFile(oligo.genbank));
+				var dnaSequence:String = featuredDNASequence.sequence;
+				var name:String = oligo.name;
+				var start:int = 0;
+				var end:int = 0;
+				var sense:Boolean = true;		
+				//get the Merlin feature
+				var f:int;
+				var features:ArrayCollection = featuredDNASequence.features as ArrayCollection;
+				for (f = 0; f < features.length; f++){
+					var feature:DNAFeature = features[f] as DNAFeature;
+					if (feature.name == "Merlin"){
+						start = feature.genbankStart;
+						end = feature.end;
+					}
+				}
+				
+				var seq:String = dnaSequence.substring(start,end);
+				contents = contents + name + colsep + seq + linesep;
+			}
+			
+			
+			fileReference.save(contents,"MerlinOligos.txt");
+			
+			//fileReference = new FileReference();
+			//fileReference.save(lines,"MerlinOligos.txt");
+			//fileReference.save(contents,"MerlinOligos.txt");
+			
+			//write the contents, ignore the rest of the commented code
+			
+			//get all the Merlin features
+			/*
+			features:ArrayCollection = this.sequenceProvider.features;
+			merlinFeatures:ArrayCollection = new ArrayCollection();
+			for (feature in features){
+				type:String = feature.type;
+				if (feature.type.toLowerCase() == "merlin"){
+					merlinFeatures.add(feature);
+				}
+			}
+			for (feature in merlinFeatures){
+				start:int = feature.start;
+				end:int = feature.end;
+				
+			}*/
+			//merlinResults = this.mageProperties.merlinResults;
+			
+		}
         
+		public function getMASCPCRPrimers():void{
+			var request:URLRequest = new URLRequest(host+"magelet/utils");
+			var loader:URLLoader = new URLLoader();
+			var variables:URLVariables = new URLVariables();
+			var GETResponse : String =  ">> No Connection";
+			
+			request.method = URLRequestMethod.GET;
+			variables.requesttype = "mascpcr";
+			variables.userID = this.mageProperties.ID; //must pass user session id
+			request.data = variables;
+			loader.dataFormat = URLLoaderDataFormat.TEXT;
+			loader.load(request);
+			try { loader.load(request); } 
+			catch (error:Error) { 
+				GETResponse = ">> Error Connecting";
+			}
+			fileReference = new FileReference();
+			fileReference.download(request,"Merlin_mascpcr.txt");
+			
+		}
+		
+		public function getDSDNAPrimer(left:int, right:int, seq:String):void{
+			var request:URLRequest = new URLRequest(host+"magelet/utils");
+			var loader:URLLoader = new URLLoader();
+			var variables:URLVariables = new URLVariables();
+			var GETResponse : String =  ">> No Connection";
+			
+			request.method = URLRequestMethod.GET;
+			variables.requesttype = "dsdna";
+			variables.userID = this.mageProperties.ID; //must pass user session id
+			variables.left = left;
+			variables.right = right;
+			variables.seq = seq;
+			request.data = variables;
+			loader.dataFormat = URLLoaderDataFormat.TEXT;
+			loader.load(request);
+			try { loader.load(request); } 
+			catch (error:Error) { 
+				GETResponse = ">> Error Connecting";
+			}
+			fileReference = new FileReference();
+			fileReference.download(request,"Merlin_dsdna.txt");
+		}
+		
         // Event Handlers
 		private function onActionStackChanged(event:ActionStackEvent):void
 		{

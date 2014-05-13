@@ -23,6 +23,7 @@ package org.jbei.registry.mediators
 			super(NAME, viewComponent);
 			
 			mainMenu = viewComponent as MainMenu;
+			mainMenu.addEventListener(MainMenu.EXPORT_OLIGOS, onExportOligos);
             mainMenu.addEventListener(MainMenu.SAVE_TO_REGISTRY, onSaveToRegistry);
             mainMenu.addEventListener(MainMenu.SAVE_PROJECT, onSaveProject);
             mainMenu.addEventListener(MainMenu.SAVE_PROJECT_AS, onSaveProjectAs);
@@ -43,6 +44,9 @@ package org.jbei.registry.mediators
 			mainMenu.addEventListener(MainMenu.SHOW_CUT_SITE_LABELS_STATE_CHANGED, onShowCutSiteLabelsStateChanged);
 			mainMenu.addEventListener(MainMenu.SHOW_SELECT_BY_RANGE_DIALOG, onShowSelectByRangeDialog);
 			mainMenu.addEventListener(MainMenu.SHOW_PREFERENCES_DIALOG, onShowPreferencesDialog);
+			mainMenu.addEventListener(MainMenu.SHOW_DIVERSIFICATION_INPUT_DIALOG, onShowDiversificationInputDialog);
+			mainMenu.addEventListener(MainMenu.SHOW_DSDNA_DIALOG, onShowDSDNADialog);
+			mainMenu.addEventListener(MainMenu.DOWNLOAD_MASCPCR, onDownloadMASCPCR);
 			mainMenu.addEventListener(MainMenu.SHOW_GOTO_DIALOG, onShowGoToDialog);
 			mainMenu.addEventListener(MainMenu.SHOW_FIND_DIALOG, onShowFindDialog);
 			mainMenu.addEventListener(MainMenu.SHOW_ABOUT_DIALOG, onShowAboutDialog);
@@ -140,10 +144,16 @@ package org.jbei.registry.mediators
                     mainMenu.menuItemByName("saveToRegistryMenuItem").enabled = ApplicationFacade.getInstance().hasWritablePermissions;
                     
                     break;
+				
 			}
 		}
 		
 		// Private Methods
+		private function onExportOligos(event:MenuItemEvent):void
+		{
+			sendNotification(Notifications.EXPORT_OLIGOS, event);
+		}
+		
 		private function onShowFeaturesStateChanged(event:MenuItemEvent):void
 		{
 			sendNotification(Notifications.SHOW_FEATURES, (event.menuItem as MenuItem).toggled);
@@ -202,6 +212,22 @@ package org.jbei.registry.mediators
 		private function onShowPreferencesDialog(event:MenuItemEvent):void
 		{
 			sendNotification(Notifications.SHOW_PREFERENCES_DIALOG);
+		}
+		
+		private function onShowDiversificationInputDialog(event:MenuItemEvent):void
+		{
+			//Alert.show("diversification menu item selected");
+			sendNotification(Notifications.SHOW_DIVERSIFICATION_INPUT_DIALOG);
+		}
+		
+		private function onShowDSDNADialog(event:MenuItemEvent):void
+		{
+			sendNotification(Notifications.SHOW_DSDNA_DIALOG);
+		}
+		
+		private function onDownloadMASCPCR(event:MenuItemEvent):void
+		{
+			sendNotification(Notifications.DOWNLOAD_MASCPCR);
 		}
 		
 		private function onShowAboutDialog(event:MenuItemEvent):void

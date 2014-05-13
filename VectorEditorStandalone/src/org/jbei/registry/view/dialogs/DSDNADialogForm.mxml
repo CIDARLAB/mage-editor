@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dialogs:AbstractDialogForm xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:dialogs="org.jbei.lib.ui.dialogs.*" width="100%" height="100%" creationComplete="onCreationComplete()">
+<mx:Script>
+	<![CDATA[
+		import mx.events.ValidationResultEvent;
+		
+		import org.jbei.registry.ApplicationFacade;
+		
+		[Bindable]
+		private var sequenceLength:int = ApplicationFacade.getInstance().mageProperties.getSavedGenome.length;
+		
+		// Event Handlers
+		private function onCreationComplete():void{}
+		
+		// Public Methods
+		public override function validate():void
+		{
+			//TODO: validate that the input sequence is only legal bases
+			
+			if(sequenceLength == 0 
+				|| leftValidator.validate().type == ValidationResultEvent.INVALID
+				|| rightValidator.validate().type == ValidationResultEvent.INVALID) {
+					isValid = false;
+			} else {
+				//dataObject = int(positionNumericStepper.value);
+				var dict:Dictionary = new Dictionary();
+				dict["left"] = int(leftNumericStepper.value);				
+				dict["right"] = int(rightNumericStepper.value);
+				dict["sequence"] = seqTextArea.text;
+				dataObject = dict;
+				isValid = true;
+			}
+		}
+	]]>
+</mx:Script>
+	<mx:NumberValidator id="leftValidator" source="{ leftNumericStepper }" required="true" minValue="1" maxValue="{ sequenceLength}" property="value" domain="int"/>
+	<mx:NumberValidator id="rightValidator" source="{ rightNumericStepper }" required="true" minValue="1" maxValue="{ sequenceLength}" property="value" domain="int"/>
+	<mx:Form id="mainForm" paddingBottom="5" paddingTop="5" paddingLeft="5" paddingRight="5">
+		<mx:FormItem label="Insertion Sequence:" direction="horizontal">
+			<mx:TextArea id="seqTextArea" width="600" height="200" enabled="true" textAlign="left"/></mx:FormItem>
+		<mx:FormItem label="Left Genomic Position:" direction="horizontal"><mx:NumericStepper id="leftNumericStepper" minimum="1" maximum="{ sequenceLength}" stepSize="1" /></mx:FormItem>
+		<mx:FormItem label="Right Genomic Position:" direction="horizontal"><mx:NumericStepper id="rightNumericStepper" minimum="1" maximum="{ sequenceLength}" stepSize="1" /></mx:FormItem>
+	</mx:Form>
+
+</dialogs:AbstractDialogForm>

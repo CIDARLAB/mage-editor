@@ -25,7 +25,7 @@
 			[Bindable]
 			private var mageConnectionIcon:Class;
 			
-			[Embed(source='../assets/icons/fasta.png')]
+			[Embed(source='../assets/icons/mageParameters.png')]
 			[Bindable]
 			private var mageGenomeFASTAIcon:Class;
 			
