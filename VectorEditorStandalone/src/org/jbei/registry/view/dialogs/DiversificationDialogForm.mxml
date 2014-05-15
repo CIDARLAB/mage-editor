@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dialogs:AbstractDialogForm xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:dialogs="org.jbei.lib.ui.dialogs.*" width="100%" height="100%" creationComplete="onCreationComplete(event)">
+	<mx:Script>
+	<![CDATA[
+		import mx.charts.ColumnChart;
+		import mx.charts.series.items.ColumnSeriesItem;
+		import mx.collections.ArrayCollection;
+		import mx.utils.StringUtil;
+		
+		import org.jbei.registry.ApplicationFacade;
+		import org.jbei.registry.Notifications;
+		
+		[Bindable]
+		private var sequenceLength:int = ApplicationFacade.getInstance().sequenceProvider.sequence.length; 
+		private var diversityTable:ArrayCollection = new ArrayCollection;
+		//private var columnSeries:ColumnSeries;
+
+	//	private var medalsAC:ArrayCollection = new ArrayCollection( [
+	//		{ Country: "USA", Gold: 35, Silver:39, Bronze: 29 },
+	//		{ Country: "China", Gold: 32, Silver:17, Bronze: 14 },
+	//		{ Country: "Russia", Gold: 27, Silver:27, Bronze: 38 } ]);
+		//private var dataAC:ArrayCollection = new ArrayCollection();
+		
+		// Event Handlers
+		private function onCreationComplete(event:Event):void
+		{
+			var cycles:int = dataObject as int;
+			
+			//the diversification table as a tab-delimited string
+			//each row represents a new cycle
+			//each column is the number of transformations, from 0 to N(oligos)
+			var tableString:String = StringUtil.trim(ApplicationFacade.getInstance().mageProperties.diversificationTableData);
+			
+			//columnSeries = new ColumnSeries();			
+			//populate the data array by parsing the input string
+			var lines:Array = tableString.split("\n");
+			cycles = Math.min(cycles,lines.length);
+			for (var i:int = 0 ; i < cycles ; i++){
+				var line:Array = StringUtil.trim((lines[i] as String)).split("\t");
+				//columnSeriesItem:ColumnSeriesItem = new ColumnSeriesItem();
+				//columnSeriesItem.
+				for(var j:int = 0; j < line.length; j++){
+					var val:Number = Number(line[j] as String);
+					var o:Object={};
+					o.cycle = i;
+					o.transformations = j;
+					o.value = val;
+					diversityTable.addItem(o);
+				}
+			}
+			
+		}
+		
+		// Public Methods
+		public override function validate():void
+		{
+			/*if(sequenceLength == 0 || positionValidator.validate().type == ValidationResultEvent.INVALID) {
+				isValid = false;
+			} else {
+				dataObject = int(positionNumericStepper.value);
+				
+				isValid = true;
+			}*/
+		}
+		
+		
+	]]>
+</mx:Script>
+		<!-- Define custom colors for use as fills. -->
+		<mx:SolidColor id="sc1" color="yellow" alpha=".8"/>
+		<mx:SolidColor id="sc2" color="0xCCCCCC" alpha=".6"/>
+		<mx:SolidColor id="sc3" color="0xFFCC66" alpha=".6"/>
+		
+	<mx:Panel title="ColumnChart and BarChart Controls Example" 
+			  height="100%" width="100%" layout="horizontal">
+		<mx:ColumnChart id="column" 
+						type="stacked"
+						height="100%" 
+						width="100%" 
+						paddingLeft="5" 
+						paddingRight="5" 
+						showDataTips="true"
+						dataProvider="{diversityTable}"
+						>                
+			<mx:horizontalAxis>
+				<mx:CategoryAxis categoryField="transformations"/>
+			</mx:horizontalAxis>
+			<mx:series>
+				<mx:ColumnSeries yField="value" xField="cycle"/>
+			</mx:series>
+		</mx:ColumnChart>
+		<mx:Legend dataProvider="{column}"/>
+	</mx:Panel>
+</dialogs:AbstractDialogForm>

@@ -54,7 +54,7 @@
 			public static const SHOW_CREATE_NEW_FEATURE_DIALOG:String = "ShowCreateNewFeatureDialog";
             public static const SHOW_SIMULATE_DIGESTION_DIALOG:String = "ShowSimulateDigestionDialog";
 			public static const SHOW_PREFERENCES_DIALOG:String = "ShowPreferencesDialog";
-			public static const SHOW_DIVERSIFICATION_INPUT_DIALOG:String = "ShowDiversificationInputDialog";
+			public static const LOAD_DIVERSIFICATION_INPUT_DIALOG:String = "LoadDiversificationInputDialog";
 			public static const DOWNLOAD_MASCPCR:String = "DownloadMASCPCR";
 			public static const SHOW_DSDNA_DIALOG:String = "ShowDSDNADialog";
 			
@@ -383,7 +383,7 @@
                 } else if(menuItem.id == "downloadSequenceMenuItem") {
                     dispatchEvent(new MenuItemEvent(DOWNLOAD_SEQUENCE, menuItem));
                 } else if(menuItem.id == "diversificationInputMenuItem") {
-					dispatchEvent(new MenuItemEvent(SHOW_DIVERSIFICATION_INPUT_DIALOG, menuItem));
+					dispatchEvent(new MenuItemEvent(LOAD_DIVERSIFICATION_INPUT_DIALOG, menuItem));
 				} else if(menuItem.id == "exportOligosMenuItem") {
 					dispatchEvent(new MenuItemEvent(EXPORT_OLIGOS, menuItem));
 				} else if (menuItem.id == "downloadMASCPCRMenuItem") {

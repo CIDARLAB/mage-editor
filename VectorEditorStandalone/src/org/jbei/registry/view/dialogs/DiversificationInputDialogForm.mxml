@@ -16,16 +16,16 @@
 			}
 			
 			// Public Methods
-			/*public override function validate():void
+			public override function validate():void
 			{
-				if(sequenceLength == 0 || positionValidator.validate().type == ValidationResultEvent.INVALID) {
+				if(cycleStepper.value < 1 || cycleStepper.value > 50) {
 					isValid = false;
 				} else {
-					dataObject = int(positionNumericStepper.value);
+					dataObject = int(cycleStepper.value);
 					
 					isValid = true;
 				}
-			}*/
+			}
 		]]>
 	</mx:Script>
 	<mx:NumberValidator id="positionValidator" source="{ cycleStepper }" required="true" minValue="1" maxValue="50" property="value" domain="int"/>

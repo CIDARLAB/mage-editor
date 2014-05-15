@@ -27,6 +27,7 @@ package org.jbei.registry.mediators
 	import org.jbei.registry.models.VectorEditorProject;
 	import org.jbei.registry.view.dialogs.AboutDialogForm;
 	import org.jbei.registry.view.dialogs.DSDNADialogForm;
+	import org.jbei.registry.view.dialogs.DiversificationDialogForm;
 	import org.jbei.registry.view.dialogs.DiversificationInputDialogForm;
 	import org.jbei.registry.view.dialogs.FeatureDialogForm;
 	import org.jbei.registry.view.dialogs.GelDigestDialogForm;
@@ -100,7 +101,8 @@ package org.jbei.registry.mediators
                 , Notifications.REDO
                 , Notifications.REBASE_SEQUENCE
                 
-				, Notifications.SHOW_DIVERSIFICATION_INPUT_DIALOG
+				, Notifications.LOAD_DIVERSIFICATION_INPUT_DIALOG
+				, Notifications.DIVERSIFICATION_TABLE_LOADED
 				, Notifications.SHOW_PREFERENCES_DIALOG
 				, Notifications.SHOW_PROPERTIES_DIALOG
 				, Notifications.SHOW_ABOUT_DIALOG
@@ -226,10 +228,14 @@ package org.jbei.registry.mediators
                     showSimulateDigestionDialog();
                     
 					break;
-				case Notifications.SHOW_DIVERSIFICATION_INPUT_DIALOG:
-					showDiversificationInputDialog();
+				case Notifications.LOAD_DIVERSIFICATION_INPUT_DIALOG:
+					loadDiversificationInputDialog();
 					
 					break;
+				case Notifications.DIVERSIFICATION_TABLE_LOADED:
+					showDiversificationInputDialog();
+					
+					break;					
 				case Notifications.SHOW_DSDNA_DIALOG:
 					showDSDNADialog();
 					
@@ -277,9 +283,29 @@ package org.jbei.registry.mediators
             sendNotification(Notifications.CARET_POSITION_CHANGED, (event.data as int));
         }
 		
-		private function onDiversifificationInputDialogSubmit(event:ModalDialogEvent):void
+		private function loadDiversificationInputDialog():void{
+			applicationFacade.loadDiversificationTable();
+		}
+		
+		private function showDiversificationInputDialog():void
 		{
-			//TODO: get the entered number of cycles, launch the diversity view
+			//applicationFacade.loadDiversificationTable();
+			var diversificationInputDialog:ModalDialog = new ModalDialog(DiversificationInputDialogForm,null);
+			diversificationInputDialog.title = "Enter number of MAGE cycles";
+			diversificationInputDialog.open();
+			diversificationInputDialog.addEventListener(ModalDialogEvent.SUBMIT, onDiversificationInputDialogSubmit);
+		}
+		
+		private function onDiversificationInputDialogSubmit(event:ModalDialogEvent):void
+		{
+					//ApplicationFacade.getInstance().sendNotification(Notifications.SELECTION_CHANGED, new Array(feature.start, feature.end));	
+			//var diversityTable:String = applicationFacade.getDiversificationTable();
+			//var table:String = event.data as String;
+			var cycles = event.data as int;
+			var diversificationDialog:ModalDialog = new ModalDialog(DiversificationDialogForm, cycles);
+			diversificationDialog.title = "Population Diversity Trend";
+			diversificationDialog.open();
+			//diversificationDialog.addEventListener(ModalDialogEvent.SUBMIT, onDiversificationDialogSubmit);
 		}
 		
 		private function onDSDNADialogSubmit(event:ModalDialogEvent):void
@@ -295,7 +321,7 @@ package org.jbei.registry.mediators
 			var rex:RegExp = /[\s\r\n]+/gim;
 			sequence = sequence.replace(rex,'');
 			
-			applicationFacade.getDSDNAPrimer(left, right, sequence);			
+			applicationFacade.loadDSDNAPrimer(left, right, sequence);			
 		}
         		
         private function onRestrictionEnzymeManagerDialogSubmit(event:ModalDialogEvent):void
@@ -427,16 +453,7 @@ package org.jbei.registry.mediators
             gelDigestDialog.title = "Gel Digest";
             gelDigestDialog.open();
         }
-		
-		private function showDiversificationInputDialog():void
-		{
-			var diversificationInputDialog:ModalDialog = new ModalDialog(DiversificationInputDialogForm, applicationFacade.caretPosition);
-			diversificationInputDialog.title = "Enter number of MAGE cycles";
-			diversificationInputDialog.open();
 			
-			diversificationInputDialog.addEventListener(ModalDialogEvent.SUBMIT, onDiversifificationInputDialogSubmit);
-		}
-		
 		private function getMASCPCRPrimers():void
 		{
 			applicationFacade.getMASCPCRPrimers();
@@ -453,7 +470,7 @@ package org.jbei.registry.mediators
 		
 		private function showDSDNADialog():void
 		{
-			var dsdnaDialog:ModalDialog = new ModalDialog(DSDNADialogForm, applicationFacade.caretPosition);
+			var dsdnaDialog:ModalDialog = new ModalDialog(DSDNADialogForm,null);
 			dsdnaDialog.title = "Enter a replacement sequence";
 			dsdnaDialog.open();
 			

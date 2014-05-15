@@ -44,7 +44,7 @@ package org.jbei.registry.mediators
 			mainMenu.addEventListener(MainMenu.SHOW_CUT_SITE_LABELS_STATE_CHANGED, onShowCutSiteLabelsStateChanged);
 			mainMenu.addEventListener(MainMenu.SHOW_SELECT_BY_RANGE_DIALOG, onShowSelectByRangeDialog);
 			mainMenu.addEventListener(MainMenu.SHOW_PREFERENCES_DIALOG, onShowPreferencesDialog);
-			mainMenu.addEventListener(MainMenu.SHOW_DIVERSIFICATION_INPUT_DIALOG, onShowDiversificationInputDialog);
+			mainMenu.addEventListener(MainMenu.LOAD_DIVERSIFICATION_INPUT_DIALOG, onLoadDiversificationInputDialog);
 			mainMenu.addEventListener(MainMenu.SHOW_DSDNA_DIALOG, onShowDSDNADialog);
 			mainMenu.addEventListener(MainMenu.DOWNLOAD_MASCPCR, onDownloadMASCPCR);
 			mainMenu.addEventListener(MainMenu.SHOW_GOTO_DIALOG, onShowGoToDialog);
@@ -214,10 +214,10 @@ package org.jbei.registry.mediators
 			sendNotification(Notifications.SHOW_PREFERENCES_DIALOG);
 		}
 		
-		private function onShowDiversificationInputDialog(event:MenuItemEvent):void
+		private function onLoadDiversificationInputDialog(event:MenuItemEvent):void
 		{
 			//Alert.show("diversification menu item selected");
-			sendNotification(Notifications.SHOW_DIVERSIFICATION_INPUT_DIALOG);
+			sendNotification(Notifications.LOAD_DIVERSIFICATION_INPUT_DIALOG);
 		}
 		
 		private function onShowDSDNADialog(event:MenuItemEvent):void

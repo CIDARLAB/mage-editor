@@ -69,6 +69,7 @@ package org.jbei.registry
 		private var _caretPosition:int = -1;
         private var _serviceProxy:RegistryAPIProxy;
         private var _project:VectorEditorProject;
+		private var _diversificationCycles:int = 10;
 		
         private var actionStack:ActionStack;
         private var entryId:String;
@@ -83,6 +84,17 @@ package org.jbei.registry
         private var _mageProperties: MageProperties;
 		private var _mageTextResults: String;
 		// Properties
+
+		public function get diversificationCycles()
+		{
+			return _diversificationCycles;
+		}
+
+		public function set diversificationCycles(value):void
+		{
+			_diversificationCycles = value;
+		}
+
         public function get project():VectorEditorProject
         {
             return _project;
@@ -562,7 +574,29 @@ package org.jbei.registry
 			
 		}
 		
-		public function getDSDNAPrimer(left:int, right:int, seq:String):void{
+		//servlet always generates this to 50 cycles. Consider a version that
+		//has cycle number as an input
+		public function loadDiversificationTable():void{
+			var request:URLRequest = new URLRequest(host+"magelet/utils");
+			var loader:URLLoader = new URLLoader();
+			var variables:URLVariables = new URLVariables();
+			var GETResponse : String =  ">> No Connection";
+			
+			request.method = URLRequestMethod.GET;
+			variables.requesttype = "diversity";
+			variables.userID = this.mageProperties.ID; //must pass user session id
+			request.data = variables;
+			loader.dataFormat = URLLoaderDataFormat.TEXT;
+			loader.addEventListener(Event.COMPLETE, onDiversificationLoaderComplete);
+			loader.load(request);
+			try { loader.load(request); } 
+			catch (error:Error) { 
+				GETResponse = ">> Error Connecting";
+			}
+			//return request as String;
+		}
+		
+		public function loadDSDNAPrimer(left:int, right:int, seq:String):void{
 			var request:URLRequest = new URLRequest(host+"magelet/utils");
 			var loader:URLLoader = new URLLoader();
 			var variables:URLVariables = new URLVariables();
@@ -620,6 +654,22 @@ package org.jbei.registry
         {
             Alert.show("Failed to write file!", "Write file error");
         }
+		
+		private function onDiversificationLoaderComplete(e:Event):void{
+			mageProperties.diversificationTableData = e.target.data as String;
+			sendNotification(Notifications.DIVERSIFICATION_TABLE_LOADED);
+			
+			//var throwaway:int = 2;
+			//var data:String = e.target.data as String;
+			
+			//show DiversificationInputDialog
+			//var diversificationInputDialog:ModalDialog = new ModalDialog(DiversificationInputDialogForm,diversificationTableString);
+			//diversificationInputDialog.title = "Enter number of MAGE cycles";
+			//diversificationInputDialog.open();
+			//diversificationInputDialog.addEventListener(ModalDialogEvent.SUBMIT, onDiversifificationInputDialogSubmit);
+
+		}
+			
 
         // Private Methods
         private function initializeProxy():void

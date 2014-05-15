@@ -24,7 +24,18 @@ package org.jbei.registry.models
 		private var oligos : Array;
 		private var current : int ;
 		private var id : String;
+		private var _diversificationTableData : String;
 		
+		public function get diversificationTableData():String
+		{
+			return _diversificationTableData;
+		}
+
+		public function set diversificationTableData(value:String):void
+		{
+			_diversificationTableData = value;
+		}
+
 		public function set merlinResults( merlinProps : Array) : void
 		{
 			this._merlinResults = merlinProps;

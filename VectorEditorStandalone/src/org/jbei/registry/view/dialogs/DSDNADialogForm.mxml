@@ -23,6 +23,8 @@
 					isValid = false;
 			} else {
 				//dataObject = int(positionNumericStepper.value);
+				
+				//should have used ArrayCollection...
 				var dict:Dictionary = new Dictionary();
 				dict["left"] = int(leftNumericStepper.value);				
 				dict["right"] = int(rightNumericStepper.value);
