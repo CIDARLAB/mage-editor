@@ -85,12 +85,12 @@ package org.jbei.registry
 		private var _mageTextResults: String;
 		// Properties
 
-		public function get diversificationCycles()
+		public function get diversificationCycles():int
 		{
 			return _diversificationCycles;
 		}
 
-		public function set diversificationCycles(value):void
+		public function set diversificationCycles(value:int):void
 		{
 			_diversificationCycles = value;
 		}
@@ -525,7 +525,7 @@ package org.jbei.registry
 				contents = contents + name + colsep + seq + linesep;
 			}
 			
-			
+			fileReference = new FileReference();
 			fileReference.save(contents,"MerlinOligos.txt");
 			
 			//fileReference = new FileReference();

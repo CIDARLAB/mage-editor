@@ -301,9 +301,9 @@ package org.jbei.registry.mediators
 					//ApplicationFacade.getInstance().sendNotification(Notifications.SELECTION_CHANGED, new Array(feature.start, feature.end));	
 			//var diversityTable:String = applicationFacade.getDiversificationTable();
 			//var table:String = event.data as String;
-			var cycles = event.data as int;
+			var cycles:int = event.data as int;
 			var diversificationDialog:ModalDialog = new ModalDialog(DiversificationDialogForm, cycles);
-			diversificationDialog.title = "Population Diversity Trend";
+			diversificationDialog.title = "Population Diversity by MERLIN Cycle";
 			diversificationDialog.open();
 			//diversificationDialog.addEventListener(ModalDialogEvent.SUBMIT, onDiversificationDialogSubmit);
 		}
