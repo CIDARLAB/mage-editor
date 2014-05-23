@@ -87,6 +87,7 @@ package org.jbei.registry.mediators
 		private function enableMerlinButton( ) : void
 		{
 			mageBar.merlinButton.addEventListener(MouseEvent.CLICK,onMerlinButtonClick);
+			mageBar.merlinButton.setStyle("color","#0D84C9");
 		}
 		
 		private function onMageGenomeButtonClick(event:Event): void 

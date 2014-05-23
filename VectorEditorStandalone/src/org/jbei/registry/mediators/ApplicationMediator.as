@@ -12,6 +12,7 @@ package org.jbei.registry.mediators
 	
 	import mx.controls.Alert;
 	import mx.core.Application;
+	import mx.core.mx_internal;
 	
 	import org.jbei.lib.data.RestrictionEnzymeGroup;
 	import org.jbei.lib.ui.dialogs.ModalDialog;
@@ -301,11 +302,17 @@ package org.jbei.registry.mediators
 					//ApplicationFacade.getInstance().sendNotification(Notifications.SELECTION_CHANGED, new Array(feature.start, feature.end));	
 			//var diversityTable:String = applicationFacade.getDiversificationTable();
 			//var table:String = event.data as String;
-			var cycles:int = event.data as int;
-			var diversificationDialog:ModalDialog = new ModalDialog(DiversificationDialogForm, cycles);
-			diversificationDialog.title = "Population Diversity by MERLIN Cycle";
-			diversificationDialog.open();
+			applicationFacade.diversificationCycles = event.data as int;
+			
+			showDiversificationDialog();
 			//diversificationDialog.addEventListener(ModalDialogEvent.SUBMIT, onDiversificationDialogSubmit);
+		}
+		
+		public function showDiversificationDialog():void{
+			var diversificationDialog:ModalDialog = new ModalDialog(DiversificationDialogForm, applicationFacade.diversificationCycles);
+			diversificationDialog.title = "Population Diversity by MERLIN Cycle";
+			//diversificationDialog.mx_internal::ModalDialog.
+			diversificationDialog.open();
 		}
 		
 		private function onDSDNADialogSubmit(event:ModalDialogEvent):void

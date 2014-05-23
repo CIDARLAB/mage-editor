@@ -67,18 +67,18 @@
 	<mx:Spacer width="10" height="10"/>
 	
 	<mx:Button id="mageButton" 
-			   width="93"
+			   width="120"
 			   height="100%" 
-			   label="MAGE" 
+			   label="① MAGE" 
 			   color="#0D84C9" 
-			   fontSize="14"/>
+			   fontSize="16"/>
 	<mx:Spacer width="10" height="10"/>
 	<mx:Button id="merlinButton" 
-			   width="91"
+			   width="120"
 			   height="100%" 
-			   label="MERLIN" 
+			   label="② MERLIN" 
 			   color="#97A9B3" 
-			   fontSize="14"/>
+			   fontSize="16"/>
 	<mx:Spacer width="10" height="10"/>
 	<mx:ComboBox id="oligoSelect" change="oligoSelect_changeHandler(event)"
 				 toolTip="Run Mage to Generate Oligos">
