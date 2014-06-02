@@ -70,6 +70,8 @@ package org.jbei.registry
         private var _serviceProxy:RegistryAPIProxy;
         private var _project:VectorEditorProject;
 		private var _diversificationCycles:int = 10;
+		private var _diversificationChartMode:int = 1; //so we can use the same loader for multiple charts
+		private var _replacementClones:int = 96;
 		
         private var actionStack:ActionStack;
         private var entryId:String;
@@ -84,6 +86,26 @@ package org.jbei.registry
         private var _mageProperties: MageProperties;
 		private var _mageTextResults: String;
 		// Properties
+
+		public function get replacementClones():int
+		{
+			return _replacementClones;
+		}
+
+		public function set replacementClones(value:int):void
+		{
+			_replacementClones = value;
+		}
+
+		public function get diversificationChartMode():int
+		{
+			return _diversificationChartMode;
+		}
+
+		public function set diversificationChartMode(value:int):void
+		{
+			_diversificationChartMode = value;
+		}
 
 		public function get diversificationCycles():int
 		{
@@ -657,17 +679,13 @@ package org.jbei.registry
 		
 		private function onDiversificationLoaderComplete(e:Event):void{
 			mageProperties.diversificationTableData = e.target.data as String;
-			sendNotification(Notifications.DIVERSIFICATION_TABLE_LOADED);
+			if(this.diversificationChartMode==1){
+				sendNotification(Notifications.DIVERSIFICATION_TABLE_LOADED);
+			}
+			else {
+				sendNotification(Notifications.FULL_REPLACEMENT_TABLE_LOADED);
+			}
 			
-			//var throwaway:int = 2;
-			//var data:String = e.target.data as String;
-			
-			//show DiversificationInputDialog
-			//var diversificationInputDialog:ModalDialog = new ModalDialog(DiversificationInputDialogForm,diversificationTableString);
-			//diversificationInputDialog.title = "Enter number of MAGE cycles";
-			//diversificationInputDialog.open();
-			//diversificationInputDialog.addEventListener(ModalDialogEvent.SUBMIT, onDiversifificationInputDialogSubmit);
-
 		}
 			
 

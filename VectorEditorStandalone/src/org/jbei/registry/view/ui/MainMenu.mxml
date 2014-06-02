@@ -54,7 +54,8 @@
 			public static const SHOW_CREATE_NEW_FEATURE_DIALOG:String = "ShowCreateNewFeatureDialog";
             public static const SHOW_SIMULATE_DIGESTION_DIALOG:String = "ShowSimulateDigestionDialog";
 			public static const SHOW_PREFERENCES_DIALOG:String = "ShowPreferencesDialog";
-			public static const LOAD_DIVERSIFICATION_INPUT_DIALOG:String = "LoadDiversificationInputDialog";
+			public static const SHOW_DIVERSIFICATION_INPUT_DIALOG:String = "ShowDiversificationInputDialog";
+			public static const SHOW_FULL_REPLACEMENT_INPUT_DIALOG:String = "ShowFullReplacementInputDialog";
 			public static const DOWNLOAD_MASCPCR:String = "DownloadMASCPCR";
 			public static const SHOW_DSDNA_DIALOG:String = "ShowDSDNADialog";
 			
@@ -204,10 +205,12 @@
             	var createNewFeatureMenuItem:MenuItem = new MenuItem("createNewFeatureMenuItem", "Create New Feature");
                 var simulateDigestionMenuItem:MenuItem = new MenuItem("simulateDigestionMenuItem", "Simulate Digestion");
                 var diversificationInputMenuItem:MenuItem = new MenuItem("diversificationInputMenuItem", "Calculate Diversification Trends");
+				var fullReplacementInputMenuItem:MenuItem = new MenuItem("fullReplacementInputMenuItem", "Calculate Complete Replacement Likelihood");
 				var downloadMASCPCRMenuItem:MenuItem = new MenuItem("downloadMASCPCRMenuItem","Download MASCPCR Primers");
 				var propertiesMenuItem:MenuItem = new MenuItem("propertiesMenuItem", "Properties");
 				var dsdnaMenuItem:MenuItem = new MenuItem("dsdnaMenuItem","DSDNA Primer Generator");
 				toolsMenuItem.addSubItem(diversificationInputMenuItem);
+				toolsMenuItem.addSubItem(fullReplacementInputMenuItem);
 				toolsMenuItem.addSubItem(downloadMASCPCRMenuItem);
 				toolsMenuItem.addSubItem(dsdnaMenuItem);
 				toolsMenuItem.addSubItem(separatorMenuItem);
@@ -284,6 +287,7 @@
                 menuItemsMap["propertiesMenuItem"] = propertiesMenuItem;
             	menuItemsMap["preferencesMenuItem"] = preferencesMenuItem;
 				menuItemsMap["diversificationInputMenuItem"] = diversificationInputMenuItem;
+				menuItemsMap["fullReplacementInputMenuItem"] = fullReplacementInputMenuItem;
 				menuItemsMap["downloadMASCPCRMenuItem"] = downloadMASCPCRMenuItem;
 				menuItemsMap["dsdnsMenuItem"] = dsdnaMenuItem;
             	
@@ -383,7 +387,9 @@
                 } else if(menuItem.id == "downloadSequenceMenuItem") {
                     dispatchEvent(new MenuItemEvent(DOWNLOAD_SEQUENCE, menuItem));
                 } else if(menuItem.id == "diversificationInputMenuItem") {
-					dispatchEvent(new MenuItemEvent(LOAD_DIVERSIFICATION_INPUT_DIALOG, menuItem));
+					dispatchEvent(new MenuItemEvent(SHOW_DIVERSIFICATION_INPUT_DIALOG, menuItem));
+				} else if (menuItem.id == "fullReplacementInputMenuItem") {
+					dispatchEvent(new MenuItemEvent(SHOW_FULL_REPLACEMENT_INPUT_DIALOG, menuItem));
 				} else if(menuItem.id == "exportOligosMenuItem") {
 					dispatchEvent(new MenuItemEvent(EXPORT_OLIGOS, menuItem));
 				} else if (menuItem.id == "downloadMASCPCRMenuItem") {

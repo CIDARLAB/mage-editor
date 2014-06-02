@@ -31,6 +31,8 @@ package org.jbei.registry.mediators
 	import org.jbei.registry.view.dialogs.DiversificationDialogForm;
 	import org.jbei.registry.view.dialogs.DiversificationInputDialogForm;
 	import org.jbei.registry.view.dialogs.FeatureDialogForm;
+	import org.jbei.registry.view.dialogs.FullReplacementInputDialogForm;
+	import org.jbei.registry.view.dialogs.FullReplacementDialogForm;
 	import org.jbei.registry.view.dialogs.GelDigestDialogForm;
 	import org.jbei.registry.view.dialogs.GoToDialogForm;
 	import org.jbei.registry.view.dialogs.PreferencesDialogForm;
@@ -102,8 +104,10 @@ package org.jbei.registry.mediators
                 , Notifications.REDO
                 , Notifications.REBASE_SEQUENCE
                 
-				, Notifications.LOAD_DIVERSIFICATION_INPUT_DIALOG
+				, Notifications.SHOW_DIVERSIFICATION_INPUT_DIALOG
 				, Notifications.DIVERSIFICATION_TABLE_LOADED
+				, Notifications.SHOW_FULL_REPLACEMENT_INPUT_DIALOG
+				, Notifications.FULL_REPLACEMENT_TABLE_LOADED
 				, Notifications.SHOW_PREFERENCES_DIALOG
 				, Notifications.SHOW_PROPERTIES_DIALOG
 				, Notifications.SHOW_ABOUT_DIALOG
@@ -229,7 +233,7 @@ package org.jbei.registry.mediators
                     showSimulateDigestionDialog();
                     
 					break;
-				case Notifications.LOAD_DIVERSIFICATION_INPUT_DIALOG:
+				case Notifications.SHOW_DIVERSIFICATION_INPUT_DIALOG:
 					loadDiversificationInputDialog();
 					
 					break;
@@ -237,6 +241,14 @@ package org.jbei.registry.mediators
 					showDiversificationInputDialog();
 					
 					break;					
+				case Notifications.SHOW_FULL_REPLACEMENT_INPUT_DIALOG:
+					loadFullReplacementInputDialog();
+					
+					break;
+				case Notifications.FULL_REPLACEMENT_TABLE_LOADED:
+					showFullReplacementInputDialog();
+					
+					break;
 				case Notifications.SHOW_DSDNA_DIALOG:
 					showDSDNADialog();
 					
@@ -284,7 +296,9 @@ package org.jbei.registry.mediators
             sendNotification(Notifications.CARET_POSITION_CHANGED, (event.data as int));
         }
 		
-		private function loadDiversificationInputDialog():void{
+		private function loadDiversificationInputDialog():void
+		{
+			applicationFacade.diversificationChartMode = 1;
 			applicationFacade.loadDiversificationTable();
 		}
 		
@@ -297,22 +311,51 @@ package org.jbei.registry.mediators
 			diversificationInputDialog.addEventListener(ModalDialogEvent.SUBMIT, onDiversificationInputDialogSubmit);
 		}
 		
+
 		private function onDiversificationInputDialogSubmit(event:ModalDialogEvent):void
 		{
 					//ApplicationFacade.getInstance().sendNotification(Notifications.SELECTION_CHANGED, new Array(feature.start, feature.end));	
 			//var diversityTable:String = applicationFacade.getDiversificationTable();
 			//var table:String = event.data as String;
-			applicationFacade.diversificationCycles = event.data as int;
+			//applicationFacade.diversificationCycles = event.data as int;
 			
-			showDiversificationDialog();
+			showDiversificationDialog(event.data as int);
 			//diversificationDialog.addEventListener(ModalDialogEvent.SUBMIT, onDiversificationDialogSubmit);
 		}
 		
-		public function showDiversificationDialog():void{
-			var diversificationDialog:ModalDialog = new ModalDialog(DiversificationDialogForm, applicationFacade.diversificationCycles);
+		public function showDiversificationDialog(cycles:int):void{
+			var diversificationDialog:ModalDialog = new ModalDialog(DiversificationDialogForm, cycles);
 			diversificationDialog.title = "Population Diversity by MERLIN Cycle";
 			//diversificationDialog.mx_internal::ModalDialog.
 			diversificationDialog.open();
+		}
+		
+		private function loadFullReplacementInputDialog():void
+		{
+			applicationFacade.diversificationChartMode = 2;
+			applicationFacade.loadDiversificationTable();
+		}
+		
+		private function showFullReplacementInputDialog():void
+		{
+			var fullReplacementInputDialog:ModalDialog = new ModalDialog(FullReplacementInputDialogForm,null);
+			fullReplacementInputDialog.title = "Enter screening parameters";
+			fullReplacementInputDialog.open();
+			fullReplacementInputDialog.addEventListener(ModalDialogEvent.SUBMIT, onFullReplacementInputDialogSubmit);
+		}
+		
+		private function onFullReplacementInputDialogSubmit(event:ModalDialogEvent):void
+		{
+			//applicationFacade.diversificationCycles = event.data.cycles as int;
+			//applicationFacade.replacementClones = event.data.clones as int;
+			showFullReplacementDialog();
+		}
+		
+		private function showFullReplacementDialog():void
+		{
+			var dialog:ModalDialog = new ModalDialog(FullReplacementDialogForm,null);
+			dialog.title = "Probability of isolating a comepletely modified clone";
+			dialog.open();
 		}
 		
 		private function onDSDNADialogSubmit(event:ModalDialogEvent):void

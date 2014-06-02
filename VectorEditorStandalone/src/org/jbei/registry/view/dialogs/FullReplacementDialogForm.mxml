@@ -3,7 +3,7 @@
 	<mx:Script>
 		<![CDATA[
 			import mx.charts.HitData;
-			import mx.charts.series.ColumnSeries;
+			import mx.charts.LineChart;
 			import mx.charts.series.LineSeries;
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
@@ -18,16 +18,20 @@
 			import org.jbei.registry.ApplicationFacade;
 			import org.jbei.registry.Notifications;
 			
-			[Bindable]
-			private var menuItems:Array;
+			
+			private var clones:int;
+			private var cycles:int;
 			[Bindable]
 			public var categoryArray:ArrayCollection = new ArrayCollection();
+			[Bindable]
+			private var menuItems:Array;
 			private var menuItemsMap:Dictionary = new Dictionary();
+			private var dataString:String ="";
 			
 			//public static const SAVE_DIVERSIFICATION_CHART:String="saveDiversificationChart";
 			//public static const SAVE_DIVERSIFICATION_DATA:String="saveDiversificationData";
-			
-			
+
+
 			private function initializeMenu():void
 			{
 				var fileMenuItem:MenuItem = new MenuItem("fileMenuItem", "File");
@@ -50,10 +54,11 @@
 				//var histMax:int = 25;//
 				//var histMin:int = 5;//
 				//var countMax:int = 3;//
-				var cycles:int = dataObject as int;
+				cycles = ApplicationFacade.getInstance().diversificationCycles;
+				clones = ApplicationFacade.getInstance().replacementClones;
 				var tableString:String = StringUtil.trim(ApplicationFacade.getInstance().mageProperties.diversificationTableData);
 				//var tmpArr:Array = new Array();
-				categoryArray.removeAll(); //the x axis
+				categoryArray.removeAll(); 
 				for(var n:int = 1; n <= cycles; n++)
 				{
 					//tmpArr[n] = histMin + Math.round((2 * n) / 20 * (histMax - histMin));
@@ -61,44 +66,62 @@
 				}
 				
 				//unpack the diversity data into an array of arrays
-				//outer level is the cycle, inner level is the number of transformations
+				//this is a bit awkward, it's hacked from the diversity chart code...
 				var cycleStrings:Array = tableString.split("\n");
 				var dataMatrix:Array = new Array();
-				for (var c:int = 0; c < cycles; c++){
-					dataMatrix.push(StringUtil.trim(cycleStrings[c]).split("\t"));
+				for (var c:int = 0; c < cycles && c < cycleStrings.length; c++){
+					var arr:Array = StringUtil.trim(cycleStrings[c]).split("\t");			
+					dataMatrix.push(arr[arr.length-1]);
+					var val:Number = Number(arr[arr.length-1]);
+					dataString = dataString + val + "\t";
 				}
-				var nOligos:int = dataMatrix[0].length; //number of oligos = max # of transformations
+				//var nOligos:int = dataMatrix[0].length; //number of oligos = max # of transformations
 				
-				var cs:ColumnSeries = new ColumnSeries();
-				columnchart1.series = [cs];
+				//var cs:ColumnSeries = new ColumnSeries();
+				//columnchart1.series = [cs];
+				var ls:LineSeries = new LineSeries();
+				
+				var testArrCol:ArrayCollection = new ArrayCollection();
+				for(var cc:int = 1; cc < cycles; cc++)
+				{
+					var m:Number = cc;
+					var m1:Number = dataMatrix[cc];
+					testArrCol.addItem({mData:m.toString(),nData:(1-Math.pow(1-m1,m)).toString()});
+				}
+				
+				ls.dataProvider = testArrCol;
+				ls.xField = 'mData';
+				ls.yField = 'nData';
+				var newSeries:Array = new Array();
+				newSeries.push(ls)
+				lineChart.series = newSeries;
+				
 				// Add a series to the chart with the x-values and y-values
 				// from the arrays and set the series type to a column chart
 				//one series per transformation count
-				for(var chartSeries:int = 0; chartSeries < nOligos; chartSeries++)
+				/*for(var chartSeries:int = 0; chartSeries < nOligos; chartSeries++)
 				{
 					var testArrCol:ArrayCollection = new ArrayCollection();
 					for(var cc:int =0; cc < cycles; cc++)
 					{
-						var m:Number = cc;
+						var m:Number = cc+1;
 						var m1:Number = dataMatrix[cc][chartSeries];
 						testArrCol.addItem({mData:m.toString(),nData:(m1*100).toString()});
 					}
 					cs = new ColumnSeries();
+					
 					cs.dataProvider = testArrCol;
 					cs.displayName = 'Series' + chartSeries;
 					cs.xField = 'mData';
 					cs.yField = 'nData';
 					cs.displayName = chartSeries + " Replacements";
 					columnchart1.series[chartSeries] = cs;
-					/* columnchart1.series.push(cs);
-					columnchart1.invalidateSeriesStyles();
-					columnchart1.series = columnchart1.series; */
-				}
+				}*/
 			}
 			
 			public function myTipFunction(hitData:HitData):String
 			{
-				return(ColumnSeries(hitData.element).displayName + "\n" + "Value : "+ String(Number(hitData.item.nData)).substr(0,5));
+				return("Cycle : " + String(hitData.item.mData) + "\n" + "Value : "+ String(hitData.item.nData).substr(0,5));
 			}
 			
 			private function onMenuItemClick(event:MenuEvent):void
@@ -115,7 +138,7 @@
 			
 			private function saveChart():void
 			{
-				var image:ImageSnapshot = ImageSnapshot.captureImage(columnchart1,300,new PNGEncoder());
+				var image:ImageSnapshot = ImageSnapshot.captureImage(lineChart,300,new PNGEncoder());
 				var file:FileReference = new FileReference();
 				file.save(image.data, "diversificationChart.png");
 				//ApplicationFacade.getInstance().diversificationChart = image;
@@ -126,8 +149,8 @@
 			private function saveData():void
 			{
 				var file:FileReference = new FileReference();
-				var tableString:String = StringUtil.trim(ApplicationFacade.getInstance().mageProperties.diversificationTableData);
-				file.save(tableString,"diversificationData.txt");
+				//var tableString:String = StringUtil.trim(ApplicationFacade.getInstance().mageProperties.diversificationTableData);
+				file.save(dataString,"diversificationData.txt");
 			}
 			
 			public function menuItemByName(name:String):MenuItem
@@ -144,13 +167,13 @@
 		menuStyleName ="subMenu" 
 		itemClick="onMenuItemClick(event)"/>
 	<mx:Panel width="100%" height="100%" layout="absolute">
-		<mx:ColumnChart id="columnchart1" height="500" width="700" showDataTips="true" type="stacked" x="10" y="0" dataTipFunction="{myTipFunction}">
+		<mx:LineChart id="lineChart" height="500" width="700" showDataTips="true" x="10" y="0" dataTipFunction="{myTipFunction}">
 			<mx:horizontalAxis>
 				<mx:CategoryAxis title="MAGE Cycles" dataProvider="{categoryArray}" categoryField="data"/>
 			</mx:horizontalAxis>
 			<mx:verticalAxis>
-				<mx:LinearAxis title="Percent of Population" minimum="0" maximum="100"/>
+				<mx:LinearAxis title="Fraction of Population" minimum="0" maximum="1"/>
 			</mx:verticalAxis>
-		</mx:ColumnChart>
+		</mx:LineChart>
 	</mx:Panel>
 </dialogs:AbstractDialogForm>
