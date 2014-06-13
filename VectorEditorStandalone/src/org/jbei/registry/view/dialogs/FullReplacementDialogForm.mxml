@@ -140,7 +140,7 @@
 			{
 				var image:ImageSnapshot = ImageSnapshot.captureImage(lineChart,300,new PNGEncoder());
 				var file:FileReference = new FileReference();
-				file.save(image.data, "diversificationChart.png");
+				file.save(image.data, "fullReplacementChart.png");
 				//ApplicationFacade.getInstance().diversificationChart = image;
 				//sendNotification(Notifications.SAVE_DIVERSIFICATION_CHART);
 				//ApplicationFacade.getInstance().exportDiversificationChart(this);
@@ -150,7 +150,7 @@
 			{
 				var file:FileReference = new FileReference();
 				//var tableString:String = StringUtil.trim(ApplicationFacade.getInstance().mageProperties.diversificationTableData);
-				file.save(dataString,"diversificationData.txt");
+				file.save(dataString,"fullReplacementData.txt");
 			}
 			
 			public function menuItemByName(name:String):MenuItem

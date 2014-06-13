@@ -1,6 +1,7 @@
 package org.jbei.registry.mediators
 {
 	import flash.events.Event;
+	import flash.events.HTTPStatusEvent;
 	import flash.events.MouseEvent;
 	import flash.net.FileReference;
 	import flash.net.URLLoader;
@@ -221,16 +222,21 @@ package org.jbei.registry.mediators
 			mageRequest.method = URLRequestMethod.POST;
 			mageRequest.data = collectPostVariables(mageVariables);
 			
-			var Status: String =  "";
+			var Status: String =  ">>";
 			
 			
 			// Create a new Loader and set the listener, type and then load.
 			_mageLoader = new URLLoader();
 			_mageLoader.dataFormat = URLLoaderDataFormat.VARIABLES;
 			_mageLoader.addEventListener(Event.COMPLETE, onMageLoaded);
+			_mageLoader.addEventListener(HTTPStatusEvent.HTTP_STATUS, debugOnHttpStatusEvent);
 			try { _mageLoader.load(mageRequest); } 
 			catch (error:Error) { Status = ">> Error Connecting";}
 			updateStatus( Status );
+		}
+		
+		private function debugOnHttpStatusEvent(event:HTTPStatusEvent):void{
+			sendNotification(Notifications.UPDATE_STATUS, event.toString());
 		}
 		
 		private function onMageConnectionButtonClick(event: Event): void 
@@ -282,6 +288,10 @@ package org.jbei.registry.mediators
 			_mageVariables.parameters 	= _mp.getSavedParameters();
 			_mageVariables.genome		= _mp.getSavedGenome.toString();//getSavedGenome() ;
 			_mageVariables.id			= _mp.ID;
+			
+			//TODO: remove if not debugging
+			//sendNotification(Notifications.UPDATE_STATUS, _mageVariables.genome.toString());
+			
 			return _mageVariables;			
 			
 		}

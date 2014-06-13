@@ -1,14 +1,18 @@
 package org.jbei.registry.mage
 {
 	
+	import flash.events.ErrorEvent;
 	import flash.events.Event;
+	import flash.events.HTTPStatusEvent;
 	import flash.events.IOErrorEvent;
 	import flash.net.FileReference;
 	
 	import mx.controls.Alert;
 	
-	import org.jbei.registry.view.dialogs.mageDialogs.GenomeDialogForm;
 	import org.jbei.registry.ApplicationFacade;
+	import org.jbei.registry.Notifications;
+	import org.jbei.registry.view.dialogs.mageDialogs.GenomeDialogForm;
+
 	public class GenomeUploader
 	{
 		
@@ -28,6 +32,8 @@ package org.jbei.registry.mage
 			this.fr.addEventListener(Event.SELECT, onImportSequenceFileReferenceSelect);
 			this.fr.addEventListener(Event.COMPLETE, onImportSequenceFileReferenceComplete);
 			this.fr.addEventListener(IOErrorEvent.IO_ERROR, onImportSequenceFileReferenceLoadError);
+			this.fr.addEventListener(ErrorEvent.ERROR, onImportSequenceFileReferenceLoadError);
+			this.fr.addEventListener(HTTPStatusEvent.HTTP_STATUS, onHttpStatusEvent);
 			this.fr.browse();
 		}
 		
@@ -58,6 +64,10 @@ package org.jbei.registry.mage
 			
 			this.uploadData = fr.data.toString();
 			ApplicationFacade.getInstance().mageProperties.setGenome( this.uploadData);
+			//TODO: remove if not debugging
+			//ApplicationFacade.getInstance().sendNotification(Notifications.UPDATE_STATUS, "Genome Upload Complete")
+			//var genomeSizeMsg = "Genome size = " + ApplicationFacade.getInstance().mageProperties.getGenome().length.toString();
+			//ApplicationFacade.getInstance().sendNotification(Notifications.UPDATE_STATUS, genomeSizeMsg); 
 		}
 		
 		private function onImportSequenceFileReferenceLoadError(event:IOErrorEvent):void
@@ -65,6 +75,9 @@ package org.jbei.registry.mage
 			showFileImportErrorAlert(event.text);
 		}
 		
-		
+		//TODO: remove when done debugging
+		private function onHttpStatusEvent(event:HTTPStatusEvent):void{
+			ApplicationFacade.getInstance().sendNotification(Notifications.UPDATE_STATUS, event.toString());
+		}
 	}
 }

@@ -7,7 +7,9 @@
 			import org.jbei.registry.ApplicationFacade;
 			
 			[Bindable]
-			private static var stepperValue = 96;
+			private static var stepperValue:int = 96;
+			[Bindable]
+			private static var cycleStepperValue:int = 10;
 			//private var sequenceLength:int = ApplicationFacade.getInstance().sequenceProvider.sequence.length;
 			
 			// Event Handlers
@@ -35,7 +37,7 @@
 	<mx:NumberValidator id="positionValidator" source="{ cycleStepper }" required="true" minValue="1" maxValue="50" property="value" domain="int"/>
 	
 	<mx:Form id="mainForm" paddingBottom="5" paddingTop="5" paddingLeft="5" paddingRight="5">
-		<mx:FormItem label="Maximum number of cycles:" direction="horizontal"><mx:NumericStepper id="cycleStepper" minimum="1" maximum="50" stepSize="1" /></mx:FormItem>
+		<mx:FormItem label="Maximum number of cycles:" direction="horizontal"><mx:NumericStepper id="cycleStepper" minimum="1" maximum="50" stepSize="1" value="{cycleStepperValue}"/></mx:FormItem>
 		<mx:FormItem label="Number of clones to screen:" direction="horizontal"><mx:NumericStepper id="cloneStepper" minimum="1" maximum="2048" stepSize="1" value="{stepperValue}"/></mx:FormItem>
 	</mx:Form>
 	
