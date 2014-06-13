@@ -23,7 +23,10 @@
 			private function onCreationComplete(event:Event):void
 			{
 				_mp = ApplicationFacade.getInstance().mageProperties;
+				try{
 				uploadTextArea.text = "\n --Preview-- \n " + _mp.getGenome().substr(0,1000) ;
+				}
+				catch(te:TypeError){} //fires if the upload genome is blank
 				//uploadTextArea.text = _mp.getGenome().length ;
 				
 			}

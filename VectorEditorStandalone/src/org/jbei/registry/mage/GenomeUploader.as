@@ -11,7 +11,7 @@ package org.jbei.registry.mage
 	
 	import org.jbei.registry.ApplicationFacade;
 	import org.jbei.registry.Notifications;
-	import org.jbei.registry.view.dialogs.mageDialogs.GenomeDialogForm;
+	//import org.jbei.registry.view.dialogs.mageDialogs.GenomeDialogForm;
 
 	public class GenomeUploader
 	{
