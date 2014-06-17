@@ -272,8 +272,10 @@ package org.jbei.registry.mediators
 				mageRequest.data = mageVariables;
 							
 				try { _mageLoader.load(mageRequest); } 
-				catch (error:Error) { status = ">> Error Connecting";}
-				updateStatus( status );
+				catch (error:Error) { 
+					status = ">> Error Connecting";
+					updateStatus( status );
+				}
 			}
 			else{//this slice contains the end of the genome file
 				_mageLoader.addEventListener(Event.COMPLETE, onMageLoaded);
@@ -282,8 +284,10 @@ package org.jbei.registry.mediators
 				mageRequest.data = collectPostVariables(mageVariables);
 							
 				try { _mageLoader.load(mageRequest); } 
-				catch (error:Error) { status = ">> Error Connecting";}
-				updateStatus( status );
+				catch (error:Error) { 
+					status = ">> Error Connecting";
+					updateStatus( status );
+				}
 			}
 			
 			

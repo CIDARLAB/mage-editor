@@ -82,11 +82,11 @@
 				var ls:LineSeries = new LineSeries();
 				
 				var testArrCol:ArrayCollection = new ArrayCollection();
-				for(var cc:int = 1; cc < cycles; cc++)
+				for(var cc:int = 1; cc <= cycles; cc++)
 				{
 					var m:Number = cc;
-					var m1:Number = dataMatrix[cc];
-					testArrCol.addItem({mData:m.toString(),nData:(1-Math.pow(1-m1,m)).toString()});
+					var m1:Number = dataMatrix[cc -1];
+					testArrCol.addItem({mData:m.toString(),nData:likelihood(m1,clones).toString()});
 				}
 				
 				ls.dataProvider = testArrCol;
@@ -122,6 +122,11 @@
 			public function myTipFunction(hitData:HitData):String
 			{
 				return("Cycle : " + String(hitData.item.mData) + "\n" + "Value : "+ String(hitData.item.nData).substr(0,5));
+			}
+			
+			private function likelihood(p:Number, clones:int):Number{
+				var val:Number = 1 - Math.pow(1 - p, clones)
+					return val
 			}
 			
 			private function onMenuItemClick(event:MenuEvent):void
