@@ -44,7 +44,7 @@ package org.jbei.registry.mediators
 		private var _mageLoader :URLLoader ;
 		private var _merlinLoader :URLLoader;
 		private var _mageClicked :Boolean;
-		private var host : String = "http://cidar.bu.edu/";//"http://localhost:8080/" // 
+		private var host : String = "http://merlincad.org/"//"http://cidar.bu.edu/";//"http://localhost:8080/" // 
 		private var _genomeIdx : int = 0;
 		private var _genomeSliceSize : int = 1024 * 1024 / 6; //roughly 1MB of UTF8 characters 
 		

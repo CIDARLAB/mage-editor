@@ -30,9 +30,9 @@ package org.jbei.registry.mediators
             
             applicationFacade = ApplicationFacade.getInstance();
 			
-            controlBar.saveToRegistryButton.addEventListener(MouseEvent.CLICK, onSaveToRegistryClick);
-            controlBar.saveProjectButton.addEventListener(MouseEvent.CLICK, onSaveProjectClick);
-            controlBar.projectPropertiesButton.addEventListener(MouseEvent.CLICK, onProjectPropertiesButtonClick);
+            //controlBar.saveToRegistryButton.addEventListener(MouseEvent.CLICK, onSaveToRegistryClick);
+            //controlBar.saveProjectButton.addEventListener(MouseEvent.CLICK, onSaveProjectClick);
+            //controlBar.projectPropertiesButton.addEventListener(MouseEvent.CLICK, onProjectPropertiesButtonClick);
 			controlBar.viewToggleButtonBar.addEventListener(ItemClickEvent.ITEM_CLICK, onChangeViewButtonClick);
 			controlBar.copyButton.addEventListener(MouseEvent.CLICK, onCopy);
             controlBar.cutButton.addEventListener(MouseEvent.CLICK, onCut);
@@ -100,9 +100,9 @@ package org.jbei.registry.mediators
 					break;
                 case Notifications.PERMISSIONS_FETCHED:
                     if(applicationFacade.hasWritablePermissions) {
-                        controlBar.updateSaveButtonState(true);
+                        //controlBar.updateSaveButtonState(true);
                     } else {
-                        controlBar.updateSaveButtonState(false);
+                        //controlBar.updateSaveButtonState(false);
                     }
                     
                     break;

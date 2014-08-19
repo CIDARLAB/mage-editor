@@ -1,0 +1,2 @@
+oligo size	dG_thresh	mloc_dft	mloc_max	addthiol	calc_replic
+90	-12	10	15	0	1

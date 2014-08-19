@@ -10,7 +10,7 @@
 			import org.jbei.lib.utils.SystemUtils;
 			import org.jbei.registry.Constants;
 			
-			[Embed(source='../assets/icons/jbei-logo.gif')]
+			[Embed(source='../assets/icons/cidar.png')]
 			[Bindable]
 			private var logoImage:Class;
 		]]>
@@ -19,11 +19,11 @@
 	<mx:VBox id="mainBox" width="100%" height="100%" horizontalAlign="center">
 		<mx:Image source="{ logoImage }" horizontalAlign="center" />
 		<mx:Spacer />
-		<mx:Text width="400" htmlText="Version: { Constants.VERSION }" />
-        <mx:Text width="400">
+		<mx:Text width="400">
             <mx:htmlText>
-                <![CDATA[This is an Open Source Software. <br/>Check us out at http://code.google.com/p/vectoreditor]]>
+                <![CDATA[Merlin is built and maintained by the Cross-Disciplinary Integration of Design Automation Research (CIDAR) lab in the Department of Electrical and Computer Engineering at Boston University.<br/><br/>To report a bug or suggest a feature, please contact mquintin@bu.edu<br/><br/>This application is mage with the open source software Vector Editor. <br/>Check it out at http://code.google.com/p/vectoreditor]]>
             </mx:htmlText>
         </mx:Text> 
+		<mx:Text width="400" htmlText="Vector Editor Version: { Constants.VERSION }" />
 	</mx:VBox>
 </SimpleDialogForm>

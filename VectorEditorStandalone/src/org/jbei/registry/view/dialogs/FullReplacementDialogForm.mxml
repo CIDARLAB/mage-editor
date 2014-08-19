@@ -177,7 +177,7 @@
 				<mx:CategoryAxis title="MAGE Cycles" dataProvider="{categoryArray}" categoryField="data"/>
 			</mx:horizontalAxis>
 			<mx:verticalAxis>
-				<mx:LinearAxis title="Fraction of Population" minimum="0" maximum="1"/>
+				<mx:LinearAxis title="Probability of Finding Fully Modified Cell" minimum="0" maximum="1"/>
 			</mx:verticalAxis>
 		</mx:LineChart>
 	</mx:Panel>

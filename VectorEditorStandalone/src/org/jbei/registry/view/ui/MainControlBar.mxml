@@ -100,9 +100,9 @@
 			{
                 // disable use of save to registry buttons for standalone
                 CONFIG::standalone {
-                    saveToRegistryButton.enabled = false;
-                    saveProjectButton.enabled = false;
-                    projectPropertiesButton.enabled = false;
+                    //saveToRegistryButton.enabled = false;
+                    //saveProjectButton.enabled = false;
+                    //projectPropertiesButton.enabled = false;
                     
                 }
             }
@@ -119,7 +119,7 @@
 				}
 			}
 			
-            public function updateSaveButtonState(active:Boolean):void
+            /*public function updateSaveButtonState(active:Boolean):void
             {
                 if(active) {
                     saveToRegistryButton.enabled = true;
@@ -128,7 +128,7 @@
                     saveToRegistryButton.enabled = false;
                     saveToRegistryButton.setStyle("icon", saveDisabledIcon);
                 }
-            }
+            }*/
             
 			public function updateRedoButtonState(active:Boolean):void
 			{
@@ -158,10 +158,10 @@
 		]]>
 	</mx:Script>
 	
-    <mx:Button width="32" height="32" id="saveToRegistryButton" icon="{ saveIcon }" toolTip="Save to Registry" />
+    <!--<mx:Button width="32" height="32" id="saveToRegistryButton" icon="{ saveIcon }" toolTip="Save to Registry" />
     <mx:Button width="32" height="32" id="saveProjectButton" icon="{ saveProjectIcon }" toolTip="Save Project" />
     <mx:Button width="32" height="32" id="projectPropertiesButton" icon="{ projectPropertiesIcon }" toolTip="Project Properties" />
-    <mx:Spacer width="5" />
+    <mx:Spacer width="5" />-->
 	<mx:ToggleButtonBar id="viewToggleButtonBar" buttonHeight="32" buttonStyleName="haloSilver"
 						buttonWidth="32" paddingLeft="0" paddingRight="0" selectedIndex="1"
 						toggleOnClick="false">

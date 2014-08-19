@@ -112,7 +112,7 @@
                     //fileMenuItem.addSubItem(saveProjectMenuItem);
                     //fileMenuItem.addSubItem(saveProjectAsMenuItem);
                     //fileMenuItem.addSubItem(separatorMenuItem);
-                    fileMenuItem.addSubItem(importSequenceMenuItem);
+                    //fileMenuItem.addSubItem(importSequenceMenuItem);
                     fileMenuItem.addSubItem(downloadSequenceMenuItem);
                     fileMenuItem.addSubItem(separatorMenuItem);
                     fileMenuItem.addSubItem(projectPropertiesMenuItem);
@@ -226,9 +226,9 @@
             	var aboutMenuItem:MenuItem = new MenuItem("aboutMenuItem", "About");
 				var suggestFeatureMenuItem:MenuItem = new MenuItem("suggestFeatureMenuItem", "Suggest Feature");
 				var reportBugMenuItem:MenuItem = new MenuItem("reportBugMenuItem", "Report Bug");
-				helpMenuItem.addSubItem(suggestFeatureMenuItem);
-				helpMenuItem.addSubItem(reportBugMenuItem);
-				helpMenuItem.addSubItem(separatorMenuItem);
+				//helpMenuItem.addSubItem(suggestFeatureMenuItem);
+				//helpMenuItem.addSubItem(reportBugMenuItem);
+				//helpMenuItem.addSubItem(separatorMenuItem);
             	helpMenuItem.addSubItem(aboutMenuItem);
 				
             	menuItems = [fileMenuItem, editMenuItem, viewMenuItem, toolsMenuItem, helpMenuItem];

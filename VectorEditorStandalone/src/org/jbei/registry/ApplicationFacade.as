@@ -56,6 +56,7 @@ package org.jbei.registry
 		private const EXTERNAL_JAVASCIPT_UPDATE_SAVED_BROWSER_TITLE_FUNCTION:String = "updateSavedStateTitle";
 		
 		private var host : String = "http://cidar.bu.edu/";
+		//private var host : String = "http://merlincad.org/";
 		
 		private var _sequenceProvider:SequenceProvider;
         private var _hasWritablePermissions:Boolean = false;
