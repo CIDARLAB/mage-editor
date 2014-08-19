@@ -551,29 +551,6 @@ package org.jbei.registry
 			fileReference = new FileReference();
 			fileReference.save(contents,"MerlinOligos.txt");
 			
-			//fileReference = new FileReference();
-			//fileReference.save(lines,"MerlinOligos.txt");
-			//fileReference.save(contents,"MerlinOligos.txt");
-			
-			//write the contents, ignore the rest of the commented code
-			
-			//get all the Merlin features
-			/*
-			features:ArrayCollection = this.sequenceProvider.features;
-			merlinFeatures:ArrayCollection = new ArrayCollection();
-			for (feature in features){
-				type:String = feature.type;
-				if (feature.type.toLowerCase() == "merlin"){
-					merlinFeatures.add(feature);
-				}
-			}
-			for (feature in merlinFeatures){
-				start:int = feature.start;
-				end:int = feature.end;
-				
-			}*/
-			//merlinResults = this.mageProperties.merlinResults;
-			
 		}
         
 		public function getMASCPCRPrimers():void{

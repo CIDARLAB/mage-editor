@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <actionScriptProperties analytics="false" mainApplicationPath="VectorEditor.mxml" projectUUID="193e1fac-81f6-4ffe-a0c0-65afad0d3e21" version="11">
-  <compiler additionalCompilerArguments="-locale en_US -define=CONFIG::standalone,true -define=CONFIG::entryEdition,false -define=CONFIG::registryEdition,false" autoRSLOrdering="false" copyDependentFiles="true" flexSDK="Flex 3.6A" fteInMXComponents="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="true" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="10.0.2" useApolloConfig="false" useDebugRSLSwfs="true" useFlashSDK="false" verifyDigests="true" warn="true">
+  <compiler additionalCompilerArguments="-locale en_US -define=CONFIG::standalone,true -define=CONFIG::entryEdition,false -define=CONFIG::registryEdition,false" autoRSLOrdering="false" copyDependentFiles="true" flex3CompatMode="false" flexSDK="Flex 3.6A" fteInMXComponents="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="true" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="10.0.2" useApolloConfig="false" useDebugRSLSwfs="true" useFlashSDK="false" verifyDigests="false" warn="true">
     <compilerSourcePath/>
     <libraryPath defaultLinkType="1">
-      <libraryPathEntry kind="4" path=""/>
+      <libraryPathEntry kind="4" path="">
+        <modifiedEntries>
+          <libraryPathEntry applicationDomain="default" forceLoad="false" index="0" kind="3" linkType="4" path="${PROJECT_FRAMEWORKS}/libs/framework.swc" useDefaultLinkType="true">
+            <crossDomainRsls>
+              <crossDomainRslEntry autoExtract="true" policyFileUrl="" rslUrl="framework_3.6.0.21751.swz"/>
+              <crossDomainRslEntry autoExtract="true" policyFileUrl="" rslUrl="framework_3.6.0.21751.swf"/>
+            </crossDomainRsls>
+          </libraryPathEntry>
+        </modifiedEntries>
+        <excludedEntries>
+          <libraryPathEntry kind="3" linkType="2" path="${PROJECT_FRAMEWORKS}/libs/player/10/playerglobal.swc" useDefaultLinkType="false"/>
+        </excludedEntries>
+      </libraryPathEntry>
       <libraryPathEntry kind="1" linkType="1" path="libs"/>
-      <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/datavisualization.swc" sourcepath="${PROJECT_FBPRO}/projects/datavisualization/src" useDefaultLinkType="false"/>
       <libraryPathEntry kind="3" linkType="1" path="libs/BioFlex.swc" useDefaultLinkType="false"/>
       <libraryPathEntry kind="3" linkType="1" path="libs/VectorCommon.swc" useDefaultLinkType="false"/>
       <libraryPathEntry kind="3" linkType="1" path="/VectorCommon/bin/VectorCommon.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="C:/Program Files/Adobe/Adobe Flash Builder 4.7 (64 Bit)/sdks/datavisualization_sdk3.6/frameworks/libs/datavisualization.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="2" path="${PROJECT_FRAMEWORKS}/libs/player/10/playerglobal.swc" useDefaultLinkType="false"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>
