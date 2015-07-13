@@ -539,7 +539,7 @@ package org.jbei.registry
 				for (f = 0; f < features.length; f++){
 					var feature:DNAFeature = features[f] as DNAFeature;
 					if (feature.name == "Merlin"){
-						start = feature.genbankStart;
+						start = feature.genbankStart-1;//Genbank starts at 1, String starts at 0
 						end = feature.end;
 					}
 				}
