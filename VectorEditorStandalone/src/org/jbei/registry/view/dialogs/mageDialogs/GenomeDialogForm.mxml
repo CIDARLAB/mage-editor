@@ -24,7 +24,7 @@
 			{
 				_mp = ApplicationFacade.getInstance().mageProperties;
 				try{
-				uploadTextArea.text = "\n --Preview-- \n " + _mp.getGenome().substr(0,1000) ;
+					uploadTextArea.text = "\n --Preview-- \n " + _mp.getGenome().substr(0,1000) ;
 				}
 				catch(te:TypeError){} //fires if the upload genome is blank
 				//uploadTextArea.text = _mp.getGenome().length ;
@@ -46,8 +46,16 @@
 			{
 				uploadTextArea.text = _mp.getGenome().length+ " Characters in File";
 				uploadTextArea.text += "\n --Preview-- \n " + _mp.getGenome().substr(0,1000) ;
-				_mp.saveGenome(_mp.getGenome());
-
+				//_mp.saveGenome(_mp.getGenome());
+				
+			}
+			
+			public function update():void
+			{
+				try{
+					uploadTextArea.text = _mp.getGenome().length+ " Characters in File";
+					uploadTextArea.text = "\n --Preview-- \n " + _mp.getGenome().substr(0,1000) ;
+				} catch(e:Error){}
 			}
 			
 		]]>
@@ -60,9 +68,9 @@
 		
 		<mx:VBox 
 			label="Starting Genome" 
-            width="100%"
-            height="100%">
-            
+			width="100%"
+			height="100%">
+			
 			<mx:Form 
 				id="mainForm" 
 				paddingBottom="5" 
@@ -73,14 +81,14 @@
 					<mx:HBox id="hbox" width="100%" horizontalAlign="center" textAlign="center"
 							 verticalAlign="middle">
 						<mx:Button id="uploadButton" label = "Upload" click="uploadButton_clickHandler(event)" height="100%" width="100"/>
-						<mx:Button id="previewButton" label="Preview and Save" height="100%" width="200" click="previewButton_clickHandler(event)"/>
+						<!--mx:Button id="previewButton" label="Preview and Save" height="100%" width="200" click="previewButton_clickHandler(event)"/-->
 					</mx:HBox>
 				</mx:FormItem>
-					<mx:TextArea id="uploadTextArea" width="600" height="300" enabled="true"
-							  textAlign="left"/>
+				<mx:TextArea id="uploadTextArea" width="600" height="300" enabled="true"
+							 textAlign="left"/>
 				
 			</mx:Form>
-        </mx:VBox>
+		</mx:VBox>
 	</mx:TabNavigator>
 	
 </AbstractDialogForm>

@@ -2,14 +2,25 @@
 <AbstractDialogForm 
 	width="100%" 
 	height="100%" 
-	minWidth="300"
-	minHeight="200"
+	minWidth="1100"
+	minHeight="250"
 	xmlns="org.jbei.lib.ui.dialogs.*" 
 	xmlns:mx="http://www.adobe.com/2006/mxml"
 	creationComplete="onCreationComplete(event)">
 	
 	<mx:Script>
 		<![CDATA[
+			import mx.collections.*;
+			import mx.containers.*;
+			import mx.controls.Alert;
+			import mx.controls.ComboBox;
+			import mx.controls.Text;
+			import mx.controls.TextInput;
+			import mx.controls.ToggleButtonBar;
+			import mx.utils.StringUtil;
+			import mx.validators.NumberValidator;
+			import mx.validators.StringValidator;
+			
 			import org.jbei.registry.ApplicationFacade;
 			import org.jbei.registry.models.MageProperties;
 			
@@ -23,7 +34,62 @@
 			private function onCreationComplete(event:Event):void
 			{
 				_mp = ApplicationFacade.getInstance().mageProperties;
-				uploadTextArea.text = _mp.targetFile ;
+				if (uploadTextArea == null){
+					uploadTextArea = new TextArea();
+				}
+				update();
+			}
+			
+			public function update():void{
+				uploadTextArea.text = _mp.targetFile;
+				
+				var header:DisplayObject = targetsGrid.getChildAt(0);
+				for each (var child:DisplayObject in targetsGrid.getChildren()){
+					if (child != header){
+						targetsGrid.removeChild(child);
+					}
+				}
+				
+				
+				var lines:Array = _mp.targetFile.split("\n");
+				for (var i:int = 1;i<lines.length;i++){
+					var line:Array = StringUtil.trim(lines[i]).split(/\s/);
+					if(!(isNaN(line[2]) || isNaN(line[3]) || isNaN(line[4]))){
+						var row:GridRow = getTargetRow() as GridRow;
+						var items:Array = row.getChildren();
+						var nameField:TextInput = (items[0] as GridItem).getChildAt(0) as TextInput
+						nameField.text=line[0];
+						var strandBar:ToggleButtonBar = (items[1] as GridItem).getChildAt(0) as ToggleButtonBar;
+						if ("-" == line[1]){
+							strandBar.selectedIndex=1;
+						}
+						var repBar:ToggleButtonBar = (items[2] as GridItem).getChildAt(0) as ToggleButtonBar;
+						if ("2" == line[2]){
+							repBar.selectedIndex=1;
+						}
+						var lpField:TextInput = (items[3] as GridItem).getChildAt(0) as TextInput
+						lpField.text=line[3];
+						var rpField:TextInput = (items[4] as GridItem).getChildAt(0) as TextInput
+						rpField.text=line[4];
+
+						var mutDropdown:ComboBox = (items[5] as GridItem).getChildAt(0) as ComboBox;
+						var mut:String = (line[5] as String).substr(0,1).toUpperCase();
+						if ("I" == mut){
+							mutDropdown.selectedIndex = 1;
+						}
+						else if ("D" == mut){
+							mutDropdown.selectedIndex = 2;
+						}
+						var seqField:TextInput = (items[6] as GridItem).getChildAt(0) as TextInput
+						seqField.text=line[6];
+						
+						targetsGrid.addChild(row);
+					}
+				}
+				
+				if (targetsGrid.numChildren <= 1){
+					targetsGrid.addChild(getTargetRow());
+				}
 			}
 			
 			private function onChange(event:Event):void
@@ -41,9 +107,254 @@
 			{
 				uploadTextArea.text = _mp.targetFile; 
 				_mp.saveTargetFile(_mp.targetFile);
+				update();
+			}
+			
+			private function addTarget(idx:int):void
+			{
+				var child:DisplayObject = getTargetRow();
+				targetsGrid.addChildAt(child,idx);
+			}
+			
+			private function removeTarget(idx:int):void
+			{
+				targetsGrid.removeChildAt(idx);
+				if (targetsGrid.numChildren <= 1){
+					addTarget(1);
+				}
+			}
+			
+			private function getTargetRow():DisplayObject
+			{
+				var row:GridRow = new GridRow();
+				
+				var strandBar:ToggleButtonBar = new ToggleButtonBar();
+				var strandAL:ArrayList = new ArrayList(["+","-"]);
+				strandBar.dataProvider = strandAL;
+				
+				var repBar:ToggleButtonBar = new ToggleButtonBar();
+				var repAL:ArrayList = new ArrayList(["1","2"]);
+				repBar.dataProvider = repAL;
+				
+				var mutDropdown:ComboBox = new ComboBox();
+				var mutAL:ArrayList = new ArrayList(["Mismatch","Insertion","Deletion"]);
+				mutDropdown.dataProvider = mutAL;
+				
+				var addButton:Button = new Button();
+				addButton.label = "+";
+				addButton.name = "addButton";
+				addButton.addEventListener(MouseEvent.CLICK, rowClickEventHandler);
+				
+				var remButton:Button = new Button();
+				remButton.label = "-";
+				remButton.name = "remButton";
+				remButton.addEventListener(MouseEvent.CLICK, rowClickEventHandler);
+				
+				var lpInput:TextInput = new TextInput();
+				lpInput.restrict = "0-9";
+				
+				var rpInput:TextInput = new TextInput();
+				rpInput.restrict = "0-9";
+				
+				var seqInput:TextInput = new TextInput();
+				seqInput.restrict= "abcdghkmnrstuvwyABCDGHKMNRSTUVWY";
+				
+				var fields:Array = [new TextInput(), strandBar, repBar, 
+					lpInput, rpInput, mutDropdown, seqInput, 
+					addButton, remButton];
+				
+				//add validators to text fields
+				/*var sv:StringValidator = new StringValidator();
+				sv.source = fields[0];
+				sv.property = "text";
+				sv.required = true;
+				sv.minLength = 1;
+				
+				var sv2:StringValidator = new StringValidator();
+				sv2.source = fields[6];
+				sv2.property = "text";
+				sv2.required = true;
+				sv2.minLength = 1;
+				
+				var sv3:StringValidator = new StringValidator();
+				sv3.source = fields[6];
+				sv3.property = "text";
+				sv3.required = true;
+				sv3.minLength = 1;
+				
+				var sv4:StringValidator = new StringValidator();
+				sv4.source = fields[6];
+				sv4.property = "text";
+				sv4.required = true;
+				sv4.minLength = 1;
+				
+				var nv:NumberValidator = new NumberValidator();
+				nv.domain="int";
+				nv.source = fields[3];
+				nv.property = "text";
+				nv.required = true;
+				nv.minValue=0;*/
+								
+				for each (var comp:DisplayObject in fields){
+					var item:GridItem = new GridItem();
+					item.addChild(comp);
+					row.addChild(item);
+				}
+				
+				return(row);
+			}
+			
+			private function rowClickEventHandler(event:Event):void
+			{
+				switch (event.currentTarget.label){
+					case "+":
+						var i:int = 1;
+						for each (var row:GridRow in targetsGrid.getChildren())
+					{
+						if (row.numChildren > 8){
+							var button:Button = (row.getChildAt(7) as GridItem).getChildByName("addButton") as Button;
+							if (event.currentTarget == button){
+								addTarget(i+1);
+								break;
+							}
+							else{
+								i += 1;
+							}
+						}
+					}
+						
+						break;
+					case "-":
+						var j:int = 1;
+						for each (var rrow:GridRow in targetsGrid.getChildren())
+					{
+						if (rrow.numChildren > 8){
+							var rbutton:Button = (rrow.getChildAt(8) as GridItem).getChildByName("remButton") as Button;
+							if (event.currentTarget == rbutton){
+								removeTarget(j);
+							}
+							else{
+								j += 1;
+							}
+						}
+					}
+						break;
+				}
+			}
+			
+			protected function downloadTargets(event: MouseEvent):void
+			{
+				var file:FileReference = new FileReference();
+				var dataString:String = getTargetsString();				
+				file.save(dataString, "MerlinParams.txt");
+			}
+			
+			protected function getTargetsString():String
+			{
+				var s:String = "Gene Name\tSense\tReplichore\tLP\tRP\tMutation\tSequence";
+				for each (var row:GridRow in targetsGrid.getChildren())
+				{
+					if (row.numChildren > 8){
+						s = s+"\n";
+						s = s + getRowString(row);
+					}
+				}
+				return s;
+			}
+			
+			protected function getRowString(row:GridRow):String
+			{
+				//Gene Name	Sense	Replicore	LP	RP	Mutation	Sequence
+				var s:String = "";
+				//name
+				var ti:TextInput = (row.getChildAt(0) as GridItem).getChildAt(0) as TextInput;
+				s = s + ti.text;
+				s = s + "\t";
+				//strand
+				var bar:ToggleButtonBar = (row.getChildAt(1) as GridItem).getChildAt(0) as ToggleButtonBar;
+				s = s + bar.dataProvider.source[bar.selectedIndex];
+				s = s +"\t";
+				//replichore
+				bar = (row.getChildAt(2) as GridItem).getChildAt(0) as ToggleButtonBar;
+				s = s + bar.dataProvider.source[bar.selectedIndex];
+				s = s +"\t";
+				//LP
+				ti = (row.getChildAt(3) as GridItem).getChildAt(0) as TextInput;
+				s = s + ti.text;
+				s = s + "\t";
+				//RP
+				ti = (row.getChildAt(4) as GridItem).getChildAt(0) as TextInput;
+				s = s + ti.text;
+				s = s + "\t";
+				//Mutation
+				var cb:ComboBox = (row.getChildAt(5) as GridItem).getChildAt(0) as ComboBox;
+				s = s + cb.dataProvider[cb.selectedIndex];
+				s = s +"\t";
+				//Sequence
+				ti = (row.getChildAt(6) as GridItem).getChildAt(0) as TextInput;
+				s = s + ti.text;
+				
+				return s;
+			}
+			
+			public override function validate():void
+			{
+				isValid = false;
+				var i:int = 0;
+				//set unset name
+				var children:Array = targetsGrid.getChildren();
+				for each (var row:GridRow in children)
+				{
+					if (row.numChildren > 8){
+						var ti:TextInput = (row.getChildAt(0) as GridItem).getChildAt(0) as TextInput;
+						if (StringUtil.trim(ti.text).length < 1){
+							ti.text = "Target_" + i;
+						}
+					}
+					i = i+1;
+				}
+				//check all targets have LP
+				for each (row in children)
+				{
+					if (row.numChildren > 8){
+						ti = (row.getChildAt(3) as GridItem).getChildAt(0) as TextInput;
+						if (StringUtil.trim(ti.text).length < 1){
+							Alert.show("All oligos require a valid starting (left) position.");
+							return;
+						}
+					}
+				}
+				//check deletions and mismatches have RP
+				for each (row in children)
+				{
+					if (row.numChildren > 8){
+						ti = (row.getChildAt(4) as GridItem).getChildAt(0) as TextInput;
+						var mut:ComboBox = (row.getChildAt(5) as GridItem).getChildAt(0) as ComboBox;
+						if ((StringUtil.trim(ti.text).length < 1) && (mut.selectedIndex != 1)){
+							Alert.show("Mismatch and Deletion oligos require a valid end (right) position.");
+							return;
+						}
+					}
+				}
+						
+						
+				//check mismatch and insertion have Sequence
+				for each (row in children)
+				{
+					if (row.numChildren > 8){
+						ti = (row.getChildAt(6) as GridItem).getChildAt(0) as TextInput;
+						mut = (row.getChildAt(5) as GridItem).getChildAt(0) as ComboBox;
+						if ((StringUtil.trim(ti.text).length < 1) && (mut.selectedIndex != 2)){
+							Alert.show("Mismatch and Insertion oligos require a nucleotide sequence.");
+							return;
+						}
+					}
+				}
+				
+				isValid = true;
+				dataObject = getTargetsString();				
 			}
 
-			
 		]]>
 	</mx:Script>
 	
@@ -52,29 +363,85 @@
 		width="100%"
 		height="100%">
 		
+		<mx:VBox
+			label="Target Sites"
+			width="100%"
+			height="100%">
+			
+			<mx:Form
+				id="targetsForm" 
+				paddingBottom="5" 
+				paddingTop="5" 
+				paddingLeft="5" 
+				paddingRight="5">
+				
+				<mx:Grid id="targetsGrid" 
+						 paddingBottom="5" 
+						 paddingTop="5" 
+						 paddingLeft="5" 
+						 paddingRight="5">
+					<mx:GridRow height="32">
+						<mx:GridItem width="100%" height="100%">
+							<mx:Label height="30" fontWeight="bold" text="Target Name"
+									  textAlign="center"/>
+						</mx:GridItem>
+						<mx:GridItem width="100%" height="100%">
+							<mx:Label height="30" fontWeight="bold" text="Strand" textAlign="center"/>
+						</mx:GridItem>
+						<mx:GridItem width="100%" height="100%">
+							<mx:Label height="30" fontWeight="bold" text="Replichore"
+									  textAlign="center"/>
+						</mx:GridItem>
+						<mx:GridItem width="100%" height="100%">
+							<mx:Label height="30" fontWeight="bold"
+									  text="Left Position&#xd;(Inclusive)" textAlign="center"/>
+						</mx:GridItem>
+						<mx:GridItem width="100%" height="100%">
+							<mx:Label height="30" fontWeight="bold"
+									  text="Right Position&#xd;(Exclusive)" textAlign="center"/>
+						</mx:GridItem>
+						<mx:GridItem width="100%" height="100%">
+							<mx:Label height="30" fontWeight="bold" text="Mutation Type"
+									  textAlign="center"/>
+						</mx:GridItem>
+						<mx:GridItem width="100%" height="100%">
+							<mx:Label height="30" fontWeight="bold" text="Sequence"
+									  textAlign="center"/>
+						</mx:GridItem>
+						<mx:GridItem width="100%" height="100%" colSpan="2">
+							<mx:Label height="30" fontWeight="bold" text="Add/Remove&#xd;Targets"
+									  textAlign="center"/>
+						</mx:GridItem>
+					</mx:GridRow>
+				</mx:Grid>
+				
+			</mx:Form>
+			<mx:HBox width="100%" horizontalAlign="left">
+				<!--mx:Button id="manualSaveButton" label="Save" click="saveParams(event)"/-->
+				<mx:Button id="generateTargetfileButton" label="Download File"
+						   click="downloadTargets(event)"/>
+			</mx:HBox>
+			
+		</mx:VBox>
+		
+		
 		<mx:VBox 
-			label="Input Targets" 
-            width="100%"
-            height="100%">
-            
+			label="Upload File" 
+			width="100%"
+			height="100%">
+			
 			<mx:Form 
 				id="mainForm" 
 				paddingBottom="5" 
 				paddingTop="5" 
 				paddingLeft="5" 
 				paddingRight="5">
-				<mx:FormItem id="FI">
-					<mx:HBox id="hbox" width="100%" horizontalAlign="center" textAlign="center"
-							 verticalAlign="middle">
-						<mx:Button id="uploadButton" label = "Upload" click="uploadButton_clickHandler(event)" height="100%" width="100"/>
-						<mx:Button id="previewButton" label="Preview and Save" height="100%" width="200" click="previewButton_clickHandler(event)"/>
-					</mx:HBox>
-				</mx:FormItem>
-					<mx:TextArea id="uploadTextArea" width="600" height="300" editable="false"
-								 enabled="true" textAlign="left"/>
+				<mx:Button id="uploadButton" label = "Upload" click="uploadButton_clickHandler(event)" height="100%" width="100"/>
+				<mx:TextArea id="uploadTextArea" width="600" height="300" editable="false"
+							 enabled="true" textAlign="left"/>
 				
 			</mx:Form>
-        </mx:VBox>
+		</mx:VBox>
 	</mx:TabNavigator>
 	
 </AbstractDialogForm>

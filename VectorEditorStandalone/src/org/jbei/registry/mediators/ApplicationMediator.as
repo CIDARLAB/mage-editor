@@ -1,5 +1,6 @@
 package org.jbei.registry.mediators
 {
+	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.net.FileReference;
@@ -12,7 +13,11 @@ package org.jbei.registry.mediators
 	
 	import mx.controls.Alert;
 	import mx.core.Application;
+	import mx.core.IChildList;
+	import mx.core.UIComponent;
 	import mx.core.mx_internal;
+	import mx.managers.PopUpManager;
+	import mx.managers.SystemManager;
 	
 	import org.jbei.lib.data.RestrictionEnzymeGroup;
 	import org.jbei.lib.ui.dialogs.ModalDialog;
@@ -31,8 +36,8 @@ package org.jbei.registry.mediators
 	import org.jbei.registry.view.dialogs.DiversificationDialogForm;
 	import org.jbei.registry.view.dialogs.DiversificationInputDialogForm;
 	import org.jbei.registry.view.dialogs.FeatureDialogForm;
-	import org.jbei.registry.view.dialogs.FullReplacementInputDialogForm;
 	import org.jbei.registry.view.dialogs.FullReplacementDialogForm;
+	import org.jbei.registry.view.dialogs.FullReplacementInputDialogForm;
 	import org.jbei.registry.view.dialogs.GelDigestDialogForm;
 	import org.jbei.registry.view.dialogs.GoToDialogForm;
 	import org.jbei.registry.view.dialogs.PreferencesDialogForm;
@@ -40,6 +45,7 @@ package org.jbei.registry.mediators
 	import org.jbei.registry.view.dialogs.PropertiesDialogForm;
 	import org.jbei.registry.view.dialogs.RestrictionEnzymeManagerForm;
 	import org.jbei.registry.view.dialogs.SelectDialogForm;
+	import org.jbei.registry.view.dialogs.mageDialogs.MageParameterDialogMenuForm;
 	import org.jbei.registry.view.ui.ApplicationPanel;
 	import org.jbei.registry.view.ui.PropertiesDialog;
 	import org.puremvc.as3.interfaces.INotification;
@@ -647,12 +653,13 @@ package org.jbei.registry.mediators
             }
             CONFIG::entryEdition {
                 applicationFacade.generateSequenceOnServer();
-            }
-        }
-        
-        private function downloadSequence(content:String):void
-        {
-            applicationFacade.downloadSequence(content);
-        }
+			}
+		}
+		
+		private function downloadSequence(content:String):void
+		{
+			applicationFacade.downloadSequence(content);
+		}
+		
 	}
 }

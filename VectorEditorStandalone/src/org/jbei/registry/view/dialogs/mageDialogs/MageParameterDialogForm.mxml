@@ -67,7 +67,7 @@
 					<mx:HBox id="hbox" width="100%" horizontalAlign="center" textAlign="center"
 							 verticalAlign="middle">
 						<mx:Button id="uploadButton" label = "Upload" click="uploadButton_clickHandler(event)" height="100%" width="100"/>
-						<mx:Button id="previewButton" label="Preview and Save" height="100%" width="200" click="previewButton_clickHandler(event)"/>
+						<mx:Button id="previewButton" label="Save" height="100%" width="200" click="previewButton_clickHandler(event)"/>
 					</mx:HBox>
 				</mx:FormItem>
 					<mx:TextArea id="uploadTextArea" width="600" height="200" enabled="true"

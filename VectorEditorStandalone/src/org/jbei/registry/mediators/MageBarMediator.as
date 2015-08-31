@@ -11,17 +11,19 @@ package org.jbei.registry.mediators
 	import flash.net.URLVariables;
 	
 	import mx.collections.ArrayCollection;
+	import mx.containers.VBox;
 	import mx.controls.Button;
 	import mx.events.ListEvent;
 	
 	import org.jbei.lib.ui.dialogs.ModalDialog;
+	import org.jbei.lib.ui.dialogs.ModalDialogEvent;
 	import org.jbei.registry.ApplicationFacade;
 	import org.jbei.registry.MageConstants;
 	import org.jbei.registry.Notifications;
 	import org.jbei.registry.mage.Oligo;
 	import org.jbei.registry.models.MageProperties;
 	import org.jbei.registry.view.dialogs.mageDialogs.GenomeDialogForm;
-	import org.jbei.registry.view.dialogs.mageDialogs.MageParameterDialogForm;
+	import org.jbei.registry.view.dialogs.mageDialogs.MageParameterDialogMenuForm;
 	import org.jbei.registry.view.dialogs.mageDialogs.MageTargetDialogForm;
 	import org.jbei.registry.view.ui.MageBar;
 	import org.puremvc.as3.interfaces.INotification;
@@ -44,7 +46,8 @@ package org.jbei.registry.mediators
 		private var _mageLoader :URLLoader ;
 		private var _merlinLoader :URLLoader;
 		private var _mageClicked :Boolean;
-		private var host : String = "http://merlincad.org/"//"http://cidar.bu.edu/";//"http://localhost:8080/" // 
+		//private var host : String = "http://merlincad.org/"//"http://cidar.bu.edu/";//"http://localhost:8080/" // 
+		private var host:String = "http://cidar.bu.edu/";
 		private var _genomeIdx : int = 0;
 		private var _genomeSliceSize : int = 1024 * 1024 / 6; //roughly 1MB of UTF8 characters 
 		
@@ -102,12 +105,24 @@ package org.jbei.registry.mediators
 			
 		}
 
+		/**
+		 * 
+		 * @param event
+		 * 
+		 */
 		private function onMageParameterButtonClick(event:Event): void 
 		{
-			var _mageParameterDialog:ModalDialog = new ModalDialog(MageParameterDialogForm, null);
-			_mageParameterDialog.title = "Upload Parameter File";
+			//var _mageParameterDialog:ModalDialog = new ModalDialog(MageParameterDialogForm, null);
+			var _mageParameterDialog:ModalDialog = new ModalDialog(MageParameterDialogMenuForm, null);
+			_mageParameterDialog.title = "Oligo Parameters";
+			_mageParameterDialog.addEventListener(ModalDialogEvent.SUBMIT, onMageParameterDialogSubmit);
 			_mageParameterDialog.open();
-				
+		}
+		
+		private function onMageParameterDialogSubmit(event:ModalDialogEvent): void
+		{
+			var data:String = event.data as String;
+			_af.mageProperties.parameterFile = data;
 		}
 		
 		/* Function for dealing the completion of the Post Request Response.*/
@@ -254,12 +269,12 @@ package org.jbei.registry.mediators
 			//to debug
 			//_mageLoader.addEventListener(HTTPStatusEvent.HTTP_STATUS, debugOnHttpStatusEvent);
 			
-			if (_genomeIdx <= _mp.getSavedGenome.toString().length){
+			if (_genomeIdx <= _mp.getSavedGenome().length){
 
 				_mageLoader.addEventListener(Event.COMPLETE, loadGenomeBySlice);
 				mageVariables.targets 		= "_";
 				mageVariables.parameters 	= "_";
-				var slice:String = _mp.getSavedGenome.toString().substr(_genomeIdx,_genomeSliceSize);
+				var slice:String = _mp.getSavedGenome().substr(_genomeIdx,_genomeSliceSize);
 				mageVariables.genome		= slice;
 				mageVariables.id			= _mp.ID;
 				mageVariables.run			= "false";
@@ -346,7 +361,7 @@ package org.jbei.registry.mediators
 			var _mp :MageProperties= this._af.mageProperties;
 			_mageVariables.targets 		= _mp.getSavedTargets();
 			_mageVariables.parameters 	= _mp.getSavedParameters();
-			_mageVariables.genome		= _mp.getSavedGenome.toString().substr(_genomeIdx);//getSavedGenome() ;
+			_mageVariables.genome		= _mp.getSavedGenome().substr(_genomeIdx);//getSavedGenome() ;
 			_mageVariables.id			= _mp.ID;
 			_mageVariables.run			= "true";
 			
@@ -375,9 +390,16 @@ package org.jbei.registry.mediators
 		
 		private function onMageUploadTargetButtonClick( event : Event) : void
 		{
-			var _mageParameterDialog:ModalDialog = new ModalDialog(MageTargetDialogForm, null);
-			_mageParameterDialog.title = "Upload Target File";
-			_mageParameterDialog.open();			
+			var _mageTargetDialog:ModalDialog = new ModalDialog(MageTargetDialogForm, null);
+			_mageTargetDialog.title = "Define Targets for MAGE Oligos";
+			_mageTargetDialog.addEventListener(ModalDialogEvent.SUBMIT, onMageTargetDialogSubmit);
+			_mageTargetDialog.open();			
+		}
+		
+		private function onMageTargetDialogSubmit(event:ModalDialogEvent) : void
+		{
+			var data:String = event.data as String;
+			_af.mageProperties.targetFile = data;			
 		}
 			
 		private function clearErrorString() : void 

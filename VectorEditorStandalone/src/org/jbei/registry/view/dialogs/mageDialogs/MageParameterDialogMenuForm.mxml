@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AbstractDialogForm xmlns="org.jbei.lib.ui.dialogs.*"
+					xmlns:mx="http://www.adobe.com/2006/mxml"
+					xmlns:mageDialogs="org.jbei.registry.view.dialogs.mageDialogs.*"
+					width="100%" height="100%" minWidth="600" minHeight="200"
+					creationComplete="onCreationComplete(event)">
+	<mx:Script>
+		<![CDATA[
+			import mx.events.ValidationResultEvent;
+			import mx.preloaders.Preloader;
+			import mx.utils.StringUtil;
+			
+			import org.jbei.registry.ApplicationFacade;
+			import org.jbei.registry.Constants;
+			import org.jbei.registry.mage.Oligo;
+			import org.jbei.registry.models.MageProperties;
+			import org.jbei.registry.models.UserPreferences;
+			
+			private var changed:Boolean = false;
+			
+			[Bindable]
+			private var _mp:MageProperties;
+			
+			
+			
+			// Private Methods
+			private function onCreationComplete(event:Event):void
+			{
+				_mp = ApplicationFacade.getInstance().mageProperties;
+
+				if (uploadTextArea == null){
+					uploadTextArea = new TextArea();
+				}
+				update();
+			}
+			
+			private function onChange(event:Event):void
+			{
+				changed = true;
+			}
+			
+			protected function uploadButton_clickHandler(event:MouseEvent):void
+			{
+				_mp.uploadParameterFile();
+			}
+			
+			protected function previewButton_clickHandler(event: MouseEvent):void
+			{
+				uploadTextArea.text = _mp.parameterFile;
+				_mp.saveParameterFile(_mp.parameterFile);
+				updateParamsTab(_mp.parameterFile);			
+			}
+			
+			public function update():void
+			{
+				var textFile:String = _mp.parameterFile;
+				if (textFile == null){
+					textFile = Constants.DEFAULT_PARAMS;
+				}
+				uploadTextArea.text = textFile;
+				updateParamsTab(textFile);	
+			}
+			
+			protected function updateParamsTab(text:String):void
+			{
+				try{
+					if (!(isNaN(arr[0]) || isNaN(arr[1]) || isNaN(arr[2]) || isNaN(arr[4]))){
+						var line:String = text.split("\n")[1];
+						var arr:Array = StringUtil.trim(line).split(/\s+/);
+						sizeStepper.value=arr[0];
+						dgStepper.value=arr[1];
+						bufferStepper.value=arr[2];
+						phosStepper.value=arr[4];
+						if ((arr[5] in ["f","false","F","False","FALSE","0","n","N"])){
+							calcRepCheckBox.selected=false;
+						}
+						else{
+							calcRepCheckBox.selected=true;
+						}
+					}
+				}
+				catch (err:Error){
+					line = _mp.parameterFile.split("\n")[1];
+					arr = StringUtil.trim(line).split(/\s+/);
+					sizeStepper.value=arr[0];
+					dgStepper.value=arr[1];
+					bufferStepper.value=arr[2];
+					phosStepper.value=arr[4];
+					if ((arr[5] in ["f","false","F","False","FALSE","0","n","N"])){
+						calcRepCheckBox.selected=false;
+					}
+					else{
+						calcRepCheckBox.selected=true;
+					}
+				}
+			}
+			
+			protected function getParamString():String
+			{
+				var header:String = "oligo size\tdG_thresh\tmloc_dft\tmloc_max\taddthiol\tcalc_replic\n";
+				var line:String = "";
+				line = line + sizeStepper.value + "\t";
+				line = line + dgStepper.value + "\t";
+				line = line + bufferStepper.value + "\t" + (sizeStepper.value-bufferStepper.value) + "\t";
+				line = line + phosStepper.value + "\t";
+				var calc:String = "0";
+				if (calcRepCheckBox.selected){
+					calc = "1";
+				}
+				line = line + calc;
+				header = header + line;
+				return(StringUtil.trim(header));
+			}
+			
+			protected function downloadParams(event: MouseEvent):void
+			{
+				var file:FileReference = new FileReference();
+				var dataString:String = getParamString();				
+				file.save(dataString, "MerlinParams.txt");
+			}
+			
+			public override function validate():void
+			{
+				if(sizeValidator.validate().type == ValidationResultEvent.INVALID ||
+					dgValidator.validate().type == ValidationResultEvent.INVALID ||	
+					bufferValidator.validate().type == ValidationResultEvent.INVALID ||
+					phosValidator.validate().type == ValidationResultEvent.INVALID)
+				{
+					isValid = false;
+				} 
+				else {
+					dataObject = getParamString();
+					isValid = true;
+				}
+			}
+			
+			protected function uploadTextArea_changeHandler(event:Event):void
+			{
+				updateParamsTab(uploadTextArea.text);				
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:NumberValidator id="sizeValidator" domain="int" maxValue="300" minValue="30" property="value"
+						required="true" source="{sizeStepper}"/>
+	<mx:NumberValidator id="dgValidator" domain="int" maxValue="0" minValue="-30" property="value"
+						required="true" source="{dgStepper}"/>
+	<mx:NumberValidator id="bufferValidator" domain="int" maxValue="100" minValue="0"
+						property="value" required="true" source="{bufferStepper}"/>
+	<mx:NumberValidator id="phosValidator" domain="int" maxValue="99" minValue="0" property="value"
+						required="true" source="{phosStepper}"/>		
+	
+	
+	<mx:TabNavigator width="100%" height="100%" borderStyle="solid">
+		
+		<mx:VBox width="100%" height="100%" label="Design Parameters">
+			<mx:FormHeading label="Global Options"/>
+			<mx:Grid>
+				<mx:GridRow width="100%" height="100%">
+					<mx:GridItem width="100%" height="100%">
+						<mx:Label text="Oligo Size"/>
+					</mx:GridItem>
+					<mx:GridItem width="100%" height="100%">
+						<mx:NumericStepper id="sizeStepper" maximum="300" minimum="30" stepSize="1"
+										   value="90"/>
+						<mx:Label text="bp"/>
+					</mx:GridItem>
+					<mx:GridItem width="100%" height="100%">
+					</mx:GridItem>
+				</mx:GridRow>
+				<mx:GridRow width="100%" height="100%">
+					<mx:GridItem width="100%" height="100%">
+						<mx:Label text="ΔG (Free Energy) Threshold"/>
+					</mx:GridItem>
+					<mx:GridItem width="100%" height="100%">
+						<mx:NumericStepper id="dgStepper" maximum="0" minimum="-30" value="-12"/>
+					</mx:GridItem>
+					<mx:GridItem width="100%" height="100%">
+						<mx:LinkButton label="?"
+									   toolTip="Accept oligos with ΔG calculated to be between 0 and this value"/>
+					</mx:GridItem>
+				</mx:GridRow>
+				<mx:GridRow width="100%" height="100%">
+					<mx:GridItem width="100%" height="100%">
+						<mx:Label height="31" text="Minimum Up/Downstream&#xd;Sequence Match"/>
+					</mx:GridItem>
+					<mx:GridItem width="100%" height="100%">
+						<mx:NumericStepper id="bufferStepper" maximum="100" minimum="0" value="15"/>
+						<mx:Label text="bp"/>
+					</mx:GridItem>
+					<mx:GridItem width="100%" height="100%">
+						<mx:LinkButton label="?"
+									   toolTip="Number of bases between the end of the oligo and the first/last modified position"/>
+					</mx:GridItem>
+				</mx:GridRow>
+			</mx:Grid>
+			<mx:HRule/>
+			<mx:FormHeading label="OptMAGE Only"/>
+			<mx:Grid>
+				<mx:GridRow width="100%" height="100%">
+					<mx:GridItem width="100%" height="100%">
+						<mx:Label text="5' Phosphothioate Bonds"/>
+					</mx:GridItem>
+					<mx:GridItem width="100%" height="100%">
+						<mx:NumericStepper id="phosStepper" maximum="99" minimum="0" stepSize="1"
+										   value="0"/>
+					</mx:GridItem>
+				</mx:GridRow>
+				<mx:GridRow width="100%" height="100%">
+					<mx:GridItem width="100%" height="100%">
+						<mx:Label text="Calculate Replichore?"/>
+					</mx:GridItem>
+					<mx:GridItem width="100%" height="100%">
+						<mx:CheckBox id="calcRepCheckBox"/>
+					</mx:GridItem>
+				</mx:GridRow>
+			</mx:Grid>
+			<mx:Spacer width="211" height="33"/>
+			<mx:HBox width="100%" horizontalAlign="left">
+				<!--mx:Button id="manualSaveButton" label="Save" click="saveParams(event)"/-->
+				<mx:Button id="generateParamfileButton" label="Download File"
+						   click="downloadParams(event)"/>
+			</mx:HBox>
+		</mx:VBox>
+		
+		<mx:VBox width="100%" height="100%" label="Upload File">
+			
+			<mx:Form id="mainForm" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5">
+				<mx:FormItem id="FI">
+					<mx:HBox id="hbox" width="100%" horizontalAlign="center" textAlign="center"
+							 verticalAlign="middle">
+						<mx:Button id="uploadButton" width="100" height="100%" label="Upload"
+								   click="uploadButton_clickHandler(event)"/>
+						<!--mx:Button id="previewButton" label="Save" height="100%" width="200" click="previewButton_clickHandler(event)"/-->
+					</mx:HBox>
+				</mx:FormItem>
+				<mx:TextArea id="uploadTextArea" width="550" height="200"
+							 change="uploadTextArea_changeHandler(event)" enabled="true"
+							 textAlign="left">
+					</mx:TextArea>
+				
+			</mx:Form>
+		</mx:VBox>
+		
+		
+	</mx:TabNavigator>
+	
+</AbstractDialogForm>

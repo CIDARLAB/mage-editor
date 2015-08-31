@@ -1,15 +1,21 @@
 package org.jbei.registry.mage
 {
-	
+	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.net.FileReference;
 	
+	import mx.containers.VBox;
 	import mx.controls.Alert;
+	import mx.core.Application;
+	import mx.core.IChildList;
+	import mx.core.UIComponent;
 	
-	import org.jbei.registry.view.dialogs.mageDialogs.MageParameterDialogForm;
 	import org.jbei.registry.ApplicationFacade;
-	public class ParameterUploader
+	import org.jbei.registry.view.dialogs.mageDialogs.MageParameterDialogMenuForm;
+	import org.puremvc.as3.patterns.mediator.Mediator;
+
+	public class ParameterUploader extends Mediator
 	{
 		
 		private var fr : FileReference;
@@ -59,6 +65,21 @@ package org.jbei.registry.mage
 			
 			this.uploadData = fr.data.toString();
 			ApplicationFacade.getInstance().mageProperties.parameterFile = this.uploadData;
+			updateParamPopup();
+		}
+		
+		private function updateParamPopup():void{
+			var children:IChildList = Application.application.systemManager.rawChildren;
+			for (var i:int=0; i<children.numChildren;i++){
+				var child:DisplayObject = children.getChildAt(i);
+				if((child is UIComponent) && UIComponent(child).isPopUp){
+					try{
+						var box:VBox = (child as UIComponent).getChildAt(0) as VBox;
+						var form:MageParameterDialogMenuForm = box.getChildAt(0) as MageParameterDialogMenuForm;
+						form.update();
+					}catch (err:Error){}
+				}
+			}
 		}
 		
 		private function onImportSequenceFileReferenceLoadError(event:IOErrorEvent):void

@@ -93,5 +93,9 @@ package org.jbei.registry
 		// Additions from MAGE
 		public static const UPDATE_STATUS:String = "UPDATE_STATUS";
 		public static const UPDATE_CHARTS:String = "UPDATE_CHARTS";
+		
+		public static const PARAM_FILE_UPLOADED:String = "PARAM_FILE_UPLOADED";
+		public static const GENOME_FILE_UPLOADED:String = "GENOME_FILE_UPLOADED";
+		public static const TARGET_FILE_UPLOADED:String = "TARGET_FILE_UPLOADED";
 	}
 }
