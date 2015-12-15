@@ -10,6 +10,7 @@ package org.jbei.registry
 	import flash.net.URLRequestMethod;
 	import flash.net.URLVariables;
 	import flash.net.navigateToURL;
+	import flash.utils.Dictionary;
 	
 	import mx.collections.ArrayCollection;
 	import mx.controls.Alert;
@@ -553,7 +554,7 @@ package org.jbei.registry
 			
 		}
         
-		public function getMASCPCRPrimers():void{
+		public function getMASCPCRPrimers(dict:Dictionary):void{
 			var request:URLRequest = new URLRequest(host+"magelet/utils");
 			var loader:URLLoader = new URLLoader();
 			var variables:URLVariables = new URLVariables();
@@ -561,7 +562,20 @@ package org.jbei.registry
 			
 			request.method = URLRequestMethod.GET;
 			variables.requesttype = "mascpcr";
-			variables.userID = this.mageProperties.ID; //must pass user session id
+			variables.userID = this.mageProperties.ID;
+			variables.amp = dict["amp"];
+			variables.shift = dict["shift"];
+			variables.lenMin = dict["lenMin"];
+			variables.lenMax = dict["lenMax"];
+			variables.temp = dict["temp"];
+			variables.dnac1 = dict["dnac1"];
+			variables.dnac2 = dict["dnac2"];
+			variables.na = dict["na"];
+			variables.k = dict["k"];
+			variables.mg = dict["mg"];
+			variables.tris = dict["tris"];
+			variables.dntps = dict["dntps"];
+			
 			request.data = variables;
 			loader.dataFormat = URLLoaderDataFormat.TEXT;
 			loader.load(request);

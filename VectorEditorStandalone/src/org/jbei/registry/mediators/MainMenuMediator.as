@@ -47,7 +47,7 @@ package org.jbei.registry.mediators
 			mainMenu.addEventListener(MainMenu.SHOW_DIVERSIFICATION_INPUT_DIALOG, onShowDiversificationInputDialog);
 			mainMenu.addEventListener(MainMenu.SHOW_FULL_REPLACEMENT_INPUT_DIALOG, onShowFullReplacementInputDialog);
 			mainMenu.addEventListener(MainMenu.SHOW_DSDNA_DIALOG, onShowDSDNADialog);
-			mainMenu.addEventListener(MainMenu.DOWNLOAD_MASCPCR, onDownloadMASCPCR);
+			mainMenu.addEventListener(MainMenu.SHOW_PCR_DIALOG, onShowPCRDialog);
 			mainMenu.addEventListener(MainMenu.SHOW_GOTO_DIALOG, onShowGoToDialog);
 			mainMenu.addEventListener(MainMenu.SHOW_FIND_DIALOG, onShowFindDialog);
 			mainMenu.addEventListener(MainMenu.SHOW_ABOUT_DIALOG, onShowAboutDialog);
@@ -231,9 +231,8 @@ package org.jbei.registry.mediators
 			sendNotification(Notifications.SHOW_DSDNA_DIALOG);
 		}
 		
-		private function onDownloadMASCPCR(event:MenuItemEvent):void
-		{
-			sendNotification(Notifications.DOWNLOAD_MASCPCR);
+		private function onShowPCRDialog(event:MenuItemEvent):void{
+			sendNotification(Notifications.SHOW_PCR_DIALOG);
 		}
 		
 		private function onShowAboutDialog(event:MenuItemEvent):void

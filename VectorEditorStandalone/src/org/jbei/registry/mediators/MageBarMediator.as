@@ -435,7 +435,7 @@ package org.jbei.registry.mediators
 			sendNotification(Notifications.UPDATE_CHARTS,oligos[0]);
 		}
 		
-		private function onOligoSelection( ) : void
+		private function onOligoSelection(event:Event ) : void
 		{
 				// Get and select the correspodning oligo
 				var oligo :Oligo = (ApplicationFacade.getInstance().mageProperties.merlinResults[mageBar.oligoSelect.selectedIndex] as Oligo );

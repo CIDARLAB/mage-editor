@@ -56,7 +56,7 @@
 			public static const SHOW_PREFERENCES_DIALOG:String = "ShowPreferencesDialog";
 			public static const SHOW_DIVERSIFICATION_INPUT_DIALOG:String = "ShowDiversificationInputDialog";
 			public static const SHOW_FULL_REPLACEMENT_INPUT_DIALOG:String = "ShowFullReplacementInputDialog";
-			public static const DOWNLOAD_MASCPCR:String = "DownloadMASCPCR";
+			public static const SHOW_PCR_DIALOG:String = "ShowPCRDialog";
 			public static const SHOW_DSDNA_DIALOG:String = "ShowDSDNADialog";
 			
 			// About
@@ -206,7 +206,7 @@
                 var simulateDigestionMenuItem:MenuItem = new MenuItem("simulateDigestionMenuItem", "Simulate Digestion");
                 var diversificationInputMenuItem:MenuItem = new MenuItem("diversificationInputMenuItem", "Calculate Diversification Trends");
 				var fullReplacementInputMenuItem:MenuItem = new MenuItem("fullReplacementInputMenuItem", "Calculate Complete Replacement Likelihood");
-				var downloadMASCPCRMenuItem:MenuItem = new MenuItem("downloadMASCPCRMenuItem","Download MASCPCR Primers");
+				var downloadMASCPCRMenuItem:MenuItem = new MenuItem("pcrMenuItem","Generate PCR Primers");
 				var propertiesMenuItem:MenuItem = new MenuItem("propertiesMenuItem", "Properties");
 				var dsdnaMenuItem:MenuItem = new MenuItem("dsdnaMenuItem","DSDNA Primer Generator");
 				toolsMenuItem.addSubItem(diversificationInputMenuItem);
@@ -288,7 +288,7 @@
             	menuItemsMap["preferencesMenuItem"] = preferencesMenuItem;
 				menuItemsMap["diversificationInputMenuItem"] = diversificationInputMenuItem;
 				menuItemsMap["fullReplacementInputMenuItem"] = fullReplacementInputMenuItem;
-				menuItemsMap["downloadMASCPCRMenuItem"] = downloadMASCPCRMenuItem;
+				menuItemsMap["pcrMenuItem"] = downloadMASCPCRMenuItem;
 				menuItemsMap["dsdnsMenuItem"] = dsdnaMenuItem;
             	
             	// Help
@@ -392,8 +392,8 @@
 					dispatchEvent(new MenuItemEvent(SHOW_FULL_REPLACEMENT_INPUT_DIALOG, menuItem));
 				} else if(menuItem.id == "exportOligosMenuItem") {
 					dispatchEvent(new MenuItemEvent(EXPORT_OLIGOS, menuItem));
-				} else if (menuItem.id == "downloadMASCPCRMenuItem") {
-					dispatchEvent(new MenuItemEvent(DOWNLOAD_MASCPCR, menuItem));
+				} else if (menuItem.id == "pcrMenuItem") {
+					dispatchEvent(new MenuItemEvent(SHOW_PCR_DIALOG, menuItem));
 				} else if (menuItem.id == "dsdnaMenuItem"){
 					dispatchEvent(new MenuItemEvent(SHOW_DSDNA_DIALOG, menuItem));
 				}

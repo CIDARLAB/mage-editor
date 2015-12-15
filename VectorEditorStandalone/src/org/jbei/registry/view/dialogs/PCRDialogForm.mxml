@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AbstractDialogForm 
+	width="100%" 
+	height="100%" 
+	minWidth="1100"
+	minHeight="250"
+	xmlns="org.jbei.lib.ui.dialogs.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml">
+	
+	<mx:Script>
+		<![CDATA[
+
+			private function getData():Dictionary
+			{
+				var d:Dictionary = new Dictionary();
+				var ampstr:String = ampField.text;
+				ampstr = ampstr.replace(" ","");
+				ampstr = ampstr.replace(",",";");
+				d["amp"] = ampstr;
+				d["shift"] = shiftStepper.value.toString();
+				d["lenMin"] = lenMinStepper.value.toString();
+				d["lenMax"] = lenMaxStepper.value.toString();
+				d["temp"] = tempStepper.value.toString();
+				d["dnac1"] = dnac1Stepper.value.toString();
+				d["dnac2"] = dnac2Stepper.value.toString();
+				d["na"] = naStepper.value.toString();
+				d["k"] = kStepper.value.toString();
+				d["mg"] = mgStepper.value.toString();
+				d["dntps"] = dntpStepper.value.toString();
+				d["tris"] = trisStepper.value.toString();
+				
+				return d;
+			}
+			
+			public override function validate():void
+			{
+				dataObject = getData();
+				isValid = true;
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:VBox width="100%" height="100%">
+		<mx:FormHeading label="Primer Design"/>
+		<mx:Grid id="mainGrid">
+			<mx:GridRow width="100%" height="100%">
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text = "Amplicon Lengths"/>
+					</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<mx:TextInput id="ampField" text="100, 150, 200, 250, 300, 400, 500, 700, 850" restrict="0123456789,; "/>
+					</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<mx:LinkButton label="?" toolTip="Comma or semicolon list of PCR product lengths. If you're not pooling primers for MASC PCR, enter a single value."/>
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow>
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="Amplicon Length Adjustment"/>
+				</mx:GridItem>
+						<mx:GridItem width="100%" height="100%">
+							<mx:NumericStepper id="shiftStepper" minimum="0" maximum="100" value="5"/>
+							<mx:Label text="%"/>
+						</mx:GridItem>
+						<mx:GridItem width="100%" height="100%">
+							<mx:LinkButton label="?" toolTip="Allow the amplicon length to vary by this amount, to increase the likelihood of finding an ideal primer in the unmodified region."/> 
+						</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow>
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="Primer Length"/>
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<mx:NumericStepper id="lenMinStepper" minimum="5" maximum="50" value="16"/>
+					<mx:Label text="to"/>
+					<mx:NumericStepper id="lenMaxStepper" minimum="5" maximum="50" value="30"/>
+					<mx:Label text="bp"/>
+ 				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow>
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="Target Temperature"/>
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<mx:NumericStepper id="tempStepper" maximum="80" minimum="40" stepSize="0.5"
+									   value="60"/>
+					<mx:Label text="°C"/>
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					
+				</mx:GridItem>
+			</mx:GridRow>
+		</mx:Grid>
+		<mx:HRule width="475" height="2"/>
+		<mx:FormHeading label="PCR Parameters"/>
+		<mx:Grid label="paramGrid">
+			<mx:GridRow>
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="DNA concentration"/>
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<mx:NumericStepper id="dnac1Stepper" value="25.0" maximum="100" stepSize="0.1"/>
+					<mx:Label text="nM"/>
+				</mx:GridItem>
+				<mx:GridItem/>
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="Primer concentration"/>
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:NumericStepper id="dnac2Stepper" maximum="100" stepSize="0.1" value="25.0"/>
+					<mx:Label text="nM"/>
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow>
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="dNTPs"/>
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<mx:NumericStepper id="dntpStepper" value="25.0" maximum="1000" stepSize="0.1"/>
+					<mx:Label text="mM"/>
+					
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="Tris"/>
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<mx:NumericStepper id="trisStepper" value="0.0" maximum="1000" stepSize="0.1"/>
+					<mx:Label text="mM"/>
+					
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow>
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="Sodium (Na)"/>
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<mx:NumericStepper id="naStepper" value="50.0" maximum="1000" stepSize="0.1"/>
+					<mx:Label text="mM"/>
+					
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="Potassium (K)"/>
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<mx:NumericStepper id="kStepper" value="0.0" maximum="1000" stepSize="0.1"/>
+					<mx:Label text="mM"/>
+					
+				</mx:GridItem>
+				
+			</mx:GridRow>
+			<mx:GridRow>
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="Magnesium (Mg)"/>
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<mx:NumericStepper id="mgStepper" value="0.0" maximum="1000" stepSize="0.1"/>
+					<mx:Label text="mM"/>
+					
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+				</mx:GridItem>
+				
+			</mx:GridRow>
+		</mx:Grid>
+	</mx:VBox>
+	
+	
+	
+</AbstractDialogForm>

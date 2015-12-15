@@ -79,7 +79,7 @@
 					var testArrCol:ArrayCollection = new ArrayCollection();
 					for(var cc:int =0; cc < cycles; cc++)
 					{
-						var m:Number = cc;
+						var m:Number = cc+1;
 						var m1:Number = dataMatrix[cc][chartSeries];
 						testArrCol.addItem({mData:m.toString(),nData:(m1*100).toString()});
 					}

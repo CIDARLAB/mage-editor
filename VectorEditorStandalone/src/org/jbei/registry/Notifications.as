@@ -73,6 +73,7 @@ package org.jbei.registry
 		public static const DOWNLOAD_MASCPCR:String = "DOWNLOAD_MASCPCR";
         public static const REVERSE_COMPLEMENT_SEQUENCE:String = "REVERSE_COMPLEMENT_SEQUENCE";
 		public static const SHOW_DSDNA_DIALOG:String = "SHOW_DSDNA_DIALOG";
+		public static const SHOW_PCR_DIALOG:String = "SHOW_PCR_DIALOG";
 		//public static const DSDNA_DIALOG_SUBMITTED:String = "DSDNA_DIALOG_SUBMITTED";
 		
 		public static const PRINT_SEQUENCE:String = "PRINT_SEQUENCE";

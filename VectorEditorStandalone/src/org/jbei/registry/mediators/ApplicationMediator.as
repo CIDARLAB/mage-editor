@@ -40,6 +40,7 @@ package org.jbei.registry.mediators
 	import org.jbei.registry.view.dialogs.FullReplacementInputDialogForm;
 	import org.jbei.registry.view.dialogs.GelDigestDialogForm;
 	import org.jbei.registry.view.dialogs.GoToDialogForm;
+	import org.jbei.registry.view.dialogs.PCRDialogForm;
 	import org.jbei.registry.view.dialogs.PreferencesDialogForm;
 	import org.jbei.registry.view.dialogs.ProjectPropertiesDialogForm;
 	import org.jbei.registry.view.dialogs.PropertiesDialogForm;
@@ -95,6 +96,7 @@ package org.jbei.registry.mediators
                 , Notifications.EXPORT_OLIGOS
 				, Notifications.DOWNLOAD_MASCPCR
 				, Notifications.SHOW_DSDNA_DIALOG
+				, Notifications.SHOW_PCR_DIALOG
 				, Notifications.SAVE_TO_REGISTRY
                 , Notifications.SAVE_PROJECT
                 , Notifications.SAVE_PROJECT_AS
@@ -258,11 +260,11 @@ package org.jbei.registry.mediators
 				case Notifications.SHOW_DSDNA_DIALOG:
 					showDSDNADialog();
 					
-					break;
-				case Notifications.DOWNLOAD_MASCPCR:
-					getMASCPCRPrimers();
+					break;	
+				case Notifications.SHOW_PCR_DIALOG:
+					showPCRDialog();
 					
-					break;				
+					break;
 				case Notifications.SHOW_GOTO_DIALOG:
 					showGoToDialog();
 					
@@ -301,6 +303,12 @@ package org.jbei.registry.mediators
         {
             sendNotification(Notifications.CARET_POSITION_CHANGED, (event.data as int));
         }
+		
+		private function onPCRDialogSubmit(event:ModalDialogEvent):void
+		{
+			var dict:Dictionary = event.data as Dictionary;
+			applicationFacade.getMASCPCRPrimers(dict);
+		}
 		
 		private function loadDiversificationInputDialog():void
 		{
@@ -510,10 +518,10 @@ package org.jbei.registry.mediators
             gelDigestDialog.open();
         }
 			
-		private function getMASCPCRPrimers():void
-		{
-			applicationFacade.getMASCPCRPrimers();
-		}
+		//private function getMASCPCRPrimers():void
+		//{
+		//	applicationFacade.getMASCPCRPrimers();
+		//}
 		
 		private function showGoToDialog():void
 		{
@@ -531,6 +539,14 @@ package org.jbei.registry.mediators
 			dsdnaDialog.open();
 			
 			dsdnaDialog.addEventListener(ModalDialogEvent.SUBMIT, onDSDNADialogSubmit);
+		}
+		
+		private function showPCRDialog():void
+		{
+			var pcrDialog:ModalDialog = new ModalDialog(PCRDialogForm,null);
+			pcrDialog.title = "PCR Primer Generation";
+			pcrDialog.addEventListener(ModalDialogEvent.SUBMIT, onPCRDialogSubmit);
+			pcrDialog.open();
 		}
 		
 		private function showAboutDialog():void
